@@ -2,7 +2,7 @@
 
 # Фильтрация html-текста (http://simplehtmldom.sourceforge.net)
 
-class Cleartext {
+class ClearText {
 
     public function filter_text($post, $stopwords = array(), $filter_css_selector = array(), $domain) {
 
