@@ -12,7 +12,7 @@ if ($block == 5) {
     $postfix = '. по ролям';
 }
 
-echo '<h1>' . 'Буковски - Самая красивая женщина в городе' . $postfix . '</h1>';
+echo '<h1>' . 'Название книги' . $postfix . '</h1>';
 $text = file_get_contents('book.txt', FILE_USE_INCLUDE_PATH);
 
 //заменим все множественные символы на один
