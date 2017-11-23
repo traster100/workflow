@@ -6,38 +6,59 @@
  * $body=0 без тела страницы, $body=1 с телом страницы
  * $verbose=0 молчаливый, $verbose=1 подробный вывод о действиях
  */
+
 class Curl {
 
  public static function getpage($url, $head = 0, $body = 1, $verbose = 0) {
   $curl = curl_init();
 
-// ОСНОВНЫЕ
-  curl_setopt($curl, CURLOPT_URL, $url); // устанавливаем урл (протокол обязателен)
-// curl_setopt($curl, CURLOPT_PORT, 80); // устанавливаем альтернативный порт
+// урл (протокол обязателен)
+  curl_setopt($curl, CURLOPT_URL, $url);
+
+// User-Agent
   curl_setopt($curl, CURLOPT_USERAGENT,
-   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.114 Safari/537.36'); // устанавливаем User-Agent
-// curl_setopt($curl, CURLOPT_ENCODING, ''); // устанавливаем сжатие. все поддерживаемые сервером
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER,
-   1); // возвращаем результат строкой в переменную curl_exec, а не в браузер
-  curl_setopt($curl, CURLOPT_BINARYTRANSFER, 1); // вернуть сырой вывод
-// curl_setopt($curl, CURLOPT_MUTE, 1); // полность молчаливый режим
-  curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1); // позволить редиректы
-  curl_setopt($curl, CURLOPT_AUTOREFERER, 1); // при редиректах подставлять в Referer значение Location
-  curl_setopt($curl, CURLOPT_FAILONERROR, 1); // вернет FALSE если код ответа сервера >=400
+   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.114 Safari/537.36');
+
+// сжатие. все поддерживаемые сервером
+// curl_setopt($curl, CURLOPT_ENCODING, '');
+
+// возвращаем результат строкой в переменную curl_exec, а не в браузер
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+// вернуть сырой вывод
+  curl_setopt($curl, CURLOPT_BINARYTRANSFER, 1);
+
+// полность молчаливый режим
+// curl_setopt($curl, CURLOPT_MUTE, 1);
+
+// позволить редиректы
+  curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+
+// при редиректах подставлять в Referer значение Location
+  curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
+
+// вернет FALSE если код ответа сервера >=400
+  curl_setopt($curl, CURLOPT_FAILONERROR, 1);
+
 // curl_setopt($curl, CURLOPT_REFERER, 'referer'); // подставить свой заголовок "Referer: "
 // curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: text/plain', 'Content-length: 100')); // установить свои заголовки
 // curl_setopt($curl, CURLOPT_USERPWD, "myusername:mypassword"); // позволить авторизацию
 // curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10); // число секунд ожидания успешного коннекта
 // curl_setopt($curl, CURLOPT_TIMEOUT, 10); // число секунд выполнения курла
 
+// возвращаем http-заголовки вместе с телом страницы
   if ($head == 1) {
-   curl_setopt($curl, CURLOPT_HEADER, 1); // возвращаем http-заголовки вместе с телом страницы
+   curl_setopt($curl, CURLOPT_HEADER, 1);
   }
+
+// не возвращаем тело страницы
   if ($body == 0) {
-   curl_setopt($curl, CURLOPT_NOBODY, 1); // не возвращаем тело страницы
+   curl_setopt($curl, CURLOPT_NOBODY, 1);
   }
+
+// подробный вывод обо всех действиях
   if ($verbose == 1) {
-   curl_setopt($curl, CURLOPT_VERBOSE, 1); // подробный вывод обо всех действиях
+   curl_setopt($curl, CURLOPT_VERBOSE, 1);
   }
 
 // КУКИ
@@ -73,16 +94,25 @@ class Curl {
 
   $content = curl_exec($curl);
 
-  $result = array(
-   'content' => $content,
-   'errno' => curl_errno($curl),
-   'error' => curl_error($curl),
-   'getinfo' => curl_getinfo($curl),
-  );
+//старое
+//  $result = array(
+//   'content' => $content,
+//   'errno' => curl_errno($curl),
+//   'error' => curl_error($curl),
+//   'getinfo' => curl_getinfo($curl),
+//  );
+
+//  новое
+  if (curl_errno($curl) == 0 and curl_getinfo($curl)['http_code'] == 200) {
+   return $content;
+  } else {
+   return false;
+  }
 
   curl_close($curl);
 
-  return $result;
+//  старое
+//  return $result;
 
  }
 
