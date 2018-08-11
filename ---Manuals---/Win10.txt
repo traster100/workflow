@@ -43,3 +43,7 @@ Defragmentation disks
 
 Включить Windows Photo Viewer
 Win+R > regedit > HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations > создать строковый параметр с ключом ".png" и значением "PhotoViewer.FileAssoc.Tiff"
+
+
+Всё по винде
+https://remontka.pro/windows-10-page
