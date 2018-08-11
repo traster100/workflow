@@ -1,0 +1,74 @@
+Скачивание файла Excel
+
+1 вариант
+
+HTML
+<form action='/competitors/export_excel' method='get'>
+<input type="submit" value="Выгрузить в Excel">
+</form>
+
+2 вариант
+
+HTML
+<button id="export_excel" type="button">в Excel</button>
+
+JS
+    $('#export_excel').on('click',
+        function () {
+
+            var order_ids = '';
+            $('.check_print:checked').each(function () {
+                order_ids = order_ids + $(this).attr('name') + ";";
+            });
+            console.log(order_ids);
+
+            if (order_ids.length > 0) {
+                window.location.href = '/courier/orders_new/export_excel?order_ids=' + order_ids;
+            }
+
+        });
+		
+PHP
+
+public function export_excel() {
+
+$file = '';
+
+//поля заголовков файла ручные
+$file .= 'Столбик1' . ';';
+$file .= 'Столбик2' . ';';
+$file .= 'Столбик3' . ';';
+
+//поля заголовков файла из названия полей
+$order_one = $orders[0];
+foreach ($order_one as $field => $value) {
+    $file .= $field . ';';
+}
+$file .= "\n";
+
+
+//наполнение файла
+foreach ($orders as $order) {
+$file .= '"' . $order->id . '"' . ';';
+$file .= '"' . $order->name . '"' . ';';
+$file .= '"' . $order->cost . '"' . ';';
+}
+
+
+//название файла
+$filename = 'файл_' . date("d.m.Y_H_i") . '.csv';
+
+
+//сохраняем файл в папку
+file_put_contents(
+'/excel/download/' . $filename,
+iconv('utf-8', 'windows-1251', $file),
+FILE_USE_INCLUDE_PATH | FILE_APPEND | LOCK_EX
+);
+
+
+//скачиваем
+header("Content-type: text/csv; charset=cp1251;");
+header("Content-disposition: attachment; filename=" . $filename);
+echo iconv('utf-8', 'windows-1251', $file);
+}

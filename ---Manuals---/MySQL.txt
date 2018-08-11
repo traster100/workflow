@@ -1,0 +1,32 @@
+Доступ к БД
+
+SSH:
+mysql -h hostname -u username -p
+
+OpenServer:
+C:\OpenServer\modules\database\MySQL-5.7\bin\mysql.exe -h hostname -u username -p
+
+------------------------------------------------
+
+Временные интервалы
+
+NOW() > (`created` + INTERVAL 5 HOUR)
+NOW() > (TIMESTAMP(`created`) + INTERVAL 5 HOUR)
+
+------------------------------------------------
+
+Regexp
+
+$regexp[] = "CONVERT(LOWER(" . $field . ") USING utf8mb4) LIKE '%" . trim($word) . "%'";
+
+------------------------------------------------
+
+Склеить строки при выборке
+
+CONCAT_WS(" ", `family`, `name`, `patronym`);
+
+------------------------------------------------
+
+Даты
+SELECT * FROM `btc_log` WHERE DATE(`created`) BETWEEN '2016-10-13' AND '2016-10-14'
+SELECT * FROM `btc_log` WHERE UNIX_TIMESTAMP(`created`) BETWEEN 1493510400 AND 1494510400;
