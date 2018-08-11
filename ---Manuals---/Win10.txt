@@ -1,0 +1,45 @@
+Win+R и gpedit.msc
+
+Отключить Windows Defender
+Computer Configuration > Administrative Templates > Windows Components > Windows Defender Antivirus
+-Turn off Windows - в Enabled
+
+Зайти в диспетчер задач, на вкладку Startup, найти Windows Defender и по правому клику - в Disabled, тогда и иконка пропадёт с трея
+
+Отключить Windows Search
+Computer Configuration > Administrative Templates > Windows Components > Search
+-Do not allow web search - в Enabled
+-Don’t search the web or display web results in Search - в Enabled
+-Don’t search the web or display web result in Search over metered connections - в Enabled
+
+Службы (Services)
+-остановить службу Windows Search, и потом - в Disabled
+
+Отключить Windows Telemetry
+Computer Configuration > Administrative Templates > Windows Components > Data Collection and Preview Builds
+-Allow Telemetry - в Disabled
+
+Отключить Windows lock screen
+Computer Configuration > Administrative Templates > Control Panel > Personalization
+-Do not display the lock screen - в Enabled
+
+Отключить Windows OneDrive
+Computer Configuration > Administrative Templates > Windows Components > OneDrive
+-Prevent the usage of OneDrive for file storage - в Enabled
+
+Отключить Windows Update
+Службы (Services)
+-остановить службу Windows Update, и потом - в Disabled
+
+Отключить Диагностику
+в командной строке запущенной с правами администратора выполните 2 команды:
+sc config “DiagTrack” start= disabled
+sc stop “DiagTrack”
+
+Defragmentation disks
+-отключить для всех дисков дефрагментацию по расписанию
+
+Сделать Disk Cleanup
+
+Включить Windows Photo Viewer
+Win+R > regedit > HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations > создать строковый параметр с ключом ".png" и значением "PhotoViewer.FileAssoc.Tiff"

@@ -34,7 +34,3 @@ $orders_ids = array_map(function ($value) {
 $sum = array_sum(array_map(function ($v) {
     return $v->sum;
 }, $array));
-
------------------------------------------------------
-
-
