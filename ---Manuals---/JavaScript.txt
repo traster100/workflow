@@ -70,6 +70,9 @@ $(document).ready(function () {
 
     //не давать вбивать ничего кроме цифр
     //<input type="number" onkeypress='return event.charCode >= 48 && event.charCode <= 57' >
+    
+    //не давать вбивать ничего кроме цифр. и только 6 цифр
+    onkeypress='return (event.charCode >= 48 && event.charCode <= 57) && (this.value.length < 6)'
 
     //вопрос с подтверждением
     if (confirm('Удалить?')) {
