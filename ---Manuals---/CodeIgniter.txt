@@ -154,3 +154,22 @@ $this->name_library->function();
 
 $this->load->model('model_faq');
 загрузка модели
+
+-----------------------------------------------------
+
+Кеширование
+
+Включить кеширование
+$this->db->cache_on();
+$query = $this->db->query("SELECT * FROM mytable");
+
+Выключите кеширование для этого одного запроса
+$this->db->cache_off();
+$query = $this->db->query("SELECT * FROM members WHERE member_id = '$current_user'");
+
+Включите кеширование обратно
+$this->db->cache_on();
+$query = $this->db->query("SELECT * FROM another_table");
+
+$this->db->cache_delete()
+Удаляет кеш-файлы связанные с конкретной страницей.
