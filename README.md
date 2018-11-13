@@ -1,3 +1,4 @@
 # any_code
 
-разные куски кода и решения
+my any simples, examples, projects, codes...
+my notes and my storage, my memories and my remembers
