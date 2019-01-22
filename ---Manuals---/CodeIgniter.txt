@@ -27,7 +27,6 @@ return true;
 $this->form_validation->set_message('check_password', 'Старый пароль введен неверно');
 return false;
 }
-
 -----------------------------------------------------
 
 QueryBuilder
@@ -94,7 +93,6 @@ $this->db->delete('addresses', [
 
 ОТЛАДКА
 $this->db->last_query();
-
 -----------------------------------------------------
 
 Залогиненность
@@ -105,7 +103,6 @@ $this->administrator->is_login();
 юзер залогинен
 $this->user->is_login();
 $this->user->item('id');
-
 -----------------------------------------------------
 
 Сессии
@@ -118,7 +115,6 @@ $this->session->unset_userdata('property');
 
 всё что есть в сессии
 $this->session->all_userdata();
-
 -----------------------------------------------------
 
 ОТЛАДКА КУК И СЕССИЙ
@@ -131,7 +127,6 @@ print_r(!empty($aaa['basket']) ? $aaa['basket'] : '');
 $bbb = unserialize($this->input->cookie('ci_session'));
 var_dump('Кука ' . $bbb['session_id']);
 print_r(!empty($bbb['basket']) ? $bbb['basket'] : '');
-
 -----------------------------------------------------
 
 Хелпер
@@ -154,7 +149,6 @@ $this->name_library->function();
 
 $this->load->model('model_faq');
 загрузка модели
-
 -----------------------------------------------------
 
 Кеширование
@@ -173,3 +167,52 @@ $query = $this->db->query("SELECT * FROM another_table");
 
 $this->db->cache_delete()
 Удаляет кеш-файлы связанные с конкретной страницей.
+-----------------------------------------------------
+
+Ресайз картинок
+
+Есть 3 библиотеки изображений: GD/GD2, NetPBM, ImageMagick. Ватермарки работают только с GD/GD2. И GD/GD2 нужна для остальных библиотек, чтобы вычислять параметры картинки.
+
+Инициализация
+$this->load->library('image_lib');
+
+Вызов функций
+$this->image_lib->resize()
+$this->image_lib->crop()
+$this->image_lib->rotate()
+$this->image_lib->watermark()
+$this->image_lib->clear()
+
+Проверять отработку функций так
+if ($this->image_lib->resize()) {
+    echo 'ok';
+} else {
+    echo $this->image_lib->display_errors();
+}
+
+Сброс всех параметров обработки. Вызывать если проходим картинки в цикле
+$this->image_lib->clear();
+
+Создание тумбинашки
+$config['image_library'] = 'gd2';
+
+//путь до картинки
+$config['source_image'] = '/path/to/image/mypic.jpg';
+
+{
+//сохранить оригинал, и создать копию сюда
+$config['new_image'] = '/path/to/new_image.jpg';
+
+//сохранить оригинал, и создать миниатюру с именем файла с постфиксом оригинал_thumb.jpg
+$config['create_thumb'] = TRUE;
+}
+
+//сохранять пропорции
+$config['maintain_ratio'] = TRUE;
+
+//размер картинки
+$config['width'] = 100;
+$config['height'] = 100;
+
+$this->load->library('image_lib', $config);
+$this->image_lib->resize();
