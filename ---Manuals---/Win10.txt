@@ -53,6 +53,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAsso
 
 Отключить эскизы окон на панели задач 
 HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+- создать DWORD-параметр, с ключом ExtendedUIHoverTime и значением 60000
 -----------------------------------------------------------------------------------------
 
 Всё по винде
