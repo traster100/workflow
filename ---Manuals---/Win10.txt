@@ -1,34 +1,31 @@
 Win+R и gpedit.msc
 
-Отключить Windows Defender
+1. Отключить Windows Defender
 Computer Configuration > Administrative Templates > Windows Components > Windows Defender Antivirus
 -Turn off Windows - в Enabled
 Зайти в диспетчер задач, на вкладку Startup, найти Windows Defender и по правому клику - в Disabled, тогда и иконка пропадёт с трея
 
-Отключить Windows Search
+2. Отключить Windows Search
 Computer Configuration > Administrative Templates > Windows Components > Search
 -Do not allow web search - в Enabled
 -Don’t search the web or display web results in Search - в Enabled
 -Don’t search the web or display web result in Search over metered connections - в Enabled
 
-Отключить Windows Telemetry
+3. Отключить Windows Telemetry
 Computer Configuration > Administrative Templates > Windows Components > Data Collection and Preview Builds
 -Allow Telemetry - в Disabled
 
-Отключить Windows OneDrive
+4. Отключить Windows OneDrive
 Computer Configuration > Administrative Templates > Windows Components > OneDrive
 -Prevent the usage of OneDrive for file storage - в Enabled
 
-Отключить Windows lock screen
+5. Отключить Windows lock screen
 Computer Configuration > Administrative Templates > Control Panel > Personalization
 -Do not display the lock screen - в Enabled
 -----------------------------------------------------------------------------------------
 
-Отключить Windows Update
 Службы (Services)
 -остановить службу Windows Update, и потом - в Disabled
-
-Службы (Services)
 -остановить службу Windows Search, и потом - в Disabled
 -----------------------------------------------------------------------------------------
 
@@ -44,16 +41,21 @@ Defragmentation disks
 -----------------------------------------------------------------------------------------
 Win+R и regedit
 
-Включить Windows Photo Viewer
+1. Включить Windows Photo Viewer
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations
 И создать строковые параметры
 - с ключом ".png" и значением "PhotoViewer.FileAssoc.Tiff"
 - с ключом ".jpg" и значением "PhotoViewer.FileAssoc.Tiff"
 - с ключом ".jpeg" и значением "PhotoViewer.FileAssoc.Tiff"
 
-Отключить эскизы окон на панели задач 
+2. Отключить эскизы окон на панели задач 
 HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
 - создать DWORD-параметр, с ключом ExtendedUIHoverTime и значением 60000
+
+3. Отключить стрелочки на ярлыках
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer
+клик на Explorer и создать папку Shell Icons
+внутри папки создать String Value, назвать 29
 -----------------------------------------------------------------------------------------
 
 Всё по винде
