@@ -1,0 +1,39 @@
+Content-Security-Policy (для защиты от XSS)
+
+<meta http-equiv='Content-Security-Policy' content="">
+Общее написание тега
+
+Content-Security-Policy: script-src 'self'
+Скрипты только с текущего домена. Не будут работать встроенные inline js-скрипты, js-аттрибуты тегов, и встроенные inline css-стили
+
+Content-Security-Policy: script-src 'self' http://code.jquery.com
+Скрипты только с текущего домена, и jquery
+
+Content-Security-Policy: default-src 'self'; script-src 'self' http://code.jquery.com
+Ограничит источник всех ресурсов текущим доменом, но добавит исключение для script-src, чтобы разрешить jquery
+
+script-src 'self' www.google-analytics.com ajax.googleapis.com;
+Разрешит гугланалитику
+
+{
+Content-Security-Policy: default-src 'self'; img-src *;
+Разрешит картинки отовсюду
+
+Content-Security-Policy: default-src 'self'; img-src 'self' data:;
+Разрешит картинки внутри data:image
+
+Content-Security-Policy: img-src data:
+Разрешит встроенные изображения в кодировке base64
+}
+
+Content-Security-Policy-Report-Only
+Для тестирование юзать тег
+
+font-src: ограничивает источники для веб-шрифтов
+frame-src: ограничивает исходные URL-адреса для фреймов
+img-src: ограничивает источники изображений
+media-src: ограничивает источники видео и аудио
+object-src: ограничивает источники для Flash и других плагинов
+script-src: ограничивает источники файлов сценариев
+style-src: Ограничивает источники для файлов CSS
+default-src: Для всего вышеперечисленного. ОБЯЗАТЕЛЬНА
