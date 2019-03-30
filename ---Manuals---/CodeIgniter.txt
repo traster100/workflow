@@ -97,12 +97,8 @@ $this->db->last_query();
 
 Залогиненность
 
-администратор залогинен
-$this->administrator->is_login();
-
-юзер залогинен
-$this->user->is_login();
-$this->user->item('id');
+администратор залогинен $this->administrator->is_login();
+юзер залогинен $this->user->is_login();
 -----------------------------------------------------
 
 Сессии
@@ -216,3 +212,22 @@ $config['height'] = 100;
 
 $this->load->library('image_lib', $config);
 $this->image_lib->resize();
+-----------------------------------------------------
+
+Защита от XSS
+
+Будет заменить грязь на [removed]
+$this->load->library("security");
+$data = $this->security->xss_clean($data);
+
+Проверка файлов
+if ($this->security->xss_clean($file, TRUE)) { good file! }
+
+Будет заменять всё на спецсимволы
+$data = html_escape($data);
+
+Указать в конфиге application/config/config.php глобально
+$config ['global_xss_filtering'] = TRUE;
+
+Автоматически используется xss_clean, если второй параметр true
+$this->input->post('some_data', TRUE);
