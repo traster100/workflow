@@ -231,3 +231,18 @@ $config ['global_xss_filtering'] = TRUE;
 
 Автоматически используется xss_clean, если второй параметр true
 $this->input->post('some_data', TRUE);
+-----------------------------------------------------
+
+CSRF
+
+Указать в конфиге application/config/config.php глобально
+$config['csrf_protection'] = TRUE;
+
+Автоматически работает с form_open(). Если не работаем с form_open() то можно вручную:
+$csrf = [
+        'name' => $this->security->get_csrf_token_name(),
+        'hash' => $this->security->get_csrf_hash()
+];
+<input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>">
+
+По-умолчанию токены регенерируются каждый раз при отправке. Но могут регенерироваться по истечению cookie CSRF. Изменить можно в конфиге $config[ 'csrf_regenerate' ]  =  TRUE;
