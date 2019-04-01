@@ -56,3 +56,8 @@ TRUNCATE cities;
 TRUNCATE countries;
 TRUNCATE regions;
 SET FOREIGN_KEY_CHECKS = 1;
+-----------------------------------------------------
+
+Ключи в Workbench для таблицы users(она дочерняя), чтобы не удалялись юзеры, при удалении/изменении верхних(родительских) таблиц
+On Update CASCADE
+On Delete SET NULL
