@@ -1,17 +1,14 @@
 Замена запятой на точку, в цифре
 $post['amount'] = str_replace(',', '.', $post['amount']);
-
 -----------------------------------------------------
 
 Прибавление 0.5% к числу
 $amount = round($amount + (($amount * 0.5) / 100), 0);
-
 -----------------------------------------------------
 
 TIMESTAMP из БД вывести в нужном формате
 date('d.m.Y H:i:s', strtotime($order->created));
 date('d.m.Y H:i:s', $order->created);
-
 -----------------------------------------------------
 
 Онлайн на сайте
@@ -21,7 +18,6 @@ date('d.m.Y H:i:s', $order->created);
 
 отображение время последнего захода
 если now() > last_visit+5мин, то считаем что админ офлайн. и выводим время "бы в сети "now() - last_visit минут назад"
-
 -----------------------------------------------------
 
 ИЗ МАССИВА ВЫБИРАЕМ IDs КАК МАССИВ
@@ -34,6 +30,7 @@ $orders_ids = array_map(function ($value) {
 $sum = array_sum(array_map(function ($v) {
     return $v->sum;
 }, $array));
+-----------------------------------------------------
 
 Защита от XSS
 
@@ -48,3 +45,86 @@ HTMLPurifier - библиотека безопастной очистки HTML.
 $name = strip_tags($_POST['name']);
 $name = htmlentities($_POST['name'], ENT_QUOTES, "UTF-8");
 $name = htmlspecialchars($_POST['name'], ENT_QUOTES);
+-----------------------------------------------------
+
+Криптография
+
+Случайные числа
+rand($min, $max); - старая функция
+mt_rand($min, $max); - новая функция
+uniqid($prefix, true); - работает на основе текущего времени в микросекундах
+
+пример
+$salt = uniqid(mt_rand()); - соль
+$combine = $email . $password . $salt;
+$newpassword = md5($combine);
+
+Хэширование (необратимое шифрование)
+$sha1= sha1($string);
+$sha1= hash('sha1', $string);
+
+$sha256 = hash('sha256', $string);
+$sha384 = hash('sha384', $string);
+$sha512 = hash('sha512', $string);
+
+HMAC
+$hmac = hash_hmac('sha1', $string, 'secret');
+
+sha1_file — 40символьный SHA1-хеш файла.
+sha1 — SHA1-хеш строки.
+hash — хеш-код.
+password_hash — хеш пароля, является оберткой над crypt().
+hash_hmac_file — хеш-код на основе ключа, используя метод HMAC и содержимое файла.
+
+crypt($string, $salt); - на алгоритме DES, $salt делать случайным в каждой итерации. копирует $salt в начало возвращаемой строки. использует только первые 8 символов строки $string
+
+
+1. Пароль+соль1, Пароль+соль2. У каждого юзера своя соль, и хранится в бд.
+2. Вторая соль глобальная и одна на всех. Пароль+соль1+ГлобальнаяСоль. Хранится в конфиге.
+
+MD5 generates a 128-bit hash value. You can use CHAR(32) or BINARY(16)
+SHA-1 generates a 160-bit hash value. You can use CHAR(40) or BINARY(20)
+SHA-224 generates a 224-bit hash value. You can use CHAR(56) or BINARY(28)
+SHA-256 generates a 256-bit hash value. You can use CHAR(64) or BINARY(32)
+SHA-384 generates a 384-bit hash value. You can use CHAR(96) or BINARY(48)
+SHA-512 generates a 512-bit hash value. You can use CHAR(128) or BINARY(64)
+Лучше CHAR
+
+
+public function index() {
+
+    //имя файла
+    $filename = '1_1546716534';
+
+    //соли
+    var_dump(time());
+    var_dump(date('U'));
+    var_dump(rand());
+    var_dump(mt_rand());
+    var_dump(uniqid('', true));
+    var_dump(uniqid(mt_rand()));
+
+    echo '<hr>';
+
+    //солим имя файла
+    $result = $filename;
+
+    //функции
+    var_dump(md5($result));
+    var_dump(hash('sha1', $result));
+    var_dump(hash('sha256', $result));
+    var_dump(hash('sha384', $result));
+    var_dump(hash('sha512', $result));
+
+    echo '<hr>';
+
+    var_dump(hash_hmac('sha1', $result, 'secret'));
+    var_dump(crypt($result, 'salt'));
+
+    var_dump(password_hash($result, PASSWORD_DEFAULT));
+
+    echo '<hr>';
+
+    //в итоге берем
+    var_dump(hash('sha256', $filename . time()));
+}
