@@ -13,6 +13,27 @@ NOW() > (`created` + INTERVAL 5 HOUR)
 NOW() > (TIMESTAMP(`created`) + INTERVAL 5 HOUR)
 -----------------------------------------------------
 
+Даты
+
+SELECT * FROM `btc_log` WHERE DATE(`created`) BETWEEN '2016-10-13' AND '2016-10-14'
+SELECT * FROM `btc_log` WHERE UNIX_TIMESTAMP(`created`) BETWEEN 1493510400 AND 1494510400;
+-----------------------------------------------------
+
+Выборка строго за прошлый день/час, или от текущего момента и до дня/часа назад
+
+-строго прошлый день
+SELECT * FROM `orders` WHERE DATE(`added`) = DATE(NOW())-INTERVAL 1 DAY;
+
+-от текущего момента, и до дня назад
+SELECT * FROM `orders` WHERE (`added` + INTERVAL 1 DAY) > NOW();
+
+-строго за прошлый час
+SELECT * FROM `orders` WHERE DAY(`added`) = DAY(NOW()) AND HOUR(`added`) = HOUR(NOW()-INTERVAL 1 HOUR);
+
+-от текущего момента, и до часа назад
+SELECT * FROM `orders` WHERE (`added` + INTERVAL 1 HOUR) > NOW();
+-----------------------------------------------------
+
 Regexp
 
 $regexp = "CONVERT(LOWER(" . $field . ") USING utf8mb4) LIKE '%" . trim($word) . "%'";
@@ -21,12 +42,6 @@ $regexp = "CONVERT(LOWER(" . $field . ") USING utf8mb4) LIKE '%" . trim($word) .
 Склеить строки при выборке
 
 CONCAT_WS(" ", `family`, `name`, `patronym`);
------------------------------------------------------
-
-Даты
-
-SELECT * FROM `btc_log` WHERE DATE(`created`) BETWEEN '2016-10-13' AND '2016-10-14'
-SELECT * FROM `btc_log` WHERE UNIX_TIMESTAMP(`created`) BETWEEN 1493510400 AND 1494510400;
 -----------------------------------------------------
 
 Очистить таблицы с ключами
