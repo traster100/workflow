@@ -1,0 +1,127 @@
+Настройка Cent OS 7
+
+Версия сервера
+cat /proc/version
+cat /etc/centos-release
+cat /etc/system-release
+uname -a
+rpm --query centos-release
+hostnamectl
+
+Обновимся целиком
+yum update
+----------------------------------------------------
+
+Установка Apache
+
+yum install httpd
+systemctl start httpd.service
+systemctl enable httpd.service
+папка /var/www/html/
+
+Проверим версию
+httpd -v
+
+Список модулей
+httpd -M
+
+Настройка виртуальных хостов
+Мануал https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-centos-7
+Отсюда взял Options -Indexes +FollowSymLinks https://linuxize.com/post/how-to-set-up-apache-virtual-hosts-on-centos-7/
+----------------------------------------------------
+
+Установка MySQL
+
+yum install http://dev.mysql.com/get/mysql57-community-release-el7-7.noarch.rpm
+yum install mysql-server
+systemctl start mysqld
+mysql_secure_installation
+
+Пароль для root-юзера
+grep 'temporary password' /var/log/mysqld.log
+Видим временный пароль qwerty123
+Меняем на свой
+mysql -uroot -p
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'root123';
+Проверка mysql -uroot -p'root123'
+
+Проверим версию
+mysql -V
+
+Расположение файла my.cnf
+mysql --help покажет все места
+/etc/my.cnf
+
+Создадим базу данных
+CREATE DATABASE database123;
+SHOW DATABASES;
+
+Создадим нового юзера (для php-скриптов)
+CREATE USER 'user1'@'localhost' IDENTIFIED BY 'pass1';
+GRANT ALL PRIVILEGES ON database123.* TO 'user1'@'localhost';
+FLUSH PRIVILEGES;
+systemctl restart mysqld
+Проверка mysql -uuser1 -p'pass1'
+
+Создадим нового юзера (для HeidiSQL)
+CREATE USER 'user2'@'%' IDENTIFIED BY 'pass2';
+GRANT ALL PRIVILEGES ON database123.* TO 'user2'@'%';
+FLUSH PRIVILEGES;
+systemctl restart mysqld
+Проверка mysql -uuser2 -p'pass2'
+
+Настройка SSL
+SHOW GLOBAL VARIABLES LIKE '%ssl%';
+mysql> STATUS; (смотреть строку SSL: Not in use)
+В /etc/my.cnf пишем:
+[mysqld]
+bind-address = *
+ssl-ca=/var/lib/mysql/ca.pem
+ssl-cert=/var/lib/mysql/server-cert.pem
+ssl-key=/var/lib/mysql/server-key.pem
+[client]
+ssl-ca=/var/lib/mysql/ca.pem
+ssl-cert=/var/lib/mysql/client-cert.pem
+ssl-key=/var/lib/mysql/client-key.pem
+
+systemctl restart mysqld
+mysql> STATUS; (видим SSL: Cipher in use is DHE-RSA-AES256-SHA)
+----------------------------------------------------
+
+Установка PHP 7.3
+
+yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+yum -y install epel-release yum-utils
+yum-config-manager --disable remi-php54
+yum-config-manager --enable remi-php73
+yum -y install php php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json
+systemctl restart httpd.service
+
+Проверим версию
+php -v
+
+Список модулей
+yum search php-
+
+Описание модуля
+yum info php-gd
+
+Установка модуля
+yum install php-gd
+----------------------------------------------------
+
+Установка Composer
+
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+HASH="$(wget -q -O - https://composer.github.io/installer.sig)"
+php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+Проверим версию
+composer -V
+
+Установка пакетов
+composer require nesbot/carbon
+
+Если такая установка не сработала, то юзать
+yum install composer
