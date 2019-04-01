@@ -1,9 +1,9 @@
 Доступ к БД
 
-SSH:
+для SSH:
 mysql -h hostname -u username -p
 
-OpenServer:
+для OpenServer:
 C:\OpenServer\modules\database\MySQL-5.7\bin\mysql.exe -h hostname -u username -p
 -----------------------------------------------------
 
@@ -11,6 +11,12 @@ C:\OpenServer\modules\database\MySQL-5.7\bin\mysql.exe -h hostname -u username -
 
 NOW() > (`created` + INTERVAL 5 HOUR)
 NOW() > (TIMESTAMP(`created`) + INTERVAL 5 HOUR)
+-----------------------------------------------------
+
+Поле для времени 00:00
+
+поле типа TIME
+SELECT TIME_FORMAT (foo_hour, '% H:% i');
 -----------------------------------------------------
 
 Даты
