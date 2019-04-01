@@ -36,7 +36,12 @@ SELECT * FROM `orders` WHERE (`added` + INTERVAL 1 HOUR) > NOW();
 
 Regexp
 
+Выборка по регулярному выражению
 $regexp = "CONVERT(LOWER(" . $field . ") USING utf8mb4) LIKE '%" . trim($word) . "%'";
+
+Замена по регулярному выражению
+SELECT * FROM `table` WHERE `field` LIKE '%text1%';
+UPDATE `table` SET `field`= REPLACE(`field`, 'text1', 'text2');
 -----------------------------------------------------
 
 Склеить строки при выборке
