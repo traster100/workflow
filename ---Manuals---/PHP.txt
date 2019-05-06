@@ -11,6 +11,24 @@ date('d.m.Y H:i:s', strtotime($order->created));
 date('d.m.Y H:i:s', $order->created);
 -----------------------------------------------------
 
+Вставка в базу времени "текущее время + 3 месяца"
+
+1 метод. генерим время из php
+$validate_expired = new DateTime('+ 3 month');
+$validate_expired = $validate_expired->format('Y-m-d');
+$this->model_user->update(['validate_expired' => ($value == 0) ? $validate_expired : NULL], $id);
+
+2 метод. генерим время на стороне MYSQL
+$validate_expired = 'NOW() + INTERVAL 3 MONTH';
+$this->db->where('id', $id);
+if ($value == 0) {
+    $this->db->set('validate_expired', $validate_expired, false);
+} else {
+    $this->db->set('validate_expired', NULL);
+}
+$this->db->update('users');
+-----------------------------------------------------
+
 Онлайн на сайте
 
 статус онлайн/офлайн
