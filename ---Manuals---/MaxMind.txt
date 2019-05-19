@@ -1,0 +1,160 @@
+Установка системы определения страны и города, по IP
+https://maxmind.com
+https://github.com/maxmind/GeoIP2-php
+https://maxmind.github.io/GeoIP2-php
+https://github.com/maxmind/MaxMind-DB-Reader-php
+
+
+1. либу MaxMind-DB-Reader можно поставить через Composer
+curl -sS https://getcomposer.org/installer | php
+php composer.phar require geoip2/geoip2:~2.0
+
+
+2. ставим либу MaxMind-DB-Reader как PHP C Extension (быстрее в 6-7 раз чем вариант 1)
+https://github.com/maxmind/MaxMind-DB-Reader-php
+
+cd /tmp
+sudo yum install git (установка Git)
+git clone --recursive https://github.com/maxmind/libmaxminddb
+cd libmaxminddb/
+./bootstrap
+./configure
+make
+make install
+
+cd /tmp
+git clone --recursive https://github.com/maxmind/MaxMind-DB-Reader-php.git
+cd MaxMind-DB-Reader-php/ext
+phpize
+./configure
+make
+make install
+
+sh -c "echo /usr/local/lib >> /etc/ld.so.conf.d/local.conf"
+ldconfig
+sh -c 'echo -e "; Enable MaxMind GEOIP extension\n[maxmind]\nextension=maxminddb.so" > /etc/php.d/maxminddb.ini'
+
+
+3. Проверка
+yum search php-maxminddb
+в phpinfo() должен быть блок настроек maxminddb
+
+
+4. Использование
+- в composer.json бросить строку "geoip2/geoip2": "v2.9.0"
+- на сервере сделать composer update
+- с сайта https://maxmind.com скачать GeoLite2-Country.mmdb и залить на сервер
+
+
+maxmind.php:
+
+<?php
+
+// TODO вариант 1. MaxMind установлен как PHP C Extension
+require 'vendor/autoload.php';
+use MaxMind\Db\Reader;
+
+// 2-значный ISO-код страны посетителя, по его IP
+function getisobyip($ip) {
+
+  $CI =& get_instance();
+  $reader = new Reader($CI->config->item('upload_path_stat') . '/GeoLite2-Country.mmdb');
+
+  try {
+    $result = $reader->get($ip);
+    $reader->close();
+
+    return $result['country']['iso_code'];
+  } catch (Exception $e) {
+
+    return '';
+  }
+}
+
+// TODO вариант 2. MaxMind установлен через Composer
+require 'vendor/autoload.php';
+use GeoIp2\Database\Reader;
+
+// 2-значный ISO-код страны посетителя, по его IP
+function getisobyip($ip) {
+  $CI =& get_instance();
+  $reader = new Reader($CI->config->item('upload_path_stat') . '/GeoLite2-Country.mmdb');
+
+  try {
+    $result = $reader->country($ip);
+
+    return $result->country->isoCode;
+  } catch (Exception $e) {
+
+    return '';
+  }
+}
+
+//отладка
+function getisobyip_debug($ip) {
+
+  foreach (
+    [
+      '',
+      '0',
+      '0.0.0.0',
+      '1.1.1.1',
+      '255.255.255.255',
+      '300.300.300.300',
+      '1000.1000.1000.1000',
+      '1000.1000.1000',
+      '1000.1000',
+      '1000.',
+    ] as $ip) {
+
+    var_dump(
+      getisobyip($ip)
+    );
+
+  }
+
+}
+?>
+
+
+5. Автоапдейт файла GeoLite2-Country.mmdb
+- установить wget: sudo yum install wget
+- создать файл update_GeoLite2_Country_mmdb.sh, выставить права 0744
+- запускать так
+/var/www/html/maxmind/update_GeoLite2_Country_mmdb.sh
+/var/www/html/maxmind/update_GeoLite2_Country_mmdb.sh >> /var/www/html/maxmind/update.log
+- в крон на каждый 1й день месяца (раз в месяц)
+0 0 1 * * update_GeoLite2_Country_mmdb.sh
+*/1 * * * * - для тестов раз в минуту
+
+-------------------------------------------------
+#!/bin/sh
+
+date
+
+folder1=/var/www/html/maxmind
+
+# удалим старьё
+rm -f $folder1/GeoLite2-Country.mmdb
+rm -f $folder1/GeoLite2-Country.tar.gz
+
+# скачаем новый файл (ссылка отсюда https://dev.maxmind.com/geoip/geoip2/geolite2)
+cd $folder1
+wget https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz
+
+#создадим папку
+mkdir $folder1/GeoLite2Unpack
+
+# извлечем архив в папку GeoLite2Unpack
+tar xvzf GeoLite2-Country.tar.gz -C $folder1/GeoLite2Unpack --strip-components=1
+
+# копируем файл GeoLite2-Country.mmdb в нужное место
+cp -f $folder1/GeoLite2Unpack/GeoLite2-Country.mmdb $folder1
+
+# удалим старьё
+rm -fr $folder1/GeoLite2Unpack
+rm -f $folder1/GeoLite2-Country.tar.gz
+
+# перезагрузим апач
+systemctl restart httpd.service
+-------------------------------------------------

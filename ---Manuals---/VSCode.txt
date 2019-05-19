@@ -1,0 +1,60 @@
+Portable
+- скачать ZIP-архив.
+- создать внутри папки data и tmp
+
+Настройки
+File > Preferences > Settings
+- зум колесиком мыши Editor: Mouse Wheel Zoom
+- отключить телеметрию telemetry.enableTelemetry = false
+- отключить отчеты о сбоях telemetry.enableCrashReporter = false
+- путь до PHP php.executablePath, php.validate.executablePath
+- форматировать при сохранении Editor: Format On Save
+- автосохранение файлов Files: Auto Save - onFocusChange
+
+Горячие клавиши
+Ctrl + , - настройки.
+Ctrl + Space - автодополнение кода.
+View > Appearance > Toggle Zen Mode, View > Appearance > Toggle Centered Layout]
+
+Меню File
+- новый файл Ctrl+N
+- открыть папку/файл Ctrl+O
+- закрыть файл Ctrl+F4
+
+Меню Edit
+- шаг назад Ctrl+Z
+- шаг вперед Ctrl+Y
+- найти/найти в файлах Ctrl+F/Ctrl+Shift+F
+- заменить/заменить в файлах Ctrl+H/Ctrl+Shift+H
+- коммент/блоковый коммент Ctrl+/, Shift+Alt+A
+
+Меню Selection
+--------------------------------------------------------------------
+
+Расширения
+
+PHP IntelliSense
+PHP Intelephense (потом php.suggest.basic = false)
+PHP Debug
+PHP Mess Detector
+PHP DocBLocker
+PHP Tools for VS Code (готовый набор)
+PHPCS, PHPCS Fixer, PHPFMT
+
+Emmet
+Live server
+Quokka
+Indent Rainbow, Bracket Pair Colorizer
+Prettier
+Debugger for Chrome
+Code Runner
+Composer
+highlight-matching-tag
+CSS Peek
+GitLens
+Turbo Console Log
+Import Checker
+Todo Highlighter, Todo+
+Rest Client
+Auto Complete Tag (Auto Close Tag, Auto Rename Tag)
+Identicator, Guides
