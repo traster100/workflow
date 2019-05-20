@@ -41,15 +41,15 @@ PHP DocBLocker
 PHP Tools for VS Code (готовый набор)
 PHPCS, PHPCS Fixer, PHPFMT
 
+IntelliJ IDEA Keybindings
 Emmet
 Live server
-Quokka
-Indent Rainbow, Bracket Pair Colorizer
+Quokka.js
+indent-rainbow, Bracket Pair Colorizer
 Prettier
 Debugger for Chrome
 Code Runner
 Composer
-highlight-matching-tag
 CSS Peek
 GitLens
 Turbo Console Log
@@ -57,4 +57,5 @@ Import Checker
 Todo Highlighter, Todo+
 Rest Client
 Auto Complete Tag (Auto Close Tag, Auto Rename Tag)
-Identicator, Guides
+Highlight Matching Tag
+Indenticator, Guides
