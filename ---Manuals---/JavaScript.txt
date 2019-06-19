@@ -70,7 +70,7 @@ $(document).ready(function () {
 
     //не давать вбивать ничего кроме цифр
     //<input type="number" onkeypress='return event.charCode >= 48 && event.charCode <= 57' >
-    
+
     //не давать вбивать ничего кроме цифр. и только 6 цифр
     onkeypress='return (event.charCode >= 48 && event.charCode <= 57) && (this.value.length < 6)'
 
@@ -132,3 +132,35 @@ $(document).ready(function () {
     parseInt(new_count);
 
 });
+
+-----------------------------------------------------------------
+
+Загрузка картинки с буфера обмена (либа jQuery-File-Upload)
+
+js:
+'use strict';
+window.onload = function () {
+    document.addEventListener('paste', handlePaste);
+};
+function handlePaste(e) {
+    for (var i = 0; i < e.clipboardData.items.length; i++) {
+        var item = e.clipboardData.items[i];
+        if (item.type.indexOf("image") != -1) {
+            uploadFile(item.getAsFile());
+        } else {
+            alert('Это не картинка');
+        }
+    }
+}
+function uploadFile(file) {
+    $('#fileupload').fileupload('add', {files: file});
+}
+
+html:
+<input accept='image/gif,image/jpeg,image/png,image/jpg' id='fileupload' type='file' name='files[]' data-url='/user/chat/jqueryfileupload' multiple titile='Форматы gif, jpeg, jpg, png'>
+
+php:
+  public function jqueryfileupload() {
+    require APPPATH . 'libraries/UserUploadHandler.php';
+    new UserUploadHandler();
+  }
