@@ -132,7 +132,6 @@ $(document).ready(function () {
     parseInt(new_count);
 
 });
-
 -----------------------------------------------------------------
 
 Загрузка картинки с буфера обмена (либа jQuery-File-Upload)
@@ -164,3 +163,30 @@ php:
     require APPPATH . 'libraries/UserUploadHandler.php';
     new UserUploadHandler();
   }
+-----------------------------------------------------------------
+
+Работа с localStorage
+
+<!DOCTYPE html>
+<html lang='ru' style='font-size: 30px' contenteditable>
+
+<head>
+  <meta charset='UTF-8'>
+  <title>чистый лист</title>
+
+  <script type='text/javascript'>
+      function myScript(body) {
+          var text = body.innerHTML;
+          localStorage.setItem('text', text);
+      }
+
+      window.onload = function get_body() {
+          body = document.getElementsByTagName('body')[0];
+          body.innerHTML = localStorage.getItem('text');
+      }
+  </script>
+
+</head>
+<body oninput='myScript(this)'>
+</body>
+</html>
