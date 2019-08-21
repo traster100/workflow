@@ -126,7 +126,6 @@ NetTrace: GatherNetworkInfo
 Destroy Windows 10 Spying
 отключит слежение. самая популярная. последняя версия апрель 2018. сайта нет, на гитхабе exe нет. Запустил, отработало норм, в hosts и фаервол добавило правила.
 https://github.com/Nummer/Destroy-Windows-10-Spying/releases
-
 https://github.com/Wohlstand/Destroy-Windows-10-Spying/releases - новый форк, самый популярный. применил его тоже. открытый исходный код. портабельный.
 
 Ashampoo AntiSpy for Windows 10
