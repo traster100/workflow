@@ -25,6 +25,13 @@ SELECT * FROM `btc_log` WHERE DATE(`created`) BETWEEN '2016-10-13' AND '2016-10-
 SELECT * FROM `btc_log` WHERE UNIX_TIMESTAMP(`created`) BETWEEN 1493510400 AND 1494510400;
 -----------------------------------------------------
 
+`created` TIMESTAMP, NOT NULL, CURRENT_TIMESTAMP
+`created` TIMESTAMP
+`price` DECIMAL(12,2), NOT NULL, 0
+`price` INT, NOT NULL, 0
+`order_id` BIGINT(20)
+-----------------------------------------------------
+
 Выборка строго за прошлый день/час, или от текущего момента и до дня/часа назад
 
 -строго прошлый день
@@ -67,3 +74,12 @@ SET FOREIGN_KEY_CHECKS = 1;
 Ключи в Workbench для таблицы users(она дочерняя), чтобы не удалялись юзеры, при удалении/изменении верхних(родительских) таблиц
 On Update CASCADE
 On Delete SET NULL
+-----------------------------------------------------
+
+Проблема mysql sql_mode=only_full_group_by
+
+в /etc/my.cnf дописать
+[mysqld]
+sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+
+systemctl restart mysqld

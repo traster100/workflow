@@ -125,3 +125,74 @@ composer require nesbot/carbon
 
 Если такая установка не сработала, то юзать
 yum install composer
+----------------------------------------------------
+
+Установка HTTPS
+
+yum -y update
+yum -y install mod_ssl
+yum -y install epel-release
+yum -y install yum-utils
+yum -y install certbot-apache
+certbot
+ввести мыло example@gmail.com
+поделиться мылом для новостей с Electronic Frontier Let's Encrypt? Нет
+Вбить сайты для которых хостим установить HTTPS
+
+Вылезла ошибка
+The server could not connect to the client to verify the domain :: dns :: DNS problem: NXDOMAIN looking up A for www
+
+Проверить что в DNS есть обе А-записи:
+domain.info A 11.111.11.111
+www.domain.info A 11.111.11.111
+
+Пробуем заново
+certbot
+
+Всё прошло. Далее надпись
+Created an SSL vhost at /etc/httpd/sites-available/domain.info-le-ssl.conf
+И создан файл /etc/httpd/sites-available/domain.info-le-ssl.conf в котором всё тоже самое
+что и тут /etc/httpd/sites-available/domain.info.conf плюс добавлены настройки SSLCertificateFile, SSLCertificateKeyFile, SSLCertificateChainFile
+
+Далее идет вопрос
+Please choose whether or not to redirect HTTP traffic to HTTPS, removing HTTP access.
+Ответ 2: Redirect - Make all requests redirect to secure HTTPS access.
+
+Проверка
+https://www.ssllabs.com/ssltest/analyze.html?d=domain.info
+https://www.ssllabs.com/ssltest/analyze.html?d=www.domain.info
+
+Your certificate and chain have been saved at: /etc/letsencrypt/live/domain.info/fullchain.pem
+Your key file has been saved at: /etc/letsencrypt/live/domain.info/privkey.pem
+
+Your cert will expire on 2019-07-01. To obtain a new or tweaked version of this certificate in the future, simply run certbot again with the "certonly" option. To non-interactively renew *all* of your certificates, run "certbot renew"
+
+Проверка
+curl http://domain.info
+curl https://domain.info
+certbot certificates
+
+Добавим в крон автопродление сертификата 2 раза в день
+- создадим файл /var/spool/cron/root
+- положим туда строку * */12 * * * /usr/bin/certbot renew >> /var/log/le-renew.log
+- посмотрим список кронов crontab -l
+- применим крон crontab /var/spool/cron/root
+----------------------------------------------------
+
+Редирект с www на без www
+RewriteCond %{HTTP_HOST} ^www\.(.*)$
+RewriteRule ^(.*)$ http://%1/$1 [L,R=301]
+
+Установка прав массово на все файлы .htaccess, во всех папках
+- проверить что найдет
+find . -name .htaccess -print
+- применить
+find . -name .htaccess | xargs chmod 0644
+
+
+Права на файлы
+.htaccess - 644
+.htpasswd - 640
+.php - 600
+конфиги config.php - 400
+для папок с загружаемыми ресурсами - 766 (если не заработало то 775)
