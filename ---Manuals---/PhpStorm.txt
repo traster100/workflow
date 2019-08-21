@@ -37,10 +37,6 @@ Ctrl+Alt+Home - навигация основанная на определен�
 
 F11 - закладки
 Shift+F11 - выбрать закладку
------------------------------------------------------
 
-прочитать про утилиты бьютификации минификации итд
-https://www.jetbrains.com/help/phpstorm/code-inspection.html
-https://github.com/phpmd/phpmd
-https://confluence.jetbrains.com/display/PhpStorm/PHP+Mess+Detector+in+PhpStorm
-https://phpmd.org/rules/index.html
+Ctrl+Shift+Alt+T - покажет все рефакторинги в данном месте
+Alt+Enter - покажет все инспекции в данном месте
