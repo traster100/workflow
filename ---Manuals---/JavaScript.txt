@@ -190,3 +190,36 @@ php:
 <body oninput='myScript(this)'>
 </body>
 </html>
+-----------------------------------------------------------------
+
+LocalStorage. Работа с массивом лежащим по ключу
+
+получить значение по ключу
+var imgs = localStorage.getItem('imgs');
+
+сериализуем строку в объект
+imgs = JSON.parse(imgs);
+
+добавить новое в массив
+imgs.push({'id': id, 'type': type});
+
+сериализуем обратно
+imgs = JSON.stringify(imgs);
+
+положим обратно
+localStorage.setItem('imgs', imgs);
+
+-----------
+проверка на пустоту
+if (imgs) {}
+ИЛИ так
+if (JSON.parse(localStorage.getItem('imgs')) && JSON.parse(localStorage.getItem('imgs')).length > 0) {}
+
+перебор массива
+for (let i = 0; i < imgs.length; i++) {
+    console.log(imgs[i].id);
+    console.log(imgs[i].type);
+}
+
+удалим значение по ключу
+localStorage.removeItem('imgs');
