@@ -125,6 +125,58 @@ composer require nesbot/carbon
 
 Если такая установка не сработала, то юзать
 yum install composer
+
+Работа с Composer
+
+создали папку /home/user/test
+перешли в папку cd /home/user/test
+
+инициализируем композер
+composer init
+это создаст пустой composer.json
+
+например нужен пакет https://github.com/guzzle/guzzle
+ставим пакет composer require guzzlehttp/guzzle
+
+появится папка /home/user/test/vendor в которой:
+vendor/autoload.php - файл автозагрузчика composer
+vendor/composer - папка с сервисными классами composer
+vendor/guzzlehttp - папка пакета
+
+в composer.json добавится строка:
+"require": {
+   "guzzlehttp/guzzle": "^6.3"
+}
+
+например нам нужен еще пакет https://github.com/Seldaek/monolog
+ставим пакет composer require monolog/monolog
+появится папка vendor/monolog
+
+composer.json станет выглядеть так:
+"require": {
+   "guzzlehttp/guzzle": "^6.3",
+   "monolog/monolog": "^1.23"
+}
+
+создадим файл /home/user/test/index.php:
+<?php
+require 'vendor/autoload.php'; // подключили автолоадер composer
+$client = new \GuzzleHttp\Client();
+//далее код
+?>
+
+через год обновим либы
+composer update
+это автоматически скачает новые версии всех пакетов, и все их зависимости
+
+удалим ненужный пакет
+composer remove guzzlehttp/guzzle
+это удалит папку vendor/guzzlehttp
+
+composer.json станет выглядеть так:
+"require": {
+    "monolog/monolog": "^1.23"
+}
 ----------------------------------------------------
 
 Установка HTTPS
