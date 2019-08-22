@@ -1,35 +1,60 @@
-Доступ к БД
+Консольные команды
 
-для SSH:
-mysql -h hostname -u username -p
+mysql --user=user1 --password=password1; - подключение
+mysql -h host1 -u user1 -p - подключение
+show databases; - посмотреть все базы
+show tables from database; - посмотреть все таблицы базы
+show columns from table; - посмотреть все поля таблицы
+use dbname; - выбор базы
+drop database dbname; - удаление базы
+create database dbname; - создание базы
 
-для OpenServer:
-C:\OpenServer\modules\database\MySQL-5.7\bin\mysql.exe -h hostname -u username -p
+mysql --user=user1 --password=password1 dbname1 < /home/dbname1.sql - импорт дампа
+mysqldump --user=user1 --password=password1 dbname1 > /home/dbname1.sql - экспорт дампа
+SELECT * FROM table INTO OUTFILE text.txt - быстродамп (вывод в файл)
+SELECT * FROM table > text.txt – полноценный дамп
+
+SET PASSWORD FOR user1@host1=PASSWORD('password1'); - смена пароля юзера
+UPDATE user1 SET PASSWORD=PASSWORD('password1') WHERE user='user1'; FLUSH PRIVILEGES;
 -----------------------------------------------------
 
-Временные интервалы
+Запросы со временем
 
-NOW() > (`created` + INTERVAL 5 HOUR)
-NOW() > (TIMESTAMP(`created`) + INTERVAL 5 HOUR)
+WHERE NOW() > (`created` + INTERVAL 5 HOUR)
+WHERE NOW() > (TIMESTAMP(`created`) + INTERVAL 5 HOUR)
+WHERE DATE(`created`) BETWEEN '2016-10-13' AND '2016-10-14'
+WHERE UNIX_TIMESTAMP(`created`) BETWEEN 1493510400 AND 1494510400;
 -----------------------------------------------------
 
-Поле для времени 00:00
+Типы полей
 
+Для времени 00:00
 поле типа TIME
 SELECT TIME_FORMAT (foo_hour, '% H:% i');
------------------------------------------------------
 
-Даты
+Для IPV4 адреса
+- varchar(15) и сохранять строки в виде '127.0.0.1'.
+- int(4) UNSIGNED (это обязательно) и сохранять в виде числа 3229614095 и преобразовывать через php ip2long() / long2ip(), или mysql inet_aton() / inet_ntoa().
+Примеры
+select inet_ntoa(3229614095); // вернет 192.128.0.15
+select inet_aton('192.128.0.15'); // вернет 3229614095
 
-SELECT * FROM `btc_log` WHERE DATE(`created`) BETWEEN '2016-10-13' AND '2016-10-14'
-SELECT * FROM `btc_log` WHERE UNIX_TIMESTAMP(`created`) BETWEEN 1493510400 AND 1494510400;
------------------------------------------------------
+Для IPV6 адреса
+- binary(16) и преобразовывать через mysql inet_pton().
 
+Для датывремени с автоматической вставкой
 `created` TIMESTAMP, NOT NULL, CURRENT_TIMESTAMP
+
+Для датывремени
 `created` TIMESTAMP
-`price` DECIMAL(12,2), NOT NULL, 0
-`price` INT, NOT NULL, 0
+
+Для цен
+`price` INT, NOT NULL, 0 - целое
+`price` DECIMAL(12,2), NOT NULL, 0 - с запятой
+
+Для больших чисел
 `order_id` BIGINT(20)
+
 -----------------------------------------------------
 
 Выборка строго за прошлый день/час, или от текущего момента и до дня/часа назад
@@ -78,8 +103,198 @@ On Delete SET NULL
 
 Проблема mysql sql_mode=only_full_group_by
 
-в /etc/my.cnf дописать
+Настройка в my.cnf:
 [mysqld]
 sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
 
 systemctl restart mysqld
+-----------------------------------------------------
+
+Профилирование запросов для оценки производительности
+
+Настройка в my.cnf:
+[mysqld]
+#включим лог медленных запросов.
+slow-query-log = 1
+#путь до файла.
+slow-query-log-file = G:/soft/OpenServer/userdata/logs/slow-queries.log
+#время запроса, продолжительностью более N секунд.
+long_query_time = 1
+#кол-во строк, более N.
+min-examined-row-limit = 10
+#запросы не использующие индексы.
+log-queries-not-using-indexes
+
+В лог упало:
+#Time: 140826 10:42:39 (Время, когда был запущен запрос)
+#User@Host: root[root] @ localhost [127.0.0.1]  Id: 1 (Пользователь, который выполнил запрос)
+#Query_time: 0.086005  Lock_time: 0.086005 Rows_sent: 1  Rows_examined: 10 (Время работы запроса, Продолжительность блокировки, Количество выбранных строк, Количество проанализированных строк)
+-----------------------------------------------------
+
+Кодировка сервера
+
+[client]
+default-character-set=utf8
+
+[mysql]
+default-character-set=utf8
+
+[mysqld]
+collation-server = utf8_unicode_ci
+init-connect='SET NAMES utf8'
+character-set-server = utf8
+-----------------------------------------------------
+
+INSERT
+INSERT IGNORE INTO table1 (col1, col2) VALUES (value1, DEFAULT) ON DUPLICATE KEY UPDATE col2=value; - стандарт SQL
+INSERT IGNORE INTO table1 SET col1={value|DEFAULT}, col2={value|DEFAULT}] ON DUPLICATE KEY UPDATE col2=value; - синтаксис MySQL
+INSERT IGNORE INTO table1 (col1, col2) VALUES (value, value), (value, value); - вставка сразу много значений
+
+IGNORE - не будут вставлены строки с неуникальными значениями в столбцах PRIMARY или UNIQUE. И эти строки не будут заменены или изменены. Без указания IGNORE вставка автоматом прекратиться на первом дубликате.
+ON DUPLICATE KEY UPDATE - строки с неуникальными значениями в столбцах PRIMARY или UNIQUE обновят существующие. Дубли обновятся в нужных полях, но при вставке с обновлением id отдаст 0, поэтому его получать отдельным запросом.
+
+UPDATE
+UPDATE IGNORE table1 SET col1=value, col2=value WHERE ... ORDER BY;
+IGNORE - не обновит дубликаты, но и дальнейшее обновление не будет прервано.
+
+DISTINCT
+SELECT DISTINCT col1, col2;
+убирает дубликаты строк
+
+ORDER BY
+ORDER BY col1 ASC, col2 DESC;
+Сортирует по возрастанию (ASC, по-умолчанию) или по убыванию (DESC). По любому колву столбцов - сначала по col1, а внутри него по col2.
+ORDER BY BINARY col1; – с учетом регистра
+ORDER BY RAND(); - получить случайное значение. Юзать совместно с DISTINC чтобы получить разные рандомные значения.
+
+GROUP BY
+GROUP BY col1, col2 [ASC|DESC];
+Группирует строки у которых одинаковые значения в указанном столбце. Можно применить агрегатные функции и DISTINCT.
+
+HAVING
+HAVING [агрегатная функция] col1;
+После GROUP BY. Если WHERE фильтрует строки по значениям в столбцах, то HAVING фильтрует группы образовавшиеся после GROUP BY.
+
+DELETE
+DELETE IGNORE FROM table1 WHERE ... ORDER BY;
+
+TRUNCATE
+TRUNCATE TABLE table1
+Очищает таблицу.
+
+LIMIT
+LIMIT N, M – с Nй строки невключительно, выбрать M строк
+LIMIT N, -M; LIMIT N, -1 - все строки с N-ой и до конца.
+LIMIT 0, M - с 1й строки
+LIMIT M - аналогично LIMIT 0, M
+-----------------------------------------------------
+
+Значения по-умолчанию для столбцов
+
+Вставка NULL в столбец TIMESTAMP - вставится текущее значение датывремени.
+Для столбцов UNIQUE ставить DEFAULT NULL, при вставке пустоты будет вставляться NULL, а он не подвержен неуникальности в отличие от пустоты.
+Для столбца TIMESTAMP можно задать DEFAULT NOW()
+
+Если для столбца не задан DEFAULT, то вставится:
+NULL если столбец NULL
+0 если столбец числовая
+'' если столбец строковая
+value+1 если столбец AUTO_INCREMENT
+value1 если столбец ENUM
+текущее датавремя если столбец TIMESTAMP
+00-00-00 00:00:00 для остальных типов датывремени
+-----------------------------------------------------
+
+Связи между таблицами
+
+one-to-one non-identifying relationship (пунктирная)
+one-to-one identifying relationship (сплошная)
+
+one-to-many non-identifying relationship (пунктирная)
+one-to-many identifying relationship (сплошная)
+
+many-to-many identifying relationship (сплошная) (создает дополнительную таблицу)
+
+Non-identifying relationship
+Книга принадлежит владельцу, владелец может владеть несколькими книгами. Но книга может существовать и без владельца, и он может изменить владельца.
+Первичный ключ родительского объекта входит в дочерний объект, но не как часть первичного ключа. Значение в дочерней таблице может быть NULL. Дочерний элемент может быть оставлен, даже если родитель удаляется.
+
+Identifying relationship
+Книга написана автором, автор мог написать несколько книг. Но книга не может существовать без автора.
+Первичный ключ родительского объекта входит в первичный ключ дочернего объекта, как часть первичного ключа. Значение в дочерней таблице не может быть NULL. Дочерний элемент должен быть удален, если родитель удаляется.
+
+Связь One to One
+У родителя первичный ключ id. У дочерней таблица первичный ключ id. Сделать foreign key и связать их напрямую.
+
+Foreign Key опции:
+CASCADE - при удалении родителя удалит и потомков, при изменении ключа родителя, изменится ключ у потомков.
+SET NULL - при обновлении или удалении родителя, ставит NULL у потомков.
+NO ACTION или RESTRICT - не даст удалить родителя, пока есть потомки, не даст обновить ключи родителя.
+-----------------------------------------------------
+
+Многотабличные запросы
+
+SELECT * FROM table1, table2;
+SELECT * FROM table1, table2 WHERE table1.col1 = table2.col2;
+SELECT * FROM table1, (SELECT * FROM table2) AS table3;
+SELECT * FROM table1 JOIN table2 ON (table1.col1 = table2.col2); - попадут только строки с совпадающим условием
+SELECT * FROM table1 LEFT [RIGHT|FULL] JOIN table2 ON (table1.col1 = table2.col2) - попадут строки с совпадающим условием и все строки из таблицы table1
+
+SELECT * FROM table1 LEFT JOIN table2 USING (col1,col2,col3);
+эквивалентно
+SELECT * FROM table1 LEFT JOIN table2 ON (table1.col1 = table2.col1 AND table1.col2 = table2.col2 AND table1.col3 = table2.col3);
+
+В ON() можно юзать все что во WHERE.
+
+Можно объединять много таблиц: SELECT * FROM table1 JOIN table2 ON() JOIN table3 ON();
+
+SELECT * FROM table1 UNION ALL SELECT * FROM table2;
+ALL - сохраняет дубликаты. Объединяет строки из каждого запроса в один набор под одни столбцы.
+
+SELECT * FROM table1 INTERSECT SELECT * FROM table2;
+Объединяет строки из каждого запроса в один набор под одни столбцы, и только те строки которые есть в обоих таблицах.
+
+SELECT * FROM table1 EXCEPT SELECT * FROM table2;
+Объединяет строки из каждого запроса в один набор под одни столбцы, и только те строки которые есть в первом запросе и нет во втором.
+
+INTERSECT и EXCEPT можно реализовать через [NOT] EXISTS во WHERE.
+-----------------------------------------------------
+
+Функции
+
+SUM(col1) – сумма значений в столбце
+AVG(col1) – средне-арифметическое значение в столбце
+MIN(col1) – минимальное значение в столбце
+MAX(col1) - максимальное значение в столбце
+ABS(N) - модуль числа
+SIGN(N) - знак числа (как -1, 0, +1)
+MOD(N,M), N%M - остаток от деления
+FLOOR(N) - наибольшее целое число
+CEILING(N) - наименьшее целое число
+ROUND(N) - правильное округление до знака N
+ROUND(N,M) - округление числа N, до M десятичных знаков
+EXP(N) - e в степени N
+LN(N) - натуральный логарифм числа N
+LOG(N,M) - если с одним M то натуральный логарифм, если с двумя то логарифм числа M, по базе N
+LOG2(N) - логарифм числа N, по базе 2
+LOG10(N) - логарифм числа N, по базе 10
+POW(N,M), POWER(N,M) - N в степени M
+SQRT(N) - квадратный корень
+PI() - число Пи
+COS(N) - N в радианах
+SIN(N) - N в радианах
+TAN(N) - N в радианах
+ACOS(N) - арккосинус (величина, косинус которой равен N)
+ASIN(N) - арксинус
+ATAN(N) - арктангенс
+COT(N) - котангенс
+RAND([N]) - случайное float-число от 0 до 1 (или от N до 1)
+LEAST(N,M,X,...) - отдает наименьшее значение
+GREATEST(N,M,X,...) - отдает наибольшее значение
+DEGREES(N) - радианы в градусы
+RADIANS(N) - градусы в радианы
+TRUNCATE(N,M) - усекает N, до M десятичных знаков. При M=0 число будет целым. При -M то число разрядов (слева) обнуляется
+INET_NTOA(exp) - конвертит строки в IP-адреса
+INET_ATON(exp) - конвертит IP-адреса в строки
+-----------------------------------------------------
+
