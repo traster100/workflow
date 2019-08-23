@@ -65,7 +65,6 @@ $schedules = [
 ];
 
 Найдем сумму по полю anytime:
-
       array_reduce(
         $schedules,
         function ($total, $schedule) {
@@ -132,7 +131,6 @@ SHA-384 generates a 384-bit hash value. You can use CHAR(96) or BINARY(48)
 SHA-512 generates a 512-bit hash value. You can use CHAR(128) or BINARY(64)
 Лучше CHAR
 
-
 public function index() {
 
     //имя файла
@@ -170,3 +168,155 @@ public function index() {
     //в итоге берем
     var_dump(hash('sha256', $filename . time()));
 }
+-----------------------------------------------------
+
+DateTime
+
+Установка даты
+$date = new DateTime('2000-01-01');
+
+Установка даты с часовым поясом
+$date = new DateTime('2000-01-01', new DateTimeZone('Europa/Moscow'));
+
+$date = new DateTime('2013-12-01');
+$date->setTimezone(new DateTimeZone('Pacific/Chatham'));
+
+Установка даты на 4 дня вперед
+$date = new DateTime('+4 days');
+
+Вывод форматированной даты
+echo $date->format('d.m.Y');
+
+Вывод timestamp
+echo $date->getTimestamp();
+
+Изменение даты, уже установленной при создании объекта
+$date->setDate(2001, 2, 3);
+
+Изменение времени, уже установленной при создании объекта
+$date->setTime(14, 55);
+
+Изменение timestamp, уже установленной при создании объекта
+$date->setTimestamp(1385665999);
+
+Изменения даты
+$date->modify('+3 day');
+$date->modify('+1 month');
+
+Сравнение дат
+$difference = $date1->diff($date2);
+-----------------------------------------------------
+
+Сортировка дат по годам
+
+$years = range(2012, 2025);
+$case = array('10 September 2012', '10 September 2014', '10 September 2016', '11 September 2016');
+
+foreach ($years as $v1) {
+ echo $v1;
+ foreach ($case as $v2) {
+  if ($v1 == date('Y', strtotime($v2))) {
+    echo '';
+    echo $v2;
+    echo '';
+  }
+ }
+}
+-----------------------------------------------------
+
+Трейты
+Добавляют классу новое поведение. Можно использовать несколько трейтов в одном классе.
+
+trait T1 {
+ public function n1() {
+  echo 'T1';
+  $this->v = 1;
+  echo $this->v;
+ }
+}
+
+trait T2 {
+ public function n2() {
+  echo 'T2';
+  $this->v = 2;
+  echo $this->v;
+ }
+}
+
+
+class N {
+
+ use T1, T2; //подключение трейтов
+ public $v = 3;
+
+ public function nn() {
+  echo 'N';
+  echo $this->v;
+ }
+}
+
+$a = new N;
+$a->nn(); // N3
+$a->n1(); // T11
+$a->n2(); // T22
+-----------------------------------------------------
+
+Пространства имен
+
+index1.php
+namespace A1;
+class N {
+ public function n() {
+  echo __CLASS__ . ' : ' . __NAMESPACE__;
+ }
+}
+echo __FILE__ . ' : ' . __NAMESPACE__;
+
+index2.php
+namespace A2;
+class N {
+ public function n() {
+  echo __CLASS__ . ' : ' . __NAMESPACE__;
+ }
+}
+echo __FILE__ . ' : ' . __NAMESPACE__;
+
+
+index3.php
+namespace A3;
+include_once 'index1.php';
+include_once 'index2.php';
+
+$a1 = new \A1\N;
+$a1->n();
+
+$a2 = new \A2\N;
+$a2->n();
+
+echo __FILE__ . ' : ' . __NAMESPACE__ . '';
+
+Элементы из одного пространства имён могут быть импортированы в другое, и использоваться в нём непосредственно.
+
+use A1\N;
+$a3 = new N;
+$a3->n();
+
+Вывод:
+C:\YD\domains\test.loc\index1.php : A1
+C:\YD\domains\test.loc\index2.php : A2
+A1\N : A1
+A2\N : A2
+C:\YD\domains\test.loc\index3.php : A3
+A1\N : A1
+-----------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
