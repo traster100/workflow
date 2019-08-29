@@ -167,30 +167,28 @@ php:
 
 Работа с localStorage
 
+LocalStorage (только его можно надёжно использовать из всех трех LocalStorage, WebSQL, IndexedDB) - это простой способ хранения пар ключ-значение. API прост, но использование ограничено 5Мб во многих браузерах. API является синхронным, поэтому может блокировать DOM. Поддержка браузера очень хорошая. https://caniuse.com/#feat=namevalue-storage (97,51% браузеров). LocalStorage это локальное хранилище, наподобие кук, данные хранятся в браузере и не передаются на сервер при каждом запросе. LocalStorage - в Chrome, Firefox и Edge, полностью блокирует DOM, пока вы пишете данные.
+
 <!DOCTYPE html>
 <html lang='ru' style='font-size: 30px' contenteditable>
-
 <head>
   <meta charset='UTF-8'>
   <title>чистый лист</title>
-
   <script type='text/javascript'>
       function myScript(body) {
           var text = body.innerHTML;
           localStorage.setItem('text', text);
       }
-
       window.onload = function get_body() {
           body = document.getElementsByTagName('body')[0];
           body.innerHTML = localStorage.getItem('text');
       }
   </script>
-
 </head>
 <body oninput='myScript(this)'>
 </body>
 </html>
------------------------------------------------------------------
+-------------------------------
 
 LocalStorage. Работа с массивом лежащим по ключу
 
