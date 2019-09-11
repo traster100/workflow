@@ -310,13 +310,10 @@ C:\YD\domains\test.loc\index3.php : A3
 A1\N : A1
 -----------------------------------------------------
 
+Замена переводов строки ['\n', '\r', '\r\n'] на <br> в textarea
 
+- при сохранении в базу
+str_replace(PHP_EOL, '<br>', $text);
 
-
-
-
-
-
-
-
-
+- при выводе
+str_replace('<br>', PHP_EOL, $text);

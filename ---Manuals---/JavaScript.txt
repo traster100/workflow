@@ -80,27 +80,21 @@ $(document).ready(function () {
     }
 
     //слушаем инпуты
-    $('input').keydown(function (event) {
-
-        //keypress - нажатие. еще keyup
-        //может еще так быть event.which == 13
+    $('input').on('keydown', function (event) {
 
         //ловим Enter
-        if (event.keyCode == 13) {
-            //тут код
-        }
+        if (event.keyCode == 13) {}
 
         //ловим Esc
-        if (event.keyCode == 27) {
-            //тут код
-        }
+        if (event.keyCode == 27) {}
+
+        //ловим Shift+Enter
+        if (event.keyCode === 13 && event.shiftKey) {}
     });
 
 
     //слушаем селекты
-    $('select').change(function (event) {
-        //тут код
-    });
+    $('select').change(function (event) {});
 
     //генерация клика
     $('#submit').trigger('click');
@@ -226,3 +220,8 @@ localStorage.removeItem('imgs');
 event.preventDefault() - предотвращает действие по-умолчанию, которое браузер выполняет с этим событием.
 
 event.stopPropagation() - останавливает распространения события дальше по цепочке родителей.
+
+//перевод строки в textarea по Shift+Enter
+if (event.keyCode === 13 && event.shiftKey) {
+    $('#textarea').val($(this).val() + '\n');
+}
