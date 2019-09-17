@@ -1,4 +1,4 @@
-Валидация
+Валидация полей
 
 HTML
 <input type="text" class="form-control" id="password">
@@ -61,6 +61,7 @@ $query = $this->db->get('table');
 $result = $query->result(); // вся выборка
 $result = $query->row(); // 1 строка
 $result = $query->row()->field; // 1 строка 1 столбец
+$result = $query->num_rows(); // колво строк (аналог count(*))
 
 
 UPDATE
