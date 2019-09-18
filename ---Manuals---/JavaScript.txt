@@ -225,3 +225,37 @@ event.stopPropagation() - останавливает распространен�
 if (event.keyCode === 13 && event.shiftKey) {
     $('#textarea').val($(this).val() + '\n');
 }
+-----------------------------------------------------------------
+
+Работа с урлом браузера
+
+1. https://domain.com/basket
+
+window.location вернет массив:
+protocol: "https:"
+host: "domain.com"
+hostname: "domain.com"
+href: "https://domain.com/basket"
+origin: "https://domain.com"
+pathname: "/basket"
+search: ""
+
+
+2. https://domain.com/basket?address_id=1
+
+window.location вернет массив:
+protocol: "https:"
+host: "domain.com"
+hostname: "domain.com"
+href: "https://domain.com/basket?address_id=1"
+origin: "https://domain.com"
+pathname: "/basket"
+search: "?address_id=1"
+
+
+Меняем урл браузера
+history.pushState(
+    null,
+    null,
+    window.location.origin + window.location.pathname
+);
