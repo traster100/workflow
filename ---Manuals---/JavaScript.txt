@@ -43,15 +43,11 @@ $(document).ready(function () {
             });
     });
 
-    //клик по кнопке которая появляется на странице динамически, и ее в момент загрузки еще нет
-    $(document).delegate('#check', 'click', function () {
-        //тут код
-    });
+    //клик по ссылке, которая есть на странице с самого начала
+    $('#link').on('click', function (event) {});
 
-    //клик по ссылке которая будет в будущем
-    $(document).delegate('a', 'click', function () {
-        //тут код
-    });
+    //клик по ссылке, которая появится на странице потом, в результате ajax-запроса
+    $(document).delegate('#link', 'click', function (event) {});
 
     //скрол наверх или к элементу
     $('html,body').animate({scrollTop: $("input:first").offset().top - 100}, 500);
