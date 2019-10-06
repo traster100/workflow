@@ -248,3 +248,6 @@ find . -name .htaccess | xargs chmod 0644
 .php - 600
 конфиги config.php - 400
 для папок с загружаемыми ресурсами - 766 (если не заработало то 775)
+
+Запуск крона кажные 3 секунды
+*/1 * * * * php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3;
