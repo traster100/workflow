@@ -270,10 +270,9 @@ TRUNCATE TABLE table1
 Очищает таблицу.
 
 LIMIT
-LIMIT N, M – с Nй строки невключительно, выбрать M строк
-LIMIT N, -M; LIMIT N, -1 - все строки с N-ой и до конца.
-LIMIT 0, M - с 1й строки
-LIMIT M - аналогично LIMIT 0, M
+LIMIT $count; - аналог LIMIT 0, $count; - с 1й строки выбрать $count строк.
+LIMIT $offset, $count - с $offset-й строки невключительно, выбрать $count строк.
+LIMIT $offset, -$count; LIMIT $offset, -1; - все строки с $offset-й и до конца.
 -----------------------------------------------------
 
 Значения по-умолчанию для столбцов
