@@ -1,20 +1,26 @@
 Консольные команды
 
-mysql --user=user1 --password=password1; - подключение
-mysql -h host1 -u user1 -p - подключение
+Подключение
+mysql --host=127.0.0.1 --port=3310 --user=myusername --password=mypassword
+
+Экспорт БД->файл.sql
+mysqldump --host=127.0.0.1 --port=3310 --user=myusername --password=mypassword mydbname > /var/www/mydbname.sql
+
+Экспорт БД->файл.zip
+mysqldump --host=127.0.0.1 --port=3310 --user=myusername --password=mypassword mydbname | gzip > /var/www/mydbname.gz
+
+Импорт файл.sql->БД
+mysqldump --host=127.0.0.1 --port=3310 --user=myusername --password=mypassword mydbname < /var/www/mydbname.sql
+
 show databases; - посмотреть все базы
-show tables from database; - посмотреть все таблицы базы
-show columns from table; - посмотреть все поля таблицы
-use dbname; - выбор базы
-drop database dbname; - удаление базы
-create database dbname; - создание базы
+show tables from mydbname; - посмотреть все таблицы базы
+show columns from mytable; - посмотреть все поля таблицы
+use mydbname; - выбор базы
+drop database mydbname; - удаление базы
+create database mydbname; - создание базы
 
-mysql --user=user1 --password=password1 dbname1 < /home/dbname1.sql - импорт дампа
-mysqldump --user=user1 --password=password1 dbname1 > /home/dbname1.sql - экспорт дампа
-SELECT * FROM table INTO OUTFILE text.txt - быстродамп (вывод в файл)
-SELECT * FROM table > text.txt – полноценный дамп
-
-SET PASSWORD FOR user1@host1=PASSWORD('password1'); - смена пароля юзера
+Смена пароля юзера
+SET PASSWORD FOR user1@host1=PASSWORD('password1');
 UPDATE user1 SET PASSWORD=PASSWORD('password1') WHERE user='user1'; FLUSH PRIVILEGES;
 -----------------------------------------------------
 
@@ -415,3 +421,13 @@ REGEXP
 exp1 [NOT] REGEXP [BINARY] 'регулярка';
 Сравнивает без учета регистра
 BINARY учитывает регистр
+-----------------------------------------------------
+
+Лог медленных запросов MySQL
+
+1. Включить в настройках
+
+2. Потом образуется файл логов тут /var/lib/mysql-5.7/mysql-5-slow.log
+
+3. Потом отсортировать топ-10 медленных запросов, по результатам анализа логов:
+mysqldumpslow -s c -t 10 /var/lib/mysql-5.7/mysql-5-slow.log > /var/www/myusername/data/www/slowlog/top10.log

@@ -2,7 +2,7 @@
 
 require_once 'lib/simple_html_dom.php';
 
-class Replaser {
+class Replacer {
 
   //вырезает тег <a> в котором слово, если находит его, и все вокруг тега. Иначе вырезает просто слово
   //$word - слово, $oldvalue - фраза откуда вырезать
@@ -46,13 +46,13 @@ class Replaser {
     return preg_replace('~(' . $word . ')~isu', '', $result);
   }
 
-//тут только замена слова, на слово
+  //тут только замена слова, на слово
   static public function get_newvalue_text2($word, $oldvalue) {
 
     //экранирование слешем указанных символов, для preg-функций
     $word = addcslashes($word, '~\^$.[]|()*+?{},-!=<>:');
 
-    return preg_replace('~(' . $word . ')~isu', 'brpzakaz.com', $oldvalue);
+    return preg_replace('~(' . $word . ')~isu', 'domain.com', $oldvalue);
 
   }
 
