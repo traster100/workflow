@@ -40,3 +40,27 @@ Shift+F11 - выбрать закладку
 
 Ctrl+Shift+Alt+T - покажет все рефакторинги в данном месте
 Alt+Enter - покажет все инспекции в данном месте
+---------------------------------------------------------------------------------------------------
+
+Улучшение производительности
+
+в файле phpstorm64.exe.vmoptions вместо:
+-Xms256m
+-Xmx1024m
+-XX:MaxPermSize=500m
+
+поставить
+-Xms1024m
+-Xmx2048m
+-XX:MaxPermSize=1024m
+
+еще добавить
+-Dawt.useSystemAAFontSettings=lcd
+-Dawt.java2d.opengl=true
+
+в файл idea.properties добавить:
+editor.zero.latency.typing=true
+
+Отключение плагинов File->Settings->Plugins
+Отключение инспекций File->Settings->Inspections
+Отключение языковых инспекций File->Settings->Language injections (отключение HTML очень поднял производительность)
