@@ -56,6 +56,7 @@ $this->db->limit($count, $offset); - аналог LIMIT $offset, $count;
 
 $this->db->escape($var);
 
+$this->db->from('table');
 $query = $this->db->get('table');
 
 $result = $query->result(); // вся выборка
