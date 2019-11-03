@@ -27,3 +27,139 @@ Photoshop. Создание макроса
 4. File - Automate - Batch, выбрать макрос, выбрать папки folder_from и folder_to, нажать ОК.
 ---------------------------------------------------------------------------------------------------
 
+PhpStorm
+
+1. Поставить галки:
+
+Размер шрифта менять колесом мыши
+Editor->General->Change font size (Zoom) with Ctrl+MouseWheel
+
+Перенос текста в консоли
+Editor->General->Console->Use soft wraps in console
+
+Перенос текста в редакторе
+Editor->General->Soft-wrap files *.*
+
+Горизонтальная линия между методами, в классе
+Editor->General->Appearance->Show method separators
+
+2. В файле \bin\idea.properties:
+
+Профиль в папке PhpStorm
+idea.config.path=${idea.home}/.PhpStorm/config
+idea.system.path=${idea.home}/.PhpStorm/system
+
+Удалить задержку IDE при печатании
+editor.zero.latency.typing=true
+
+3. В файле \bin\phpstorm64.exe.vmoptions:
+
+Увеличенный кеш
+-Xms1024m
+-Xmx2048m
+-XX:MaxPermSize=1024m
+
+Кряк
+-javaagent:crack.jar
+
+Сглаживание шрифтов
+-Dawt.useSystemAAFontSettings=lcd
+
+Аппаратное ускорение
+-Dawt.java2d.opengl=true
+
+Отключение поддержки мониторов HiDPI
+-Dsun.java2d.uiScale.enabled=false
+
+3. Отключить обновления
+Appearance & Behavior->System Settings->Updates->Automatically check updates for
+
+4. Отключить плагины
+
+Angular and AngularJS
+ASP
+Drupal Support
+Joomla! Support
+Mercurial
+Vue.js
+Vagrant
+WordPress Support
+Subversion
+PHP Docker
+Docker
+Twig Support
+
+Горячие клавиши
+Ctrl+E - Recent Files (последние открытые файлы)
+Ctrl+Shift+E - Recent Loocations (последние редактируемые области)
+Ctrl+F12 - Structure File (структура файла), нажать 2 раза и увидеть родителей
+Ctrl+N - Go to Class (найти класс)
+Ctrl+Shift+N - Go to File (найти файл)
+Ctrl+Shift+Alt+N - Go to Symbols (найти символ)
+
+Escape - фокус с таба на редактор
+Shift+Escape - фокус с таба на редактор, с закрытием таба
+---------------------------------------------------------------------------------------------------
+
+ДАЛЕЕ РАЗБИРАТЬ
+
+Макрос "форматировать и сохранить"
+1. В настройках Setting -> Keymap -> Save All - удалить сочетание клавишь Ctrl + S.
+2. В меню Edit -> Macros -> Start Recording - и нажимаем Ctrl + Alt + L (форматирование) и потом Ctrl + S (сохранение). Тормозим запись. Edit -> Macros ->  Edit Macros и смотрим что записалось ReformatCode, SaveAll. Называем макрос reformat_save.
+3. В настройках Setting -> Keymap -> reformat_save - ставим сочетание клавишь Ctrl + S.
+-------------------------------------------------
+
+Горячие клавиши
+
+Ctrl+U - перейти в родительский класс или метод на иерархию выше
+Ctrl+Alt+B - перейти в дочерний класс или метод на иерархию ниже
+
+Ctrl+Shift+H - иерархия метода
+
+Ctrl+H - иерархия класса
+Ctrl+Alt+U - диаграмма иерархии класса
+
+Ctrl+Alt+H - иерархия вызовов метода
+
+Alt+Ctrl+F7 - Показать использования символа/переменной/константы/методы/класса
+
+Ctrl+Alt+Home - навигация основанная на определенных отношениях типа контроллер-представление
+
+F11 - закладки
+Shift+F11 - выбрать закладку
+
+Ctrl+Shift+Alt+T - покажет все рефакторинги в данном месте
+Alt+Enter - покажет все инспекции в данном месте
+-------------------------------------------------
+
+Улучшение производительности
+
+
+Отключение инспекций File->Settings->Inspections
+Отключение языковых инспекций File->Settings->Language injections (отключение HTML очень поднял производительность)
+-------------------------------------------------
+
+Настройка IDE
+Appearance&Behavior->Appearance->Animate windows (снять галку).
+Appearance&Behaviour->Appearance->Widescreen tool window layout (поставить галку).
+Верхнее меню View->Navigation Bar (тулбар папок-путей сверху).
+Editor->General->Appearance->Show breadcrumbs (тулбар путей кода в редакторе).
+Editor->General->Appearance->Show code lens on scrollbar hover (ховер-окно с кодом, который вне видимости).
+
+Editor->General->(поставить галки):
+Highlight current scope.
+
+Editor->General->Editor Tabs->(поставить галки):
+Hide file extension in editor tabs.
+Mark modified tabs with asterisk.
+
+Editor->Code Style->PHP->Set From->Predefined Style->PSR1/PSR2.
+Editor->Code Style->PHP->Wrapping and Braces->Braces placement->In class declaration, In function declaration->end of line.
+Editor->Code Style->PHP/CSS/HTML/Javascript->Tabs and Indents (приводим всё к 2/4/2).
+Editor->Inspections->Spelling (снять галку проверки орфографии).
+Editor->Images->галка Zoom image with mouse wheel.
+Editor->Colors&Fonts->General->Caret row (цвет текущей линии. было FFFAE3, стало E8E8FF).
+Tools->Web Browsers->(снять всего галки кроме Chrome).
+Панель Project->Шестеренка->Autoscroll from Source (редактор->подсвечивает файл), Autoscroll to Source (файлы->сразу открывает в редакторе).
+Appearance&Behavior->Quick Lists->создание кастомного контекстного меню. создаем список mylist, и туда пункты меню. потом идем в Keymap, там находим mylist, и вешаем хоткей Alt+D.
+
