@@ -1,6 +1,0 @@
-Создание макроса
-
-1. Меню Window - Actions.
-2. В палитре нажать Create new action, задать имя, нажать Record.
-3. Провести все процедуры, сохранить картинку, нажать Stop Record.
-4. File - Automate - Batch, выбрать макрос, выбрать папки folder_from и folder_to, нажать ОК.
