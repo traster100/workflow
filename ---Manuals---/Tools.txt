@@ -19,7 +19,7 @@ https://browserleaks.com/canvas
 https://panopticlick.eff.org
 ---------------------------------------------------------------------------------------------------
 
-Photoshop. Создание макроса
+Photoshop. Создание макроса1
 
 1. Меню Window - Actions.
 2. В палитре нажать Create new action, задать имя, нажать Record.
