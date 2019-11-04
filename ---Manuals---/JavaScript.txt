@@ -107,8 +107,9 @@ $(document).ready(function () {
         }
     );
 
-    //отметить все чекбокы
-    $('.checkbox').prop('checked', 'checked');
+    //отметить чекбокс (разобраться какой правильный)
+    $('#checkbox').prop('checked', 'checked');
+    $('#checkbox').prop('checked', true);
 
     //событие на чекбоксе
     $('.check_print').on('change', function () {

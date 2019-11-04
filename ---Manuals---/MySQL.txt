@@ -29,7 +29,7 @@ UPDATE user1 SET PASSWORD=PASSWORD('password1') WHERE user='user1'; FLUSH PRIVIL
 Флаги для INTERVAL
 - DAY_MINUTE - 'DAYS HOURS:MINUTES'
 - DAY_HOUR - 'DAYS HOURS'
-- '5 DAY', '5 MINUTE', '5 HOUR'
+- '5 YEAR', '5 MONTH', '5 DAY', '5 HOUR', '5 MINUTE'
 
 SELECT TIMESTAMP('2010-10-10 10:10:10') + INTERVAL '1 1:1' DAY_MINUTE;
 SELECT TIMESTAMP('2010-10-10 10:10:10') + INTERVAL CONCAT(1, ' ', 1, ':', 1) DAY_MINUTE;
@@ -100,6 +100,7 @@ SELECT * FROM `orders` WHERE DATE(`added`) = DATE(NOW())-INTERVAL 1 DAY;
 
 -от текущего момента, и до дня назад
 SELECT * FROM `orders` WHERE (`added` + INTERVAL 1 DAY) > NOW();
+SELECT * FROM `orders` WHERE (TIMESTAMP(`added`) + INTERVAL 1 DAY) > NOW();
 
 -строго за прошлый час
 SELECT * FROM `orders` WHERE DAY(`added`) = DAY(NOW()) AND HOUR(`added`) = HOUR(NOW()-INTERVAL 1 HOUR);
@@ -431,3 +432,11 @@ BINARY учитывает регистр
 
 3. Потом отсортировать топ-10 медленных запросов, по результатам анализа логов:
 mysqldumpslow -s c -t 10 /var/lib/mysql-5.7/mysql-5-slow.log > /var/www/myusername/data/www/slowlog/top10.log
+---------------------------------------------------------------------------------------------------
+
+Колво и сумма чего-либо, с сортировкой по дням (TIMESTAMP)
+
+SELECT DATE_FORMAT(`created`, '%d.%m.%Y') AS `created2`, COUNT(*) AS 'countorders2', SUM(`cashorders`) AS 'cashorders2'
+FROM `orders`
+GROUP BY `created2`
+ORDER BY `created`;
