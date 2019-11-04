@@ -229,6 +229,13 @@ certbot certificates
 - положим туда строку * */12 * * * /usr/bin/certbot renew >> /var/log/le-renew.log
 - посмотрим список кронов crontab -l
 - применим крон crontab /var/spool/cron/root
+
+(Не запускать крон от рута!
+создать файл /var/spool/cron/projectname
+посмотреть задачи crontab -l -u projectname
+а вот применить так не работает crontab /var/spool/cron/projectname эта команда перезаписывает файл root тоже
+нужно юзать как-то через crontab -e
+)
 ---------------------------------------------------------------------------------------------------
 
 Редирект с www на без www
@@ -240,6 +247,8 @@ RewriteRule ^(.*)$ http://%1/$1 [L,R=301]
 find . -name .htaccess -print
 - применить
 find . -name .htaccess | xargs chmod 0644
+
+.htaccess достаточно только в родительскую папку бросить, а не по всем подпапкам.
 
 
 Права на файлы

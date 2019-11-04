@@ -19,8 +19,9 @@ https://browserleaks.com/canvas
 https://panopticlick.eff.org
 ---------------------------------------------------------------------------------------------------
 
-Photoshop. Создание макроса
+Photoshop
 
+Создание макроса:
 1. Меню Window->Actions.
 2. В палитре нажать Create new action, задать имя, нажать Record.
 3. Провести все процедуры, сохранить картинку, нажать Stop Record.
@@ -136,7 +137,11 @@ Docker
 Twig Support
 
 
-4. создать макрос "форматировать и сохранить"
+4. поставить плагины
+
+
+
+5. создать макрос "форматировать и сохранить"
 
 1. Edit->Macros->Start Recording запускаем, из меню нажимаем форматировать и сохранить. Останавливаем запись. Edit->Macros->Edit Macros смотрим что записалось Action:ReformatCode, Action:SaveAll. Называем макрос reformat_save.
 2. Тут Keymap->Save All удалить сочетание Ctrl+S.
