@@ -1,8 +1,10 @@
 <?php
 
-class Curl {
+class Curl
+{
 
-    public static function getpage($url, $head = 0, $body = 1, $verbose = 0) {
+    public static function getpage($url, $head = 0, $body = 1, $verbose = 0)
+    {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt(

@@ -29,23 +29,28 @@ Photoshop. Создание макроса
 
 PhpStorm
 
-
 Шрифт в редакторе
 Editor->Font->Size 18
 
 На табах в редакторе, не показывать крестик закрытия вкладки
 Editor->General->Editor Tabs->Close button position->None
 
-Открытый файл подсвечен в Project, 1 клик в Project открывает файл
+На табах в редакторе, показывать звездочку что файл не сохранен
+Editor->General->Editor Tabs->Mark modified (*)
+
+На табах в редакторе, не показывать расширения файлов
+Editor->General->Editor Tabs->Show file extension
+
+Табы в редакторе, показывать в несколько строк
+Editor->General->Editor Tabs->Show tabs in one row
+
+Открытый файл - подсвечен в Project, 1 клик в Project - открывает файл
 Таб Project->Шестеренка->Autoscroll from Source, Autoscroll to Source
 
 Appearance & Behavior->Quick Lists->создаем кастомное меню mymenu1
 В Keymap находим mymenu1 и вешаем хоткей Alt+D
 
-
-1. Поставить галки
-
-Размер шрифта менять колесом мыши
+Размер шрифта в редакторе, менять колесом мыши
 Editor->General->Change font size (Zoom) with Ctrl+MouseWheel
 
 Перенос текста в консоли
@@ -57,17 +62,11 @@ Editor->General->Soft-wrap files *.*
 Горизонтальная линия между методами, в классе
 Editor->General->Appearance->Show method separators
 
-Табы в горизонтальном виде, раскрываются только на ширину редактора
+Тулзы в горизонтальном виде, раскрываются только на ширину редактора
 Appearance & Behaviour->Appearance->Widescreen tool window layout
 
-Попап с кодом, который вне видимости в данном положении
+Попап с кодом, который вне видимости, в данном положении (например верхняя скобка)
 Editor->General->Appearance->Show code lens on scrollbar hover
-
-На табах в редакторе, показывать звездочку что файл не сохранен
-Editor->General->Editor Tabs->Mark modified (*)
-
-
-2. Снять галки
 
 Отключить обновления
 Appearance & Behavior->System Settings->Updates->Automatically check updates for
@@ -81,7 +80,7 @@ Tools->Web Browsers->Show browser popup in the editor
 Убрать инспекцию проверки грамматики слов
 Editor->Inspections->Spelling->Typo
 
-Отключить анимацию появления, табов в режиме Undock
+Отключить анимацию появления, тулзов в режиме Undock
 Appearance & Behavior->Appearance->Animate windows
 
 Отключить верхний тулбар путей до файла
@@ -90,14 +89,8 @@ View->Appearance->Navigation Bar
 Отключить нижний тулбар хлебных крошек до кода
 Editor->General->Breadcrumbs->Show breadcrumbs
 
-На табах в редакторе, не показывать расширения файлов
-Editor->General->Editor Tabs->Show file extension
 
-Табы в редакторе, показывать в несколько строк
-Editor->General->Editor Tabs->Show tabs in one row
-
-
-3. В файле \bin\idea.properties
+1. в файле \bin\idea.properties
 
 Профиль в папке PhpStorm
 idea.config.path=${idea.home}/.PhpStorm/config
@@ -107,7 +100,7 @@ idea.system.path=${idea.home}/.PhpStorm/system
 editor.zero.latency.typing=true
 
 
-4. В файле \bin\phpstorm64.exe.vmoptions
+2. в файле \bin\phpstorm64.exe.vmoptions
 
 Увеличенный кеш
 -Xms1024m
@@ -127,7 +120,7 @@ editor.zero.latency.typing=true
 -Dsun.java2d.uiScale.enabled=false
 
 
-5. Отключить плагины
+3. отключить плагины
 
 Angular and AngularJS
 ASP
@@ -141,9 +134,10 @@ Subversion
 PHP Docker
 Docker
 Twig Support
----------------------------------------------------------------------------------------------------
 
-Макрос "форматировать и сохранить"
-1. В настройках Setting -> Keymap -> Save All - удалить сочетание клавишь Ctrl + S.
-2. В меню Edit -> Macros -> Start Recording - и нажимаем Ctrl + Alt + L (форматирование) и потом Ctrl + S (сохранение). Тормозим запись. Edit -> Macros ->  Edit Macros и смотрим что записалось ReformatCode, SaveAll. Называем макрос reformat_save.
-3. В настройках Setting -> Keymap -> reformat_save - ставим сочетание клавишь Ctrl + S.
+
+4. создать макрос "форматировать и сохранить"
+
+1. Edit->Macros->Start Recording запускаем, из меню нажимаем форматировать и сохранить. Останавливаем запись. Edit->Macros->Edit Macros смотрим что записалось Action:ReformatCode, Action:SaveAll. Называем макрос reformat_save.
+2. Тут Keymap->Save All удалить сочетание Ctrl+S.
+3. Тут Keymap->reformat_save ставим сочетание Ctrl+S.
