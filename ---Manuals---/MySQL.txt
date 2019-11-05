@@ -3,14 +3,19 @@
 Подключение
 mysql --host=127.0.0.1 --port=3310 --user=myusername --password=mypassword
 
-Экспорт БД->файл.sql
+
+Экспорт бд->файл.sql
 mysqldump --host=127.0.0.1 --port=3310 --user=myusername --password=mypassword mydbname > /var/www/mydbname.sql
 
-Экспорт БД->файл.zip
+Экспорт бд->файл.zip
 mysqldump --host=127.0.0.1 --port=3310 --user=myusername --password=mypassword mydbname | gzip > /var/www/mydbname.gz
 
-Импорт файл.sql->БД
+Импорт файл.sql->бд
 mysqldump --host=127.0.0.1 --port=3310 --user=myusername --password=mypassword mydbname < /var/www/mydbname.sql
+
+Импорт файл.zip->бд
+gunzip < /var/www/mydbname.gz | mysql --host=127.0.0.1 --port=3310 --user=myusername --password=mypassword mydbname
+
 
 show databases; - посмотреть все базы
 show tables from mydbname; - посмотреть все таблицы базы
