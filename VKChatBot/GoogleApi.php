@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Гуглопереводчик
+ * Пакет composer require stichoza/google-translate-php
+ */
+
 require 'vendor/autoload.php';
 
 use Stichoza\GoogleTranslate\GoogleTranslate;
