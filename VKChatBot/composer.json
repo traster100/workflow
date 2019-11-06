@@ -1,0 +1,6 @@
+{
+    "name": "root/html",
+    "require": {
+        "stichoza/google-translate-php": "^4.0"
+    }
+}
