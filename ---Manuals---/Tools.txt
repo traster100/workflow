@@ -1,31 +1,34 @@
 Chromium
 
-- скачать отсюда https://chromium.woolyss.com/#windows-64-bit
+скачать отсюда https://chromium.woolyss.com/#windows-64-bit
 
-- файл Chromium-78.0.3904.70-x64, в списке выглядело так:
+файл Chromium-78.0.3904.70-x64, в списке выглядело так:
 "Portable • Archive • Installer • Package → Marmaduke thinLTO polly widevine all-codecs sync win64"
 
-- скачать тип Archive, а не Portable
+скачать тип Archive, а не Portable
 
-- флаг sync - версия с API-ключами для авторизации в гугле
+флаг sync - версия с API-ключами для авторизации в гугле
 
-- смена путей до профиля, и папки кеша:
-1. смотрим тут chrome://version
-2. делаем ярлык приложения и там пишем:
+смена путей до профиля, и папки кеша:
+смотрим тут chrome://version
+делаем ярлык приложения и там пишем:
 G:\soft\Chromium\chrome.exe --user-data-dir=G:\soft\Chromium\Profile --disk-cache-dir=C:\Users\u\AppData\Local\Temp\ChromiumCache --disable-reading-from-canvas
 
 флаг --disable-reading-from-canvas нужен для анонимности. проверка тут:
 https://browserleaks.com/canvas
 https://panopticlick.eff.org
+
+отключить превьюшки на табах, флаг в disabled chrome://flags/#tab-hover-cards
+отключить большую панель громкости, флаг в disabled chrome://flags/#hardware-media-key-handling
 ---------------------------------------------------------------------------------------------------
 
 Photoshop
 
 Создание макроса:
-1. Меню Window->Actions.
-2. В палитре нажать Create new action, задать имя, нажать Record.
-3. Провести все процедуры, сохранить картинку, нажать Stop Record.
-4. File->Automate->Batch, выбрать макрос, выбрать папки folder_from и folder_to, нажать ОК.
+Меню Window->Actions.
+В палитре нажать Create new action, задать имя, нажать Record.
+Провести все процедуры, сохранить картинку, нажать Stop Record.
+File->Automate->Batch, выбрать макрос, выбрать папки folder_from и folder_to, нажать ОК.
 ---------------------------------------------------------------------------------------------------
 
 PhpStorm
@@ -139,25 +142,103 @@ Twig Support
 
 4. поставить плагины
 
-Php Inspections ​(EA Extended)
+Php Inspections ​(EA Extended) (в настройках отключить сбор и отправку статистики)
 
 
 5. создать макрос "форматировать и сохранить"
 
-1. Edit->Macros->Start Recording запускаем, из меню нажимаем форматировать и сохранить. Останавливаем запись. Edit->Macros->Edit Macros смотрим что записалось Action:ReformatCode, Action:SaveAll. Называем макрос reformat_save.
-2. Тут Keymap->Save All удалить сочетание Ctrl+S.
-3. Тут Keymap->reformat_save ставим сочетание Ctrl+S.
+Edit->Macros->Start Recording запускаем, из меню нажимаем форматировать и сохранить. Останавливаем запись. Edit->Macros->Edit Macros смотрим что записалось Action:ReformatCode, Action:SaveAll. Называем макрос reformat_save.
+Тут Keymap->Save All удалить сочетание Ctrl+S.
+Тут Keymap->reformat_save ставим сочетание Ctrl+S.
+
+
+6. настроить xDebug
+
+Указать путь до php.exe
+Languages & Frameworks->PHP->PHP language level
+Languages & Frameworks->PHP->CLI Interpreter
+Рядом должна появится надпись Debugger: Xdebug 2.6.0
+
+в OpenServer сделать закладку на Phpstorm и оттуда его запускать
+
+в Хром поставить плагин для дебага и профилирования https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc
+
+Просмотр логов профилирования
+Tools->Analyze Xdebug Profiler Snapshot
+
+Настройка php.ini
+[Xdebug]
+zend_extension = "%sprogdir%/modules/php/%phpdriver%/ext/php_xdebug.dll"
+xdebug.remote_enable = 1 ;Включение
+xdebug.remote_handler = "dbgp" ;Протокол
+xdebug.remote_host = "localhost" ;Сервер
+xdebug.remote_port = 9000 ;Порт
+xdebug.remote_mode = "req" ;Режим дебага
+xdebug.remote_autostart = 0 ;НЕ стартовать автоматически
+
+xdebug.idekey = "PHPSTORM" ;IDE-кей
+xdebug.file_link_format = phpstorm://open?%f:%l ;чтобы кликать по строкам ошибок в браузере и сразу открывалось в phpstorm
+
+xdebug.auto_trace = 0 ;НЕ включать трассировку
+xdebug.trace_enable_trigger = 1 ;Позволяет включать трассировку на лету из IDE.
+xdebug.trace_output_name = "trace_%H_%R" ;1файл на 1URL
+xdebug.trace_output_dir = "%sprogdir%/userdata/temp/xdebug/"
+
+xdebug.profiler_enable = 0 ;НЕ включать профайлер
+xdebug.profiler_enable_trigger = 1 ;Позволяет включать профайлер на лету из IDE.
+xdebug.profiler_output_name = "profiler_%H_%R" ;1файл на 1URL
+xdebug.profiler_output_dir = "%sprogdir%/userdata/temp/xdebug/"
+
+Работа в PhpStorm
+Step Over выполнение кода построчно, минуя заходы в функции
+Step Into выполнение кода построчно, с заходами в функции
+Step Out выход из текущей функции, к строке кода сразу после неё
+Run to Cursor выполнить до курсора
+Resume Program переход к следующему брекпоинту и потом стоп
+
+Отладочные функции xDebug
+
+Все переменные в текущей области видимости
+xdebug_get_declared_vars()
+
+Трассировка стека до этого момента
+xdebug_get_function_stack()
+
+Трассировка текущего стека функции
+xdebug_print_function_stack()
+
+Глобальные массивы
+xdebug_dump_superglobals()
+
+Все заголовки
+xdebug_get_headers()
+headers_list()
+get_headers()
+
+Все классы
+get_declared_classes()
+
+Все константы
+get_defined_constants(true)
+
+Все функции
+get_defined_functions(true)
+
+Все переменные
+get_defined_vars()
 ---------------------------------------------------------------------------------------------------
 
 Проверка кода на уязвимость
 
 1. Плагин PhpStorm "Php Inspections ​(EA Extended)​"
 https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended
+Доки по ошибкам https://github.com/kalessil/phpinspectionsea/tree/master/docs
 
 Alt+Shift+I - проверка текущего файла
 Ctrl+Alt+Shift+I - запуск проверки по имени
 Ctrl+Shift+F4 - закрыть результаты проверки
 Проверка папки: правый клик на папке, и Inspect Code
+Автоматическое исправление: из окна инспекции, под желтой лампочкой в коде
 
 2. OWASP ZAP
 https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
