@@ -20,6 +20,63 @@ https://panopticlick.eff.org
 
 отключить превьюшки на табах, флаг в disabled chrome://flags/#tab-hover-cards
 отключить большую панель громкости, флаг в disabled chrome://flags/#hardware-media-key-handling
+
+
+Benchmarking
+console.time('point1');
+//код
+console.timeEnd('point1');
+
+Profiling
+console.profile('point1');
+//код
+console.profileEnd('point1');
+
+Стек вызовов - console.trace()
+Массив в виде таблицы - console.table([1, 2, 3])
+
+Отследить все события на элементе - monitorEvents(document.body)
+Посмотреть все обработчики событий элемента - Elements->Event Listeners
+
+Данные скорости и объём загрузки страницы - вкладка Network, внизу данные
+Точка останова в js - слово debugger в коде, или Sources->Ctrl+B
+Точка останова в html - Elements->Dom Breakpoints, ставить точки через правый клик на теге, и потом Break on
+Live Edit - вкладка Sources->Add Folder to Workspace->Map to File System Resource
+
+Копировать ответ запроса - Network->Copy->Copy Response
+Повторить ajax запрос - Network->Replay XHR
+Развернуть всё дерево тегов - Elements->Alt+клик на стрелку у тега
+
+Фильтры на вкладке Network - https://developers.google.com/web/tools/chrome-devtools/network/reference#filter
+На вкладке Network включить табы - Method, Scheme, Domain, Cookies, Set Cookies, Cache-Control, Content-Encoding, Last-Modified
+
+Изменить положение панели - Ctrl+Shift+D
+Перемещаться между вкладками - Ctrl+], Ctrl+[
+Очистить консоль - Ctrl+L
+Перевод строки в консоли - Shift+Enter
+Поиск по всем файлам - Ctrl+Shift+F
+
+Найти действие по названию - Ctrl+Shift+P
+
+Открыть файл на редактирование, из любой вкладки - Ctrl+P
+Редактирование файлов на лету - на вкладке Sources правим код, и он сразу работает. После F5 сброс
+Elements->правый клик на пути css или js файла->Reveal in Sources Panel - открыть файл на правку
+Показать значения переменных на лету в коде - Settings->Preferences->Sources->Display variable values inline while debugging
+В файле или сниппете выделить код и запустить в консоли - Ctrl+Shift+E
+
+CSS селекторы серые не совпали, черные совпали - в панели Elements->Styles
+Пролистать к элементу html на странице - Elements->правый клик на теге, и Scroll into view
+
+Посмотреть неиспользуемые участки кода - Console->Coverage, красным неюзаемые участки js и css, на вкладке Source тоже
+
+Посмотреть CSS media queries - включить мобильный вид, найти действие Show Media Queries (или в правом верхнем меню). Можно кликать на полоски, чтобы переключить ширину, и по правому клику перейти в место в коде
+
+Включить мобильный вид - Ctrl+Shift+M
+
+Отладка js - на вкладке Sources, выбирать файлы, ставить точки останова, бегать по коду F10, F11, F8. Справа в подвкладке Event Listener Breakpoints можно выставить события по которым дебагер сам срабатывает
+
+Вкладка Audits - аудит сайта на тему скорости, доступности, лучших практик, сео
+Мануал https://developers.google.com/web/tools/chrome-devtools/
 ---------------------------------------------------------------------------------------------------
 
 Photoshop
