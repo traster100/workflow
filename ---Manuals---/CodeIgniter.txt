@@ -1,14 +1,16 @@
 Валидация полей
 
 HTML
-<input type="text" class="form-control" id="password">
-<input type="text" class="form-control" id="password_1">
-<input type="text" class="form-control" id="password_2">
+<input type='text' class='form-control' id='password'>
+<input type='text' class='form-control' id='password_1'>
+<input type='text' class='form-control' id='password_2'>
 
 PHP
-$this->form_validation->set_rules('password', ' ', 'trim|required|xss_clean|min_length[1]|callback_check_password');
-$this->form_validation->set_rules('password_1', ' ', 'trim|required|xss_clean|min_length[1]');
-$this->form_validation->set_rules('password_2', ' ', 'trim|required|xss_clean|min_length[1]|matches[password_1]');
+$this->form_validation->set_rules('password', ' ', 'trim|required|callback_check_password');
+
+$this->form_validation->set_rules('password_1', ' ', 'trim|required');
+
+$this->form_validation->set_rules('password_2', ' ', 'trim|required|matches[password_1]');
 
 проверка что старый пароль введен верно
 public function check_password($password) {
@@ -101,91 +103,65 @@ $this->db->delete('addresses', [
 $this->db->last_query();
 ---------------------------------------------------------------------------------------------------
 
-Залогиненность
-
-администратор залогинен $this->administrator->is_login();
-юзер залогинен $this->user->is_login();
----------------------------------------------------------------------------------------------------
-
 Сессии
 
-положить в сессию
+вставить
 $this->session->userdata('property');
 
-удалить из сессии
+удалить
 $this->session->unset_userdata('property');
 
-всё что есть в сессии
+вывести всё
 $this->session->all_userdata();
 ---------------------------------------------------------------------------------------------------
 
-ОТЛАДКА КУК И СЕССИЙ
-
-$aaa = $this->session->all_userdata();
-var_dump('База ' . $aaa['session_id']);
-print_r(!empty($aaa['basket']) ? $aaa['basket'] : '');
-
-
-$bbb = unserialize($this->input->cookie('ci_session'));
-var_dump('Кука ' . $bbb['session_id']);
-print_r(!empty($bbb['basket']) ? $bbb['basket'] : '');
----------------------------------------------------------------------------------------------------
-
 Хелпер
+Это группы функций на одну тему, в одном файле.
 
-Хелпер - небольшие функции, позволяющие избежать дублирования кода, вспомогательный файл с набором функций в определенной группе. Использование в моделях, представлениях, контроллерах, везде.
-
-$this->load->helper('name_helper');
-хелперы автозагружаются тут application/config/autoload.php:49
+загрузка хелпера $this->load->helper('name_helper');
+хелперы автозагружаются тут application/config/autoload.php
 
 Библиотека
+Это класс, который нужно сделать экземпляром CI и использовать как $this->mylibrary->function() для вызова методов.
 
-Библиотека - содержит классы и файлы, общение с БД. Библиотека это класс, который нужно сделать экземпляром класса CI и использовать как $this->...для вызова методов.
-
-$this->load->library('name_library');
-библиотеки автозагружаются тут application/config/autoload.php:27
-
-$this->name_library->function();
+загрузка модели $this->load->library('name_library');
+библиотеки автозагружаются тут application/config/autoload.php
 
 Модель
-
-$this->load->model('model_faq');
-загрузка модели
+Это класс для работы с БД
+загрузка модели $this->load->model('model_faq');
 ---------------------------------------------------------------------------------------------------
 
 Кеширование
 
-Включить кеширование
+включить для запроса
 $this->db->cache_on();
 $query = $this->db->query("SELECT * FROM mytable");
 
-Выключите кеширование для этого одного запроса
+выключить для запроса
 $this->db->cache_off();
-$query = $this->db->query("SELECT * FROM members WHERE member_id = '$current_user'");
+$query = $this->db->query("SELECT * FROM mytable");
 
-Включите кеширование обратно
+включить снова
 $this->db->cache_on();
-$query = $this->db->query("SELECT * FROM another_table");
+$query = $this->db->query("SELECT * FROM mytable");
 
+удалить кеш для одной страницы
 $this->db->cache_delete()
-Удаляет кеш-файлы связанные с конкретной страницей.
 ---------------------------------------------------------------------------------------------------
 
 Ресайз картинок
 
-Есть 3 библиотеки изображений: GD/GD2, NetPBM, ImageMagick. Ватермарки работают только с GD/GD2. И GD/GD2 нужна для остальных библиотек, чтобы вычислять параметры картинки.
+Есть 3 либы: GD/GD2, NetPBM, ImageMagick. Ватермарки работают только с GD/GD2, и она нужна для остальных либ.
 
-Инициализация
 $this->load->library('image_lib');
-
-Вызов функций
 $this->image_lib->resize()
 $this->image_lib->crop()
 $this->image_lib->rotate()
 $this->image_lib->watermark()
 $this->image_lib->clear()
 
-Проверять отработку функций так
+Проверять результат так
 if ($this->image_lib->resize()) {
     echo 'ok';
 } else {
@@ -194,6 +170,7 @@ if ($this->image_lib->resize()) {
 
 Сброс всех параметров обработки. Вызывать если проходим картинки в цикле
 $this->image_lib->clear();
+
 
 Создание тумбинашки
 $config['image_library'] = 'gd2';
@@ -227,7 +204,7 @@ $this->load->library('security');
 $data = $this->security->xss_clean($data);
 
 Проверка файлов
-if ($this->security->xss_clean($file, TRUE)) { good file! }
+if ($this->security->xss_clean($file, TRUE)) {return true;}
 
 Будет заменять всё на спецсимволы
 $data = html_escape($data);
@@ -246,8 +223,8 @@ $config['csrf_protection'] = TRUE;
 
 Автоматически работает с form_open(). Если не работаем с form_open() то можно вручную:
 $csrf = [
-        'name' => $this->security->get_csrf_token_name(),
-        'hash' => $this->security->get_csrf_hash()
+    'name' => $this->security->get_csrf_token_name(),
+    'hash' => $this->security->get_csrf_hash()
 ];
 <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>">
 
@@ -300,3 +277,34 @@ mysql.allow_persistent=Off
 
 3. в MySQL:
 кол-во соединенинй увеличить со 151 до 500
+---------------------------------------------------------------------------------------------------
+
+Profiling
+
+$this->output->enable_profiler(TRUE);
+//код
+$this->output->enable_profiler(FALSE);
+
+настройки
+application/config/profiler.php
+отключить
+$config['config'] = FALSE;
+$config['queries'] = FALSE;
+
+
+Benchmarking
+
+$this->benchmark->mark('point1_start');
+//код
+$this->benchmark->mark('point1_end');
+echo $this->benchmark->elapsed_time('point1_start', 'point1_end');
+echo  $this->benchmark->elapsed_time(); покажет общее время
+echo $this->benchmark->memory_usage(); покажет использование памяти
+
+
+Logging
+
+настройки
+application/config/config.php
+отключить
+$config['log_threshold'] = 0;
