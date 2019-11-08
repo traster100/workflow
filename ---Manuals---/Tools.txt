@@ -91,6 +91,73 @@ File->Automate->Batch, выбрать макрос, выбрать папки fo
 
 PhpStorm
 
+Скачать отсюда ZIP https://www.jetbrains.com/phpstorm/download/other.html
+
+Чтобы профиль в папке PhpStorm, в файле \bin\idea.properties
+idea.config.path=${idea.home}/.PhpStorm/config
+idea.system.path=${idea.home}/.PhpStorm/system
+
+Запуск \bin\phpstorm64.exe, пробный период
+
+Отключить и удалить плагины
+Angular and AngularJS
+ASP
+Drupal Support
+Joomla! Support
+Mercurial
+Vue.js
+Vagrant
+WordPress Support
+Subversion
+PHP Docker
+Docker
+Twig Support
+
+Поставить плагины
+Php Inspections ​(EA Extended) (Отключить сбор статистики Settings->Php Inspections (EA Extended)->Automatically collect crash-reports)
+
+Установить кряк, в файле \bin\phpstorm64.exe.vmoptions
+-javaagent:/fullpath/crack.jar
+Перейти Configure->Manage License->License server->http://jetbrains-license-server
+
+Удалить папки и файлы
+\jbr
+\license
+\help
+\product-info.json
+\build.txt
+
+\plugins\AngularJS
+\plugins\asp
+\plugins\drupal
+\plugins\joomla
+\plugins\vuejs
+\plugins\wordPress
+\plugins\vagrant
+\plugins\twig
+\plugins\Docker
+
+\bin\fsnotifier.exe
+\bin\IdeaWin32.dll
+\bin\jumplistbridge.dll
+\bin\runnerw.exe
+
+Отключить обновления
+Appearance & Behavior->System Settings->Updates->Automatically check updates for
+
+Не отправлять статистику использования
+Appearance & Behavior->System Settings->Data Sharing->Send usage statistics
+
+Путь до \bin\git.exe
+Version Control->Git->Path to Git executable
+
+
+------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
+
+
+
+
+
 Шрифт в редакторе
 Editor->Font->Size 18
 
@@ -130,12 +197,6 @@ Appearance & Behaviour->Appearance->Widescreen tool window layout
 Попап с кодом, который вне видимости, в данном положении (например верхняя скобка)
 Editor->General->Appearance->Show code lens on scrollbar hover
 
-Отключить обновления
-Appearance & Behavior->System Settings->Updates->Automatically check updates for
-
-Не отправлять статистику использования
-Appearance & Behavior->System Settings->Data Sharing->Send usage statistics
-
 Убрать попап с браузерами
 Tools->Web Browsers->Show browser popup in the editor
 
@@ -154,10 +215,6 @@ Editor->General->Breadcrumbs->Show breadcrumbs
 
 1. в файле \bin\idea.properties
 
-Профиль в папке PhpStorm
-idea.config.path=${idea.home}/.PhpStorm/config
-idea.system.path=${idea.home}/.PhpStorm/system
-
 Удалить задержку IDE при печатании
 editor.zero.latency.typing=true
 
@@ -169,9 +226,6 @@ editor.zero.latency.typing=true
 -Xmx2048m
 -XX:MaxPermSize=1024m
 
-Кряк
--javaagent:crack.jar
-
 Сглаживание шрифтов
 -Dawt.useSystemAAFontSettings=lcd
 
@@ -180,28 +234,6 @@ editor.zero.latency.typing=true
 
 Отключение поддержки мониторов HiDPI
 -Dsun.java2d.uiScale.enabled=false
-
-
-3. отключить плагины
-
-Angular and AngularJS
-ASP
-Drupal Support
-Joomla! Support
-Mercurial
-Vue.js
-Vagrant
-WordPress Support
-Subversion
-PHP Docker
-Docker
-Twig Support
-
-
-4. поставить плагины
-
-Php Inspections ​(EA Extended) (в настройках отключить сбор и отправку статистики)
-
 
 5. создать макрос "форматировать и сохранить"
 
