@@ -151,11 +151,24 @@ Appearance & Behavior->System Settings->Data Sharing->Send usage statistics
 Путь до \bin\git.exe
 Version Control->Git->Path to Git executable
 
+Окончание строки
+Editor->Code Style->Line separator - Unix
+
+Поправить шаблон создания js-файлов
+Editor->File and Code Templates->JavaScript File
+В начало шаблона написать 'use strict';
+
+Маркеры
+Editor->TODO-> todo, fixme, note
+
+Путь до \modules\php\PHP-7.2-x64\php.exe
+Languages & Frameworks->PHP
+
+Попап с браузерами убрать и выбрать 1 браузер
+Tools->Web Browsers
+
 
 ------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
-
-
-
 
 
 Шрифт в редакторе
