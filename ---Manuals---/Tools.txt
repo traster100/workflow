@@ -119,6 +119,8 @@ Php Inspections ​(EA Extended) (Отключить сбор статистик
 Установить кряк, в файле \bin\phpstorm64.exe.vmoptions
 -javaagent:/fullpath/crack.jar
 Перейти Configure->Manage License->License server->http://jetbrains-license-server
+https://rutracker.org/forum/viewtopic.php?t=5764245
+https://zhile.io/2018/08/17/jetbrains-license-server-crack.html
 
 Удалить папки и файлы
 \jbr
@@ -329,6 +331,17 @@ get_defined_functions(true)
 
 Все переменные
 get_defined_vars()
+
+Разное
+
+Поиск дубликатов кода
+Code->Locate Duplicates
+
+Тестирование регулярных выражений внутри preg_*
+Alt+Enter->Check RegExp
+
+Очистка кода. Разобраться что это
+Code->Code Cleanup
 ---------------------------------------------------------------------------------------------------
 
 Проверка кода на уязвимость
