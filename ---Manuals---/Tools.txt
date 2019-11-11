@@ -93,25 +93,25 @@ PhpStorm
 
 Скачать отсюда ZIP https://www.jetbrains.com/phpstorm/download/other.html
 
-Чтобы профиль в папке PhpStorm, в файле \bin\idea.properties
+Чтобы профиль был в папке PhpStorm, в файле \bin\idea.properties
 idea.config.path=${idea.home}/.PhpStorm/config
 idea.system.path=${idea.home}/.PhpStorm/system
 
 Запуск \bin\phpstorm64.exe, пробный период
 
-Отключить и удалить плагины
-Angular and AngularJS
-ASP
-Drupal Support
-Joomla! Support
-Mercurial
-Vue.js
-Vagrant
-WordPress Support
-Subversion
-PHP Docker
-Docker
-Twig Support
+Отключить и удалить плагины, и удалить папки
+Angular and AngularJS (папка \plugins\AngularJS)
+ASP (\plugins\asp)
+Drupal Support (\plugins\drupal)
+Joomla! Support (\plugins\joomla)
+Mercurial (\plugins\hg4idea)
+Vue.js (\plugins\vuejs)
+Vagrant (\plugins\vagrant)
+WordPress Support (\plugins\wordPress)
+Subversion (\plugins\svn4idea)
+PHP Docker (\plugins\phpstorm-docker)
+Docker (\plugins\Docker)
+Twig Support (\plugins\twig)
 
 Поставить плагины
 Php Inspections ​(EA Extended) (Отключить сбор статистики Settings->Php Inspections (EA Extended)->Automatically collect crash-reports)
@@ -128,17 +128,6 @@ https://zhile.io/2018/08/17/jetbrains-license-server-crack.html
 \help
 \product-info.json
 \build.txt
-
-\plugins\AngularJS
-\plugins\asp
-\plugins\drupal
-\plugins\joomla
-\plugins\vuejs
-\plugins\wordPress
-\plugins\vagrant
-\plugins\twig
-\plugins\Docker
-
 \bin\fsnotifier.exe
 \bin\IdeaWin32.dll
 \bin\jumplistbridge.dll
@@ -166,15 +155,39 @@ Editor->TODO-> todo, fixme, note
 Путь до \modules\php\PHP-7.2-x64\php.exe
 Languages & Frameworks->PHP
 
-Попап с браузерами убрать и выбрать 1 браузер
+Попап с браузерами убрать, и выбрать 1 браузер
 Tools->Web Browsers
+
+Шрифт в редакторе
+Editor->Font->Size 18
+
+Размер шрифта в редакторе, менять колесом мыши
+Editor->General->Change font size (Zoom) with Ctrl+MouseWheel
+
+Открытый файл - подсвечен в Project, 1 клик в Project - открывает файл
+Таб Project->Шестеренка->Autoscroll from Source, Autoscroll to Source
+
+Табы в редакторе, показывать в несколько строк
+Editor->General->Editor Tabs->Show tabs in one row
+
+Перенос текста в редакторе
+Editor->General->Soft-wrap files *.*
+
+Открывать проекты всегда в отдельном окне
+Appearance & Behavior->System Settings->Open project in new window
+
+Дефолтовая директория, которая открывается при выборе открытия проекта
+Appearance & Behavior->System Settings->Default directory
+
+Добавить горячие клавиши на комменты (чтобы на русском тоже срабатывало)
+Keymap->Commeent with Line Comment Ctrl+.
+Keymap->Commeent with Block Comment Ctrl+Shift+.
 
 
 ------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
 
 
-Шрифт в редакторе
-Editor->Font->Size 18
+//Appearance & Behavior->Appearance->Disable mnemonics in menu (не работает. а нужно чтобы работало с alt+v пунто свитчера)
 
 На табах в редакторе, не показывать крестик закрытия вкладки
 Editor->General->Editor Tabs->Close button position->None
@@ -185,23 +198,11 @@ Editor->General->Editor Tabs->Mark modified (*)
 На табах в редакторе, не показывать расширения файлов
 Editor->General->Editor Tabs->Show file extension
 
-Табы в редакторе, показывать в несколько строк
-Editor->General->Editor Tabs->Show tabs in one row
-
-Открытый файл - подсвечен в Project, 1 клик в Project - открывает файл
-Таб Project->Шестеренка->Autoscroll from Source, Autoscroll to Source
-
 Appearance & Behavior->Quick Lists->создаем кастомное меню mymenu1
 В Keymap находим mymenu1 и вешаем хоткей Alt+D
 
-Размер шрифта в редакторе, менять колесом мыши
-Editor->General->Change font size (Zoom) with Ctrl+MouseWheel
-
 Перенос текста в консоли
 Editor->General->Console->Use soft wraps in console
-
-Перенос текста в редакторе
-Editor->General->Soft-wrap files *.*
 
 Горизонтальная линия между методами, в классе
 Editor->General->Appearance->Show method separators
