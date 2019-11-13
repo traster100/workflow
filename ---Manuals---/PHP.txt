@@ -173,35 +173,36 @@ public function index() {
 DateTime
 
 Установка даты
+$date = new DateTime();
 $date = new DateTime('2000-01-01');
 
-Установка даты с часовым поясом
+Установка даты, с часовым поясом
 $date = new DateTime('2000-01-01', new DateTimeZone('Europa/Moscow'));
 
-$date = new DateTime('2013-12-01');
-$date->setTimezone(new DateTimeZone('Pacific/Chatham'));
+Установка часового пояса
+$date->setTimezone(new DateTimeZone('Europa/Moscow'));
 
 Установка даты на 4 дня вперед
 $date = new DateTime('+4 days');
 
-Вывод форматированной даты
-echo $date->format('d.m.Y');
+Изменение даты
+$date->modify('+4 day');
+$date->modify('+1 month');
 
-Вывод timestamp
-echo $date->getTimestamp();
-
-Изменение даты, уже установленной при создании объекта
+Установка даты
 $date->setDate(2001, 2, 3);
 
-Изменение времени, уже установленной при создании объекта
-$date->setTime(14, 55);
+Вывод форматированной даты
+$date->format('d.m.Y H:i:s');
 
-Изменение timestamp, уже установленной при создании объекта
+Вывод timestamp
+$date->getTimestamp();
+
+Установка времени
+$date->setTime(13, 45);
+
+Установка timestamp
 $date->setTimestamp(1385665999);
-
-Изменения даты
-$date->modify('+3 day');
-$date->modify('+1 month');
 
 Сравнение дат
 $difference = $date1->diff($date2);
@@ -321,3 +322,39 @@ str_replace('<br>', PHP_EOL, $text);
 
 Первая буква из строки UTF-8
 mb_substr($v->name, 0, 1);
+---------------------------------------------------------------------------------------------------
+
+PDO
+
+Если в запрос не передаются переменные, то юзать query().
+Если в запрос передаются переменные, то юзать prepare().
+
+exec() - для операций, которые возвращают только колво затронутых записей.
+quote() - ставит кавычки в строковых данных, чтобы юзать в запросах без prepare.
+
+fetch() - получить строку
+fetchAll() - получить массив строк
+fetchAll(PDO::FETCH_COLUMN) - получить одну колонку
+fetchAll(PDO::FETCH_KEY_PAIR) - получить пары ключ-значение
+fetchColumn() - получить одну колонку
+$db->lastInsertId() - последний вставленный ид
+
+Всегда юзать bindValue(), потому что поведение bindParam() не очевидно.
+
+
+Валидация
+$stm->bindValue(2, $per_page, PDO::PARAM_INT);
+
+Транзакции 
+$stmt = $db->prepare('INSERT INTO `table`(`title`, `id`) VALUES (:title, :id)');
+try {
+  $db->beginTransaction();
+  foreach ($videos as $v) {
+    $stmt->bindValue(':title', $title);
+    $stmt->bindValue(':id', $id);
+    $stmt->execute();
+  }
+  $db->commit();
+} catch (PDOException $e) {
+  $db->rollBack();
+}
