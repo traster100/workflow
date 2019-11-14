@@ -1,97 +1,3 @@
-CHROMIUM
-
-скачать отсюда https://chromium.woolyss.com/#windows-64-bit
-
-файл Chromium-78.0.3904.70-x64, в списке выглядело так:
-"Portable • Archive • Installer • Package → Marmaduke thinLTO polly widevine all-codecs sync win64"
-
-скачать тип Archive, а не Portable
-
-флаг sync - версия с API-ключами для авторизации в гугле
-
-смена путей до профиля, и папки кеша:
-смотрим тут chrome://version
-делаем ярлык приложения и там пишем:
-G:\soft\Chromium\chrome.exe --user-data-dir=G:\soft\Chromium\Profile --disk-cache-dir=C:\Users\u\AppData\Local\Temp\ChromiumCache --disable-reading-from-canvas
-
-флаг --disable-reading-from-canvas нужен для анонимности. проверка тут:
-https://browserleaks.com/canvas
-https://panopticlick.eff.org
-
-отключить превьюшки на табах, флаг в disabled chrome://flags/#tab-hover-cards
-отключить большую панель громкости, флаг в disabled chrome://flags/#hardware-media-key-handling
-
-Закладка на чистый лист
-data:text/html, <html><textarea style='width:100%; height:100%; font-size: 20px; padding:0; margin:0; border:none; outline:none;'>
-
-
-Benchmarking
-console.time('point1');
-//код
-console.timeEnd('point1');
-
-Profiling
-console.profile('point1');
-//код
-console.profileEnd('point1');
-
-Стек вызовов - console.trace()
-Массив в виде таблицы - console.table([1, 2, 3])
-
-Отследить все события на элементе - monitorEvents(document.body)
-Посмотреть все обработчики событий элемента - Elements->Event Listeners
-
-Данные скорости и объём загрузки страницы - вкладка Network, внизу данные
-Точка останова в js - слово debugger в коде, или Sources->Ctrl+B
-Точка останова в html - Elements->Dom Breakpoints, ставить точки через правый клик на теге, и потом Break on
-Live Edit - вкладка Sources->Add Folder to Workspace->Map to File System Resource
-
-Копировать ответ запроса - Network->Copy->Copy Response
-Повторить ajax запрос - Network->Replay XHR
-Развернуть всё дерево тегов - Elements->Alt+клик на стрелку у тега
-
-Фильтры на вкладке Network - https://developers.google.com/web/tools/chrome-devtools/network/reference#filter
-На вкладке Network включить табы - Method, Scheme, Domain, Cookies, Set Cookies, Cache-Control, Content-Encoding, Last-Modified
-
-Изменить положение панели - Ctrl+Shift+D
-Перемещаться между вкладками - Ctrl+], Ctrl+[
-Очистить консоль - Ctrl+L
-Перевод строки в консоли - Shift+Enter
-Поиск по всем файлам - Ctrl+Shift+F
-
-Найти действие по названию - Ctrl+Shift+P
-
-Открыть файл на редактирование, из любой вкладки - Ctrl+P
-Редактирование файлов на лету - на вкладке Sources правим код, и он сразу работает. После F5 сброс
-Elements->правый клик на пути css или js файла->Reveal in Sources Panel - открыть файл на правку
-Показать значения переменных на лету в коде - Settings->Preferences->Sources->Display variable values inline while debugging
-В файле или сниппете выделить код и запустить в консоли - Ctrl+Shift+E
-
-CSS селекторы серые не совпали, черные совпали - в панели Elements->Styles
-Пролистать к элементу html на странице - Elements->правый клик на теге, и Scroll into view
-
-Посмотреть неиспользуемые участки кода - Console->Coverage, красным неюзаемые участки js и css, на вкладке Source тоже
-
-Посмотреть CSS media queries - включить мобильный вид, найти действие Show Media Queries (или в правом верхнем меню). Можно кликать на полоски, чтобы переключить ширину, и по правому клику перейти в место в коде
-
-Включить мобильный вид - Ctrl+Shift+M
-
-Отладка js - на вкладке Sources, выбирать файлы, ставить точки останова, бегать по коду F10, F11, F8. Справа в подвкладке Event Listener Breakpoints можно выставить события по которым дебагер сам срабатывает
-
-Вкладка Audits - аудит сайта на тему скорости, доступности, лучших практик, сео
-Мануал https://developers.google.com/web/tools/chrome-devtools/
----------------------------------------------------------------------------------------------------
-
-PHOTOSHOP
-
-Создание макроса:
-Открыть картинку.
-Меню Window->Actions.
-В палитре нажать Create new action, задать имя, нажать Record.
-Провести все процедуры, сохранить картинку, нажать Stop Record.
-File->Automate->Batch, выбрать макрос, выбрать папки folder_from и folder_to, нажать ОК.
----------------------------------------------------------------------------------------------------
-
 PHPSTORM
 
 Скачать отсюда ZIP https://www.jetbrains.com/phpstorm/download/other.html
@@ -117,7 +23,8 @@ Docker (\plugins\Docker)
 Twig Support (\plugins\twig)
 
 Поставить плагины
-Php Inspections ​(EA Extended) (Отключить сбор статистики Settings->Php Inspections (EA Extended)->Automatically collect crash-reports)
+Php Inspections ​EA Extended. Плагин проверки на уязвимости кода. Отключить сбор статистики Settings->Php Inspections->Automatically collect crash-reports. https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended-
+BrowseWordAtCaret. Плагин подсвечивающий одинаковые слова. https://plugins.jetbrains.com/plugin/201-browsewordatcaret
 
 Установить кряк, в файле \bin\phpstorm64.exe.vmoptions
 -javaagent:/fullpath/crack.jar
@@ -202,6 +109,7 @@ Editor->General->Appearance->Show parameter names hints
 Увеличить кеш, в файле \bin\phpstorm64.exe.vmoptions
 Было: -Xms128m, -Xmx750m
 Поставил: -Xms256m, -Xmx1500m
+Поставил: -Xms512m, -Xmx3000m
 (Протестить: -Xms1024m, -Xmx2048m, -XX:MaxPermSize=1024m)
 
 Создать макрос "Форматировать и Сохранить"
@@ -355,7 +263,101 @@ Alt+Enter->Check RegExp
 Code->Code Cleanup
 ---------------------------------------------------------------------------------------------------
 
-Проверка кода на уязвимость
+CHROMIUM
+
+скачать отсюда https://chromium.woolyss.com/#windows-64-bit
+
+файл Chromium-78.0.3904.70-x64, в списке выглядело так:
+"Portable • Archive • Installer • Package → Marmaduke thinLTO polly widevine all-codecs sync win64"
+
+скачать тип Archive, а не Portable
+
+флаг sync - версия с API-ключами для авторизации в гугле
+
+смена путей до профиля, и папки кеша:
+смотрим тут chrome://version
+делаем ярлык приложения и там пишем:
+G:\soft\Chromium\chrome.exe --user-data-dir=G:\soft\Chromium\Profile --disk-cache-dir=C:\Users\u\AppData\Local\Temp\ChromiumCache --disable-reading-from-canvas
+
+флаг --disable-reading-from-canvas нужен для анонимности. проверка тут:
+https://browserleaks.com/canvas
+https://panopticlick.eff.org
+
+отключить превьюшки на табах, флаг в disabled chrome://flags/#tab-hover-cards
+отключить большую панель громкости, флаг в disabled chrome://flags/#hardware-media-key-handling
+
+Закладка на чистый лист
+data:text/html, <html><textarea style='width:100%; height:100%; font-size: 20px; padding:0; margin:0; border:none; outline:none;'>
+
+
+Benchmarking
+console.time('point1');
+//код
+console.timeEnd('point1');
+
+Profiling
+console.profile('point1');
+//код
+console.profileEnd('point1');
+
+Стек вызовов - console.trace()
+Массив в виде таблицы - console.table([1, 2, 3])
+
+Отследить все события на элементе - monitorEvents(document.body)
+Посмотреть все обработчики событий элемента - Elements->Event Listeners
+
+Данные скорости и объём загрузки страницы - вкладка Network, внизу данные
+Точка останова в js - слово debugger в коде, или Sources->Ctrl+B
+Точка останова в html - Elements->Dom Breakpoints, ставить точки через правый клик на теге, и потом Break on
+Live Edit - вкладка Sources->Add Folder to Workspace->Map to File System Resource
+
+Копировать ответ запроса - Network->Copy->Copy Response
+Повторить ajax запрос - Network->Replay XHR
+Развернуть всё дерево тегов - Elements->Alt+клик на стрелку у тега
+
+Фильтры на вкладке Network - https://developers.google.com/web/tools/chrome-devtools/network/reference#filter
+На вкладке Network включить табы - Method, Scheme, Domain, Cookies, Set Cookies, Cache-Control, Content-Encoding, Last-Modified
+
+Изменить положение панели - Ctrl+Shift+D
+Перемещаться между вкладками - Ctrl+], Ctrl+[
+Очистить консоль - Ctrl+L
+Перевод строки в консоли - Shift+Enter
+Поиск по всем файлам - Ctrl+Shift+F
+
+Найти действие по названию - Ctrl+Shift+P
+
+Открыть файл на редактирование, из любой вкладки - Ctrl+P
+Редактирование файлов на лету - на вкладке Sources правим код, и он сразу работает. После F5 сброс
+Elements->правый клик на пути css или js файла->Reveal in Sources Panel - открыть файл на правку
+Показать значения переменных на лету в коде - Settings->Preferences->Sources->Display variable values inline while debugging
+В файле или сниппете выделить код и запустить в консоли - Ctrl+Shift+E
+
+CSS селекторы серые не совпали, черные совпали - в панели Elements->Styles
+Пролистать к элементу html на странице - Elements->правый клик на теге, и Scroll into view
+
+Посмотреть неиспользуемые участки кода - Console->Coverage, красным неюзаемые участки js и css, на вкладке Source тоже
+
+Посмотреть CSS media queries - включить мобильный вид, найти действие Show Media Queries (или в правом верхнем меню). Можно кликать на полоски, чтобы переключить ширину, и по правому клику перейти в место в коде
+
+Включить мобильный вид - Ctrl+Shift+M
+
+Отладка js - на вкладке Sources, выбирать файлы, ставить точки останова, бегать по коду F10, F11, F8. Справа в подвкладке Event Listener Breakpoints можно выставить события по которым дебагер сам срабатывает
+
+Вкладка Audits - аудит сайта на тему скорости, доступности, лучших практик, сео
+Мануал https://developers.google.com/web/tools/chrome-devtools/
+---------------------------------------------------------------------------------------------------
+
+PHOTOSHOP
+
+Создание макроса:
+Открыть картинку.
+Меню Window->Actions.
+В палитре нажать Create new action, задать имя, нажать Record.
+Провести все процедуры, сохранить картинку, нажать Stop Record.
+File->Automate->Batch, выбрать макрос, выбрать папки folder_from и folder_to, нажать ОК.
+---------------------------------------------------------------------------------------------------
+
+ПРОВЕРКА КОДА НА УЯЗВИМОСТЬ
 
 1. Плагин PhpStorm "Php Inspections ​(EA Extended)​"
 https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended
@@ -373,7 +375,7 @@ https://segment.com/blog/hacking-with-a-heads-up-display/
 https://www.youtube.com/channel/UC-3qyzm4f29C12KGp3-12bQ
 ---------------------------------------------------------------------------------------------------
 
-OPEN SERVER
+OPENSERVER
 
 Подключение к MySQL
 mysql mysql
