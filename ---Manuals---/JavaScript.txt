@@ -16,14 +16,15 @@ $(document).ready(function () {
             //тут код
         }
 
-        //добавление/удаление аттрибута
+        //добавление/удаление аттрибута у тега
         $('#check').attr('disabled', 'disabled');
         $('#check').removeAttr('disabled');
 
-        //добавление/удаление класса
+        //добавление/удаление класса у тега
         $('#check').addClass('btn-default');
         $('#check').removeClass('btn-default');
     });
+
 
     //клик по кнопке
     $('#check').on('click', function () {
@@ -43,11 +44,13 @@ $(document).ready(function () {
             });
     });
 
+
     //клик по ссылке, которая есть на странице с самого начала
     $('#link').on('click', function (event) {});
 
     //клик по ссылке, которая появится на странице потом, в результате ajax-запроса
     $(document).delegate('#link', 'click', function (event) {});
+
 
     //скрол наверх или к элементу
     $('html,body').animate({scrollTop: $("input:first").offset().top - 100}, 500);
@@ -60,6 +63,7 @@ $(document).ready(function () {
         }, 200);
         return false;
     });
+
 
     //редирект/открытие другого урла. обычно для скачивания файла
     window.location.href = 'url';
@@ -88,6 +92,8 @@ $(document).ready(function () {
         if (event.keyCode === 13 && event.shiftKey) {}
     });
 
+    //слушаем 2 события сразу
+    $(document).delegate('.span1, .span2', 'click hover', function () {});
 
     //слушаем селекты
     $('select').change(function (event) {});
@@ -127,7 +133,7 @@ $(document).ready(function () {
 
 Загрузка картинки с буфера обмена (либа jQuery-File-Upload)
 
-js:
+JS:
 'use strict';
 window.onload = function () {
     document.addEventListener('paste', handlePaste);
@@ -146,10 +152,10 @@ function uploadFile(file) {
     $('#fileupload').fileupload('add', {files: file});
 }
 
-html:
+HTML:
 <input accept='image/gif,image/jpeg,image/png,image/jpg' id='fileupload' type='file' name='files[]' data-url='/user/chat/jqueryfileupload' multiple titile='Форматы gif, jpeg, jpg, png'>
 
-php:
+PHP:
   public function jqueryfileupload() {
     require APPPATH . 'libraries/UserUploadHandler.php';
     new UserUploadHandler();
