@@ -110,6 +110,7 @@ Editor->General->Appearance->Show parameter names hints
 Было: -Xms128m, -Xmx750m
 Поставил: -Xms256m, -Xmx1500m
 Поставил: -Xms512m, -Xmx3000m
+Поставил: -Xms1024m, -Xmx6000m
 (Протестить: -Xms1024m, -Xmx2048m, -XX:MaxPermSize=1024m)
 
 Создать макрос "Форматировать и Сохранить"
@@ -120,10 +121,11 @@ Edit->Macros->Start Recording запускаем, из меню нажимаем
 Скобка "{" у класса и метода, на этой же строке
 Editor->Code Style->PHP->Wrapping and Braces->Braces placement->(In class declaration, In function declaration)->End of line
 
+Убрать инспекцию проверки грамматики слов
+Editor->Inspections->Spelling->Typo
 
 
 ------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
-
 
 
 //Appearance & Behavior->Appearance->Disable mnemonics in menu (не работает. а нужно чтобы работало с alt+v пунто свитчера)
@@ -154,9 +156,6 @@ Editor->General->Appearance->Show code lens on scrollbar hover
 
 Убрать попап с браузерами
 Tools->Web Browsers->Show browser popup in the editor
-
-Убрать инспекцию проверки грамматики слов
-Editor->Inspections->Spelling->Typo
 
 Отключить анимацию появления, тулзов в режиме Undock
 Appearance & Behavior->Appearance->Animate windows
@@ -363,10 +362,12 @@ File->Automate->Batch, выбрать макрос, выбрать папки fo
 https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended
 Доки по ошибкам https://github.com/kalessil/phpinspectionsea/tree/master/docs
 
-Alt+Shift+I - проверка текущего файла
+Проверка файла - Alt+Shift+I
+Проверка папки - правый клик на папке, и Inspect Code
+
 Ctrl+Alt+Shift+I - запуск проверки по имени
 Ctrl+Shift+F4 - закрыть результаты проверки
-Проверка папки: правый клик на папке, и Inspect Code
+
 Автоматическое исправление: из окна инспекции, под желтой лампочкой в коде
 
 2. OWASP ZAP

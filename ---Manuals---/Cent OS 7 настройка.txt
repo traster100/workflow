@@ -260,3 +260,7 @@ find . -name .htaccess | xargs chmod 0644
 
 Запуск крона кажные 3 секунды
 */1 * * * * php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3;
+
+Проверка колва редиректов
+wget domain.com 2>&1 | grep Location
+https://a.pr-cy.ru/domain.com
