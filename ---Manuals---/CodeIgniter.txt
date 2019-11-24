@@ -66,7 +66,7 @@ $result = $query->row(); // 1 строка
 $result = $query->row()->field; // 1 строка 1 столбец
 $result = $query->num_rows(); // колво строк (сначала будет выполнен запрос, потом посчитано колво строк.)
 $result = $query->count_all_results(); // колво строк (сразу посчитано колво строк. быстрее! но проверить.)
-
+-------------------------------------------------
 
 UPDATE
 $this->db
@@ -74,14 +74,32 @@ $this->db
 ->update('table', ['field' => 0]);
 
 UPDATE increment field
-$this->db->where('id', 100);
-$this->db->set('field', 'field+1', FALSE);
-$this->db->update('table');
+$this->db
+->where('id', 100)
+->set('field', 'field+1', FALSE)
+->update('table');
 ИЛИ
 "UPDATE `table` SET `field` = (`field` + " . $this->db->escape($field) . ") WHERE `id` = " . $this->db->escape($field);
 
 для UPDATE запросов, сколько рядов затронуло
 $this->db->affected_rows();
+
+UPDATE построчно:
+foreach ($objects as $v) {
+    $this->db->where(['id' => $v->id]);
+    $this->db->update('table', ['field' => 0]);
+}
+
+UPDATE много строк сразу
+$update_batch = [];
+foreach ($objects as $v) {
+    $update_batch[] = ['id' => $v->id, 'field' => 0];
+}
+
+if ($update_batch) {
+    $this->db->update_batch('table', $update_batch, 'id');
+}
+-------------------------------------------------
 
 INSERT
 $this->db->insert('addresses', $post);
