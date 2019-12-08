@@ -315,6 +315,7 @@ https://panopticlick.eff.org
 
 отключить превьюшки на табах, флаг в disabled chrome://flags/#tab-hover-cards
 отключить большую панель громкости, флаг в disabled chrome://flags/#hardware-media-key-handling
+включить DNS через HTTPS (DoH), флаг в enabled chrome://flags/#dns-over-https
 
 Закладка на чистый лист
 data:text/html, <html><textarea style='width:100%; height:100%; font-size: 20px; padding:0; margin:0; border:none; outline:none;'>
