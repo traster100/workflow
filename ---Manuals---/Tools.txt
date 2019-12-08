@@ -124,9 +124,27 @@ Editor->Code Style->PHP->Wrapping and Braces->Braces placement->(In class declar
 Убрать инспекцию проверки грамматики слов
 Editor->Inspections->Spelling->Typo
 
+YUI Compressor сжатие CSS и JS
+https://www.jetbrains.com/help/phpstorm/compressing-css.html
+https://www.jetbrains.com/help/phpstorm/minifying-javascript.html
+-скачать nodejs.org
+-поставить  npm install yuicompressor
+-добавить ватчер "YUI Compressor CSS" File->Settings->Tools->File Watchers
+-добавить ватчер "YUI Compressor JS" File->Settings->Tools->File Watchers
+-для обоих путь до C:\Users\u\node_modules\.bin\yuicompressor.cmd
+-сжимает CSS просто в строку, удаляя комменты.
+-сжимает JS просто в строку, удаляя комменты, меняет названия переменных.
+
+
 
 ------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
 
+
+
+Когда синхроним папку Deployment->Synchronize
+Ставим галку, чтобы удаляло файлы с хоста, которых нет локально
+File->Settings->Build, Execution, Deployment->Deployment->Options
+"Delete target items when source ones do not exist (when transferring from Project view or Remote Host view)"
 
 //Appearance & Behavior->Appearance->Disable mnemonics in menu (не работает. а нужно чтобы работало с alt+v пунто свитчера)
 
@@ -174,6 +192,19 @@ editor.zero.latency.typing=true
 
 Отключение поддержки мониторов HiDPI
 -Dsun.java2d.uiScale.enabled=false
+
+PHPSTORM цвета в старом редакторе
+Editor->Font: Monospaced 18, 1.0
+Editor->Color Scheme->Console Font: Monospaced 18, 1.0
+Editor->Color Scheme->Color Scheme Font: Monospaced 18, 1.0
+Appearance&Behavior->Appearance: Segoe UI 15
+Цвет фона F7FAFF
+Цвет синей полосы CDCDE2
+
+Плагин RIPS Security Analysis
+https://plugins.jetbrains.com/plugin/10447-rips-security-analysis/
+требует регистрации. пока отключил
+
 
 6. настроить xDebug
 
