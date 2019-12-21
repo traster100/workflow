@@ -1,11 +1,11 @@
 # Навыки и инструменты
 - 10 лет опыта в программировании.
-- PHP, Kohana, CodeIgniter, немного Yii.
+- PHP, Kohana, CodeIgniter, Yii, Laravel.
 - MySQL, PDO, ORM.
 - OOP, MVC, HMVC.
 - WordPress, PhpBB.
 - работа с API социальных сетей.
-- HTML, CSS, JavaScript, jQuery, Bootstrap, микроразметка hCard.
+- HTML, CSS, JavaScript, jQuery, Bootstrap, Микроформаты.
 - написание сайтов, админок, консольных скриптов, парсеров, регалок, сабмиттеров, автопостеров.
 - Использую PhpStorm, Workbench, Open Server, HeidiSQL, Putty, Git.
 
@@ -13,7 +13,7 @@
 
 ## Биржа фриланса для удалённых работников
 
-На чистом PHP реализована биржа фриланса. Каталог проектов, вакансий, фрилансеров. Категории, портфолио, стоимость. http://1000developers.com
+На чистом PHP реализована биржа фриланса. Каталог проектов, вакансий, фрилансеров, услуг. Категории, портфолио, стоимость. Вход через соцсети. http://1000developers.com
 
 ![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/23.png "Биржа фриланса для удалённых работников")
 
@@ -45,7 +45,7 @@
 
 Организация взаимодействия рекламных партнеров фотостраны. Контентные страницы: О проекте, Статистика, Возможности, Стоимость, Кейсы, FAQ, Контакты. Административная часть: работа с партнерами, кейсами, страницами, событиями. Создан на Kohana.
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/17.png "Проект для компании "Фотострана"")
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/17.png "Проект для компании Фотострана")
 
 ## Гостиница-отель
 
