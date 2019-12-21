@@ -6,9 +6,9 @@
 - APIs: GoogleMaps, GoogleTranslate, YandexMaps, Facebook, Instagram, Telegram, Vk.
 - Projects: Shops, Catalogs, Admin Panels, Dashboards, Console Scripts.
 
-Tools: PhpStorm, Workbench, HeidiSQL, Git.
-Working time: Monday - Friday, 10:00 - 18:00
-Timezone: Europe/Moscow UTC+3:00 MSK
+- Tools: PhpStorm, Workbench, HeidiSQL, Git.
+- Working time: Monday - Friday, 10:00 - 18:00
+- Timezone: Europe/Moscow UTC+3:00 MSK
 
 
 # Выполненные работы
