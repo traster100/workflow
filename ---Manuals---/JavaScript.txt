@@ -1,20 +1,27 @@
+JSDoc - документация.
+JSLint - проверяльщик кода на ошибки+стиль+структуру.
+
 "use strict";
 
 $(document).ready(function () {
 
+    //не давать вбивать ничего кроме цифр
+    //<input type="number" onkeypress='return event.charCode >= 48 && event.charCode <= 57' >
+
+    //не давать вбивать ничего кроме цифр. и только 6 цифр
+    onkeypress='return (event.charCode >= 48 && event.charCode <= 57) && (this.value.length < 6)'
+
     //проверка вбиваемых символов на лету, когда вбиваем их в поле input
     $('#code').on('keyup', function () {
 
-        var filed_string = $(this).val();
+        var filed = $(this).val();
 
         //длина символов
-        var length_symbols = filed_string.length;
+        var length_symbols = filed.length;
 
         //ничего кроме латинницы и цифр
         var regexp = /^[a-zA-Z0-9]+$/i;
-        if (regexp.test(filed_string)) {
-            //тут код
-        }
+        if (regexp.test(filed)) {}
 
         //добавление/удаление аттрибута у тега
         $('#check').attr('disabled', 'disabled');
@@ -23,8 +30,13 @@ $(document).ready(function () {
         //добавление/удаление класса у тега
         $('#check').addClass('btn-default');
         $('#check').removeClass('btn-default');
-    });
 
+        //если нет класса - добавит, если есть - удалит
+        $('a').toggleClass('active');
+
+        //перед объектами, которые управляются jQuery, ставим символ $
+        var $first = $('#first');
+    });
 
     //клик по кнопке
     $('#check').on('click', function () {
@@ -37,13 +49,11 @@ $(document).ready(function () {
             'url',
             {
                 'var1': 'value1',
-                'var2': 'value2'
             },
             function (result) {
                 console.log(result);
             });
     });
-
 
     //клик по ссылке, которая есть на странице с самого начала
     $('#link').on('click', function (event) {});
@@ -51,33 +61,23 @@ $(document).ready(function () {
     //клик по ссылке, которая появится на странице потом, в результате ajax-запроса
     $(document).delegate('#link', 'click', function (event) {});
 
-
-    //скрол наверх или к элементу
+    //скрол наверх, или к элементу
     $('html,body').animate({scrollTop: $("input:first").offset().top - 100}, 500);
     $('#boxscroll').scrollTop(9999999);
     $('#boxscroll').scrollTop();
 
-    $('a').click(function () {
+    $('a').on('click', function () {
         $('html, body').animate({
             scrollTop: $("header").offset().top
         }, 200);
         return false;
     });
 
-
     //редирект/открытие другого урла. обычно для скачивания файла
     window.location.href = 'url';
 
-    //не давать вбивать ничего кроме цифр
-    //<input type="number" onkeypress='return event.charCode >= 48 && event.charCode <= 57' >
-
-    //не давать вбивать ничего кроме цифр. и только 6 цифр
-    onkeypress='return (event.charCode >= 48 && event.charCode <= 57) && (this.value.length < 6)'
-
     //вопрос с подтверждением
-    if (confirm('Удалить?')) {
-        //тут код
-    }
+    if (confirm('Удалить?')) {}
 
     //слушаем инпуты
     $('input').on('keydown', function (event) {
@@ -90,6 +90,11 @@ $(document).ready(function () {
 
         //ловим Shift+Enter
         if (event.keyCode === 13 && event.shiftKey) {}
+
+        //перевод строки в textarea по Shift+Enter
+        if (event.keyCode === 13 && event.shiftKey) {
+            $('#textarea').val($(this).val() + '\n');
+        }
     });
 
     //слушаем 2 события сразу
@@ -101,7 +106,7 @@ $(document).ready(function () {
     //генерация клика
     $('#submit').trigger('click');
 
-    // остановить распространение события
+    //остановить распространение события
     $('#submit').on('click', function (event) {
         event.preventDefault();
     });
@@ -118,12 +123,7 @@ $(document).ready(function () {
     $('#checkbox').prop('checked', true);
 
     //событие на чекбоксе
-    $('.check_print').on('change', function () {
-        //тут код
-    });
-
-    //если нет класса - добавит, если есть - удалит
-    $('a').toggleClass('active');
+    $('.check_print').on('change', function () {});
 
     //приведение к целому числу
     parseInt(new_count);
@@ -131,7 +131,7 @@ $(document).ready(function () {
 });
 ---------------------------------------------------------------------------------------------------
 
-Загрузка картинки с буфера обмена (либа jQuery-File-Upload)
+Загрузка картинки с буфера обмена, на основе jQuery-File-Upload
 
 JS:
 'use strict';
@@ -164,13 +164,13 @@ PHP:
 
 Работа с localStorage
 
-LocalStorage (только его можно надёжно использовать из всех трех LocalStorage, WebSQL, IndexedDB) - это простой способ хранения пар ключ-значение. API прост, но использование ограничено 5Мб во многих браузерах. API является синхронным, поэтому может блокировать DOM. Поддержка браузера очень хорошая. https://caniuse.com/#feat=namevalue-storage (97,51% браузеров). LocalStorage это локальное хранилище, наподобие кук, данные хранятся в браузере и не передаются на сервер при каждом запросе. LocalStorage - в Chrome, Firefox и Edge, полностью блокирует DOM, пока вы пишете данные.
+LocalStorage (только его можно надёжно использовать из всех трех LocalStorage, WebSQL, IndexedDB) - это простой способ хранения пар ключ-значение. API прост, но использование ограничено 5Мб в браузерах. API синхронный, блокирует DOM. Поддержка браузера очень хорошая. https://caniuse.com/#feat=namevalue-storage (97,51% браузеров). LocalStorage - это локальное хранилище, наподобие кук, данные хранятся в браузере, но не передаются на сервер при каждом запросе.
 
 <!DOCTYPE html>
 <html lang='ru' style='font-size: 30px' contenteditable>
 <head>
   <meta charset='UTF-8'>
-  <title>чистый лист</title>
+  <title>ЧИСТЫЙ ЛИСТ</title>
   <script type='text/javascript'>
       function myScript(body) {
           var text = body.innerHTML;
@@ -207,7 +207,7 @@ localStorage.setItem('imgs', imgs);
 -------------------------------------------------
 проверка на пустоту
 if (imgs) {}
-ИЛИ так
+ИЛИ
 if (JSON.parse(localStorage.getItem('imgs')) && JSON.parse(localStorage.getItem('imgs')).length > 0) {}
 
 перебор массива
@@ -220,14 +220,11 @@ for (let i = 0; i < imgs.length; i++) {
 localStorage.removeItem('imgs');
 ---------------------------------------------------------------------------------------------------
 
+События
+
 event.preventDefault() - предотвращает действие по-умолчанию, которое браузер выполняет с этим событием.
-
 event.stopPropagation() - останавливает распространения события дальше по цепочке родителей.
-
-//перевод строки в textarea по Shift+Enter
-if (event.keyCode === 13 && event.shiftKey) {
-    $('#textarea').val($(this).val() + '\n');
-}
+event.target; - источник события от которого началось.
 ---------------------------------------------------------------------------------------------------
 
 Работа с урлом браузера
@@ -235,6 +232,7 @@ if (event.keyCode === 13 && event.shiftKey) {
 1. https://domain.com/basket
 
 window.location вернет массив:
+
 protocol: "https:"
 host: "domain.com"
 hostname: "domain.com"
@@ -247,6 +245,7 @@ search: ""
 2. https://domain.com/basket?address_id=1
 
 window.location вернет массив:
+
 protocol: "https:"
 host: "domain.com"
 hostname: "domain.com"
@@ -255,10 +254,64 @@ origin: "https://domain.com"
 pathname: "/basket"
 search: "?address_id=1"
 
-
-Меняем урл браузера
+3. Меняем урл браузера
 history.pushState(
     null,
     null,
     window.location.origin + window.location.pathname
 );
+---------------------------------------------------------------------------------------------------
+
+Таймеры
+
+1. setTimeout - ждёт X миллисекунд, и запускает функцию.
+
+var Timer1 = setTimeout(function() {код и $var}, 5000, $var);
+отменить clearTimeout(Timer1);
+
+2. setInterval - запускает функцию, каждые X миллисекунд.
+
+var Timer2 = setInterval(function() {код и $var}, 5000, $var);
+отменить
+clearInterval(Timer2);
+---------------------------------------------------------------------------------------------------
+
+1. Модуль
+var basketModule = (function () {
+
+	//приватная переменная
+	var basket = [];
+
+	//публичные методы
+    return {
+
+        public_method1: function (values) {},
+
+        public_method2: function () {
+
+            //доступ к приватной переменной
+            return basket.length;
+        },
+    }
+
+    //приватные методы
+	function private_method1 () {}
+	function private_method2 () {}
+}());
+
+
+2. Самовызывающиеся функции
+(function name() {
+    return {
+        var1: 1,
+        var2: 2
+    };
+})();
+
+3. Объект
+var obj1 = {
+    var1: 1,
+    method1: function () {
+        return this.var1;
+    }
+};

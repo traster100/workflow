@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>Vuex</title>
+  <script src='https://cdn.jsdelivr.net/npm/vue/dist/vue.js'></script>
+  <script src='https://cdn.jsdelivr.net/npm/vuex/dist/vuex.js'></script>
+</head>
+<body style='padding-bottom: 200px'>
+
+
+<h1>Простейшее хранилище</h1>
+
+<div id='a1'></div>
+
+<script>
+    const store1 = new Vuex.Store({
+
+        //состояние
+        state: {
+            count1: 1
+        },
+
+        //мутации
+        mutations: {
+            increment1(state) {
+                state.count1++;
+            }
+        }
+    });
+
+    var a1 = new Vue({
+        el: '#a1',
+    });
+</script>
+
+<!--
+вызов мутации, для изменения состояния
+store1.commit('increment1')
+
+отладка
+console.log(store1.state.count1)
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Передача состояния в компоненты, через вычисляемые свойства</h1>
+
+<div id='a2'>
+  <component1></component1>
+</div>
+
+<script>
+    const store2 = new Vuex.Store({
+        state: {
+            count1: 2
+        },
+    });
+
+    Vue.component('component1', {
+        computed: {
+            count1() {
+                return store2.state.count1;
+            },
+        },
+        template: '<div>{{count1}}</div>',
+    });
+
+    var a2 = new Vue({
+        el: '#a2',
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Передача состояния в компоненты, через инъекцию хранилища (предпочтительный вариант)</h1>
+
+<div id='a3'>
+  <component2></component2>
+</div>
+
+<script>
+    const store3 = new Vuex.Store({
+        state: {
+            count1: 3
+        },
+    });
+
+    Vue.component('component2', {
+        computed: {
+            count1() {
+                return this.$store.state.count1;
+            },
+        },
+        template: '<div>{{count1}}</div>',
+    });
+
+    var a3 = new Vue({
+        el: '#a3',
+        store: store3,
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Геттеры</h1>
+
+<div id='a4'>
+  <component3></component3>
+</div>
+
+<script>
+    const store4 = new Vuex.Store({
+        state: {
+            count1: 4
+        },
+
+        //тут геттеры (вычисляемые свойства для хранилища)
+        getters: {
+
+            //1й аргумент (state) ссылка на состояние
+            getter1: state => {
+                return state.count1 + 101;
+            },
+
+            //2й аргумент (getters) список всех геттеров
+            getter2: (state, getters) => {
+                return state.count1 + 102;
+
+                //доступ из геттера, к другим геттерам
+                return getters.getter1;
+            },
+
+            getter3: state => id => {
+                return state.count1 + id;
+            },
+        },
+    });
+
+    Vue.component('component3', {
+
+        //тут методы (вычисляемые свойства для компонента)
+        computed: {
+
+            //используем состояние хранилища, внутри компонента
+            computed1() {
+                return this.$store.state.count1 + 200;
+            },
+
+            //используем геттер хранилища, внутри компонента
+            computed2() {
+                return this.$store.getters.getter1
+            }
+        },
+        template: '<div>{{computed1}} | {{computed2}}</div>',
+    });
+
+    var a4 = new Vue({
+        el: '#a4',
+        store: store4,
+    });
+</script>
+
+<!--
+Вызов геттеров, как свойств
+store4.getters.getter1; //105
+store4.getters.getter2; //106
+
+Вызов геттеров, как методов
+store4.getters.getter3(500); //504
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Мутации</h1>
+
+<div id='a5'>
+  <component4></component4>
+</div>
+
+<script>
+    const store5 = new Vuex.Store({
+        state: {
+            count1: 5
+        },
+
+        //мутации
+        mutations: {
+
+            //изменяем состояние
+            increment1(state) {
+                state.count1++;
+            },
+
+            //мутация с нагрузкой
+            increment2(state, param1) {
+                state.count1 += param1;
+            },
+
+            //когда нагрузка - объект
+            increment3(state, object1) {
+                state.count1 += object1.param1;
+            }
+
+        },
+    });
+
+
+    Vue.component('component4', {
+        computed: {
+            computed1() {
+                //вызов мутации из компонента
+                this.$store.commit('increment1');
+
+                return this.$store.state.count1;
+            },
+        },
+        template: '<div>{{computed1}}</div>',
+    });
+
+
+    var a5 = new Vue({
+        el: '#a5',
+        store: store5,
+    });
+</script>
+
+<!--
+Состояние ДО
+store5.state.count1; //5
+
+Вызов мутации
+store5.commit('increment1');
+
+Состояние ПОСЛЕ
+store5.state.count1; //6
+
+
+вызов мутации с нагрузкой
+store5.commit('increment2', 10);
+
+когда нагрузка это объект
+store5.commit('increment3', {param1: 50});
+
+объектный синтаксис вызова мутации
+store5.commit({type: 'increment3', param1: 100});
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Действия</h1>
+
+<div id='a6'>
+  <component5></component5>
+</div>
+
+<script>
+    const store6 = new Vuex.Store({
+        state: {
+            count1: 6
+        },
+
+        //мутации
+        mutations: {
+            mutation1(state) {
+                state.count1++;
+            }
+        },
+
+        //действия
+        actions: {
+
+            action1(context) {
+                //вызов мутации
+                context.commit('mutation1');
+
+                //доступ к состоянию и геттерам
+                console.log(context.state);
+                console.log(context.getters);
+            },
+
+            //асинхронная операция внутри действия
+            //action2({commit}) это запись в стиле "деструктуризации аргументов"
+            //action2({commit,state}) можно еще так
+            action2({commit}) {
+                setTimeout(() => {
+                    commit('mutation1');
+                    console.log('5 sec');
+                }, 1000 * 5)
+            },
+
+
+            //действие с нагрузкой
+            action3(context, param1) {
+                context.state.count1 += param1;
+            },
+
+            //когда нагрузка - объект
+            action4(context, object1) {
+                context.state.count1 += object1.param1;
+            },
+
+            //связка двух асинхронных действий
+            actionA({commit}) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        console.log('actionA');
+                        resolve()
+                    }, 1000 * 5)
+                })
+            },
+            actionB({dispatch, commit}) {
+                return dispatch('actionA').then(() => {
+                    console.log('actionB');
+                })
+            },
+
+            /*
+            вызываем store6.dispatch('actionA');
+            и получаем:
+            actionA
+
+            вызываем store6.dispatch('actionB');
+            и получаем:
+            actionA
+            actionB
+
+            вызываем:
+            store6.dispatch('actionA').then(() => {console.log(1);});
+            получаем:
+            actionA
+            1
+
+            вызываем:
+            store6.dispatch('actionB').then(() => {console.log(2);});
+            получаем:
+            actionA
+            actionB
+            2
+            */
+        }
+    });
+
+    Vue.component('component5', {
+        computed: {
+            computed1() {
+                //вызов действия из компонента
+                this.$store.dispatch('action1');
+
+                return this.$store.state.count1;
+            },
+        },
+        template: '<div>{{computed1}}</div>',
+    });
+
+
+    var a6 = new Vue({
+        el: '#a6',
+        store: store6,
+    });
+</script>
+
+<!--
+Состояние ДО
+store6.state.count1; //6
+
+Вызов действия
+store6.dispatch('action1');
+
+Состояние ПОСЛЕ
+store6.state.count1; //7
+
+
+вызов действия с нагрузкой
+store6.dispatch('action3', 10);
+
+когда нагрузка это объект
+store6.dispatch('action4', {param1: 50});
+
+объектный синтаксис вызова действия
+store6.dispatch({type: 'action4', param1: 100});
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Модули</h1>
+
+<div id='a7'></div>
+
+<script>
+
+    //модуль moduleA
+    const moduleA = {
+        state: {param1: 1},
+
+        mutations: {
+            mutation1(state) {
+                state.param1++; //state это локальное состояние
+            }
+        },
+
+        actions: {
+            action1({state, commit, rootState}) {
+                state.param1++; //state это локальное состояние
+                rootState.param1++; //rootState это корневое состояние
+            }
+        },
+
+        getters: {
+            getter1(state, getters, rootState) {
+                return state.param1 * 2; //state это локальное состояние
+                return rootState.param1 * 2; //rootState это корневое состояние
+            }
+        },
+    };
+
+    //модуль moduleB
+    const moduleB = {
+        state: {param1: 2},
+        mutations: {},
+        actions: {},
+        getters: {},
+    };
+
+    //модуль moduleB (с собственным пространством имен)
+    const moduleC = {
+
+        namespaced: true,
+
+        state: {param1: 3},
+
+        mutations: {
+            mutation1() {
+                console.log('mutation1');
+            }
+        },
+
+        actions: {
+
+            action1({dispatch, commit, getters, rootGetters}) {
+                console.log('action1');
+
+                //вызов локального геттера: getters.getter1; //'c/getter1'
+                //вызов глобального геттера: rootGetters.getter1; //'getter1'
+
+                //вызов локального действия: dispatch('action1'); //'c/action1'
+                //вызов глобального действия: dispatch('action1', null, { root: true }); //'action1'
+
+                //вызов локальной мутации: commit('mutation1'); //'c/mutation1'
+                //вызов глобальной мутации: commit('someMutation', null, { root: true }); //'mutation1'
+            },
+
+            //регистрация глобального действия в модуле с собственным пространством имён
+            action2: {
+                root: true,
+                //в глобальном пространстве вызывается как dispatch('action2');
+                handler(namespacedContext, payload) {
+                }
+            },
+        },
+        getters: {
+            getter1(state, getters, rootState, rootGetters) {
+                console.log('getter1');
+
+                //state это локальное состояние
+                //rootState это глобальное состояние
+
+                //вызов локального геттера: getters.getter1; //'c/getter1'
+                //вызов глобального геттера: rootGetters.getter1; //'getter1'
+            }
+        },
+    };
+
+    /*
+    вызовы для модуля с пространством имен
+    store7.getters['c/getter1'];
+    store7.dispatch('c/action1');
+    store7.commit('c/mutation1');
+    */
+
+    const store7 = new Vuex.Store({
+        modules: {
+            a: moduleA,
+            b: moduleB,
+            c: moduleC,
+        }
+    });
+
+    var a7 = new Vue({
+        el: '#a7',
+        store: store7,
+    });
+</script>
+
+<!--
+состояние модулей
+store7.state.a.param1; //1
+store7.state.b.param1; //2
+
+регистрация нового модуля на лету:
+store7.registerModule('moduleD', {});
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Плагины. strict mode</h1>
+
+<div id='a8'></div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.js'></script>
+
+<script>
+
+    //плагин
+    const myPlugin1 = store => {
+        console.log('вызывается после инициализации хранилища');
+
+        console.log('слепок состояния ДО мутации:');
+        console.log(_.cloneDeep(store.state));
+
+        store.subscribe((mutation, state) => {
+            console.log('вызывается после каждой мутации. сработал myPlugin1');
+            console.log(mutation);
+            console.log(state);
+
+            console.log('слепок состояния ПОСЛЕ мутации:');
+            console.log(_.cloneDeep(state));
+        });
+    };
+
+    //хранилище
+    const store8 = new Vuex.Store({
+
+        //strict mode. строгий режим для хранилища
+        strict: true,
+
+        state: {
+            count1: 7
+        },
+
+        mutations: {
+            mutation1(state) {
+                console.log('mutation1');
+                state.count1++;
+            }
+        },
+
+        plugins: [myPlugin1],
+    });
+
+    var a8 = new Vue({
+        el: '#a8',
+        store: store8,
+    });
+</script>
+
+<!--
+вызов мутации:
+store8.commit('mutation1')
+и сработал плагин
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Работа с формами в strict mode</h1>
+
+<div id='a9'>
+  <input v-model='count1'>
+</div>
+
+<script>
+    const store9 = new Vuex.Store({
+
+        strict: true,
+
+        state: {
+            count1: 8
+        },
+
+        mutations: {
+            updateCount(state, newcount) {
+                state.count1 = newcount;
+            },
+        },
+    });
+
+    var a9 = new Vue({
+        el: '#a9',
+        store: store9,
+
+        computed: {
+            count1: {
+                get() {
+                    return this.$store.state.count1;
+                },
+                set(value) {
+                    this.$store.commit('updateCount', value);
+                },
+            },
+        },
+    });
+</script>
+
+</body>
+</html>

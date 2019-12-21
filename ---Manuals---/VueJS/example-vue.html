@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:v-bind='http://www.w3.org/1999/xhtml' xmlns:v-on='http://www.w3.org/1999/xhtml'>
+<head>
+  <meta charset='UTF-8'>
+  <title>Vue</title>
+  <script src='https://cdn.jsdelivr.net/npm/vue/dist/vue.js'></script>
+</head>
+<body style='padding-bottom: 200px'>
+
+
+<h1>Связывание с текстом</h1>
+
+<div id='a1'>
+  {{message1}}, {{message2}}, {{message3}}
+  <!--JS выражения-->
+  <p>
+    {{message3 + 1}}
+    {{message3.split('').reverse().join('')}}
+    {{message3 ? 'YES' : 'NO'}}
+  </p>
+</div>
+
+<script>
+    var a1 = new Vue({
+        el: '#a1',
+        data: {
+            message1: 'Привет1',
+            message2: 'Привет2',
+            message3: 'Привет3',
+        },
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Связывание с аттрибутами</h1>
+
+<div id='a2'>
+  <p
+      v-bind:title='title1'
+      v-bind:id='id1'
+      v-bind:class='message1'
+      v-bind:rel="'id1-' + 'message1'">
+    Аттрибуты смотри в коде. В rel - JS выражение
+  </p>
+
+  <p :title='title1' :id='id1' :class='message1' :rel="'id1-' + 'message1'">
+    сокращенная запись v-bind
+  </p>
+
+  <button v-bind:disabled='isVisible1'>Булевы аттрибуты</button>
+</div>
+
+<script>
+    var a2 = new Vue({
+        el: '#a2',
+        data: {
+            title1: 'title1',
+            id1: 'id1',
+            message1: 'message1',
+
+            isVisible1: true, //если true, то аттрибут disabled будет. если false(null, undefined), то аттрибута не будет
+        },
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Связь формы и текста</h1>
+
+<div id='a6'>
+  <input v-model='message1'>
+
+  <p>Тут будет обновляться: {{message1}}</p>
+  <p v-once>А тут только однократно (при загрузке): {{message1}}.
+    очень быстрая отрисовка.
+    нужна для статического контента</p>
+
+  А тут как html-верстка:
+  <p v-html='message1'></p>
+</div>
+
+<script>
+    var a6 = new Vue({
+        el: '#a6',
+        data: {
+            message1: 'Привет1',
+        },
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Создать компонент (список)</h1>
+
+<ol id='a7'>
+  <component1
+      v-for='item1 in list1'
+      v-bind:list1='item1'
+      v-bind:key='item1.id1'>
+  </component1>
+</ol>
+
+<script>
+    Vue.component('component1', {
+        props: ['list1'],
+        template: '<li>{{list1.text1}}</li>'
+    });
+
+    var a7 = new Vue({
+        el: '#a7',
+        data: {
+            list1: [
+                {id1: 1, text1: 'Пункт1'},
+                {id1: 2, text1: 'Пункт2'},
+                {id1: 3, text1: 'Пункт3'},
+            ],
+        },
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Создать экземпляр Vue</h1>
+
+<div id='a8'></div>
+
+<script>
+
+    //данные
+    var data1 = {
+        a: 0,
+        b: 1,
+        c: '',
+        d: false,
+        e: [],
+        f: null,
+    };
+
+    //стартуем
+    var a8 = new Vue({
+        el: '#a8',
+        data: data1,
+        //хук 'created'
+        created: function () {
+            // console.log('Значение a: ' + this.a);
+        },
+    });
+
+    //корневой элемент
+    //console.log(a8.$el);
+
+    //все данные
+    //console.log(a8.$data);
+
+    //изменение
+    a8.a = 11;
+    //console.log(a8.a);
+
+    //колбек при изменении (лучше использовать вычисляемые свойства)
+    a8.$watch('a', function (newValue, oldValue) {
+        console.log(oldValue);
+        console.log(newValue);
+    });
+
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Вычисляемые свойства</h1>
+
+<div id='a9'>
+  <p>Исходное сообщение: {{message1}}</p>
+  <p>Вычисляемое сообщение: {{reversedMessage1}}</p>
+  <p>Вычисляемое сообщение: {{reversedMessage2}}</p>
+
+  <p>Вычисляемое сообщение(не кешируемое): {{reverseMessage3()}}</p>
+</div>
+
+<script>
+    var a9 = new Vue({
+        el: '#a9',
+        data: {
+            message1: 'Привет1',
+        },
+
+        computed: {
+            reversedMessage1: function () {
+                return this.message1.split('').reverse().join('');
+            },
+            reversedMessage2: function () {
+                return this.reversedMessage1 + '1';
+            },
+        },
+
+        methods: {
+            reverseMessage3: function () {
+                return this.message1 + '2';
+            },
+        },
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Сеттеры на вычисляемые свойства</h1>
+
+<div id='a11'>{{fullName}}</div>
+
+<script>
+    var a11 = new Vue({
+        el: '#a11',
+        data: {
+            firstName: 'First',
+            lastName: 'Last',
+        },
+        computed: {
+            fullName: {
+                //геттер
+                get: function () {
+                    return this.firstName + ' ' + this.lastName;
+                },
+                //сеттер
+                set: function (newValue) {
+                    var names = newValue.split(' ');
+                    this.firstName = names[0];
+                    this.lastName = names[names.length - 1];
+                },
+            },
+        },
+    });
+</script>
+
+<!--теперь записи
+a11.firstName = 'aaa';
+a11.lastName = 'bbb';
+как обычно изменяют a11.fullName, и делают его равным 'aaa bbb'
+
+но и запись a11.fullName = 'ccc vvv';
+вызовет сеттер и изменит a11.firstName и a11.lastName, и они станут ccc и vvv
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Коллбэк в $watch</h1>
+
+<!--(лучше использовать вычисляемые свойства)-->
+
+<div id='a10'>{{fullName}}</div>
+
+<script>
+    var a10 = new Vue({
+        el: '#a10',
+        data: {
+            firstName: 'First',
+            lastName: 'Last',
+            fullName: 'First Last',
+        },
+        watch: {
+            firstName: function (val) {
+                this.fullName = val + ' ' + this.lastName;
+            },
+            lastName: function (val) {
+                this.fullName = this.firstName + ' ' + val;
+            },
+        },
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Методы-наблюдатели</h1>
+
+<!--для дорогих или асинхронных операций, для вызовов API-->
+
+<div id='a12'>
+  <p>Задайте вопрос</p>
+  <input v-model='question1'>
+  <p>{{answer1}}</p>
+</div>
+
+<script>
+    var a12 = new Vue({
+        el: '#a12',
+
+        data: {
+            question1: '',
+            answer1: 'Жду вопрос',
+        },
+
+        watch: {
+            //эта функция запускается при любом изменении в поле question1
+            question1: function (newQuestion, oldQuestion) {
+                this.answer1 = 'Ожидаю, когда вы закончите печатать';
+                this.debouncedGetAnswer();
+            },
+        },
+
+        created: function () {
+            this.debouncedGetAnswer = this.getAnswer;
+        },
+
+        methods: {
+            getAnswer: function () {
+
+                if (this.question1.indexOf('?') === -1) {
+                    this.answer1 = 'Поставьте в конце "?"';
+                    return;
+                }
+
+                this.answer1 = 'Думаю...';
+                var vm = this;
+
+                setTimeout(function () {
+                    vm.answer1 = 'Ответ 1';
+                }, 1500);
+
+                // axios.get('https://yesno.wtf/api')
+                //     .then(function (response) {
+                //         vm.answer1 = response.data.answer;
+                //     })
+                //     .catch(function (error) {
+                //         vm.answer1 = 'Не могу связаться с API. ' + error;
+                //     });
+            },
+        },
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Связывание CSS классов и стилей</h1>
+
+<div id='a13'>
+  <div v-bind:class='{myclass1: isActive1}'>один класс</div>
+  <div v-bind:class='{myclass1: isActive1, myclass2: isActive2 }'>много классов</div>
+  <div v-bind:class='{myclass1: isActive1, myclass2: isActive2 }' class='static_class'>
+    много классов + обычный аттрибут class
+  </div>
+
+  <div v-bind:class='isActive3'>класс как объект</div>
+  <div v-bind:class='isActive4'>класс как вычисляемый объект</div>
+
+  <div v-bind:class='[myclass5, myclass6, myclass7 ? "myclass7_7" : ""]'>массив классов, условия вывода</div>
+  <div v-bind:class='[myclass5, myclass6, {myclass7_7: myclass7}]'>массив классов, условия вывода, другая запись</div>
+
+  <div v-bind:style='{color: color1, fontSize: font1 + "px" }'>связывание инлайн-стилей</div>
+  <div v-bind:style='style1'>инлайн-стили как объект</div>
+  <div v-bind:style='style2'>инлайн-стили как вычисляемый объект</div>
+
+  <div v-bind:style='[style3, style4]'>массив объектов стилей</div>
+</div>
+
+<script>
+    var a13 = new Vue({
+        el: '#a13',
+        data: {
+            //один класс, много классов
+            isActive1: true,
+            isActive2: true,
+
+            //класс как объект
+            isActive3: {
+                myclass3: true,
+                'text-danger3': true,
+            },
+
+            //массив классов, условия вывода
+            myclass5: 'myclass5_5',
+            myclass6: 'myclass6_6',
+            myclass7: true,
+
+            //связывание инлайн-стилей
+            color1: 'red',
+            font1: 20,
+
+            //инлайн-стили как объект
+            style1: {
+                color: 'green',
+                fontSize: '10px',
+            },
+
+            //массив объектов стилей
+            style3: {
+                color: 'aqua',
+            },
+            style4: {
+                fontSize: '16px',
+            },
+        },
+
+        computed: {
+            //класс как вычисляемый объект
+            isActive4: function () {
+                return {
+                    myclass4: this.isActive1 && this.isActive2,
+                    'text-danger4': this.isActive3.myclass3,
+                };
+            },
+            //инлайн-стили как вычисляемый объект
+            style2: function () {
+                return {
+                    color: 'blue',
+                    fontSize: '20px',
+                };
+            },
+        },
+    });
+</script>
+
+<!--
+меняем
+a13.isActive1=true;
+a13.isActive1=false;
+a13.isActive2=true;
+a13.isActive2=false;
+и классы у элемента появляются или пропадают
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Условная отрисовка и видимость</h1>
+
+<div id='a14'>
+  <p v-if='param1'>один блок</p>
+
+  <template v-if='param2'>
+    группа блоков
+    <p>блок1</p>
+    <p>блок2</p>
+  </template>
+
+  <div v-if='Math.random() > 0.5'>блок if</div>
+  <div v-else>блок else</div>
+
+  <div v-if='Math.random() > 0.5'>блок if</div>
+  <div v-else-if='Math.random() > 0.5'>блок v-else-if</div>
+  <div v-else-if='Math.random() > 0.5'>второй блок v-else-if</div>
+  <div v-else>блок else</div>
+
+  <!--переиспользование элементов. тут введенное в input значение остается при переключении-->
+  <template v-if='loginType === "username"'>
+    <label>Имя</label>
+    <input placeholder='Имя'>
+  </template>
+  <template v-else>
+    <label>Почта</label>
+    <input placeholder='Почта'>
+  </template>
+
+  <!--укажем уникальные key для input, чтобы элементы полностью заменялись при переключении. теперь введенное в input значение пустое-->
+  <template v-if='loginType === "username"'>
+    <label>Имя</label>
+    <input placeholder='Имя' key='username'>
+  </template>
+  <template v-else>
+    <label>Почта</label>
+    <input placeholder='Почта' key='email'>
+  </template>
+
+  <p v-show='param3'>блок v-show</p>
+
+  <p v-if='param4.length'>для массива проверка на длину</p>
+
+</div>
+
+<script>
+    var a14 = new Vue({
+        el: '#a14',
+        data: {
+            param1: true,
+            param2: true,
+
+            loginType: '',
+
+            param3: true,
+
+            param4: []
+        },
+    });
+</script>
+
+<!--
+меняем
+a14.param1=true;
+a14.param1=false;
+и элемент полностью удаляется или появляется, на странице
+
+меняем
+a14.param3=true;
+a14.param3=false;
+и элемент появляется или скрывается, через display none или block
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Вывод списков</h1>
+
+<ul id='a15'>
+
+  <!--внутри цикла доступны родительские свойства-->
+  <li v-for='item1 in list1'>
+    {{item1.text1}} | {{parentMessage}}
+  </li>
+
+  <!--индекс текущего элемента-->
+  <li v-for='(item1, index1) in list1'>
+    {{item1.text1}} | индекс {{index1}}
+  </li>
+
+  <!--цикл по объекту, по свойствам-->
+  <li v-for='item1 in object1'>
+    {{item1}}
+  </li>
+
+  <!--цикл по объекту, с ключами и индексами свойств-->
+  <div v-for='(item1, key1, index1) in object1'>
+    {{item1}} | {{key1}} | {{index1}}
+  </div>
+
+  <!--key (сокращенно :key='item1.id') нужен для вывода с обновлением с отслеживанием идентичности элементов-->
+  <li v-for='item1 in list2' v-bind:key='item1.id'>
+    {{item1.text1}}
+  </li>
+
+  <!--вывод числового диапазона-->
+  <li v-for='number in 5'>
+    {{number}}
+  </li>
+
+  <!--template обёртка, для вывода нескольких тегов в цикле-->
+  <template v-for='item1 in list1'>
+    <p>1-{{ item1.text1 }}</p>
+    <p>2-{{ item1.text1 }}</p>
+  </template>
+
+  <!--вывод массива с if, для показа только некоторых элементов-->
+  <li v-for='item1 in list2' v-if='item1.id > 1'>
+    {{item1.text1}}
+  </li>
+</ul>
+
+<script>
+    var a15 = new Vue({
+        el: '#a15',
+        data: {
+            //список
+            list1: [
+                {text1: 'Пункт1'},
+                {text1: 'Пункт2'},
+                {text1: 'Пункт3'},
+            ],
+
+            //родительское свойство
+            parentMessage: 'родительское свойство',
+
+            //объект
+            object1: {
+                firstName: 'Иван',
+                lastName: 'Петров',
+                age: 30,
+            },
+
+            //список с id, для key
+            list2: [
+                {text1: 'Пункт11', id: 1},
+                {text1: 'Пункт22', id: 2},
+                {text1: 'Пункт33', id: 3},
+            ],
+        },
+    });
+</script>
+
+<!--добавить элемент в список a15.list1.push({text1: 'Пункт4'})-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Обработка событий</h1>
+
+<div id='a16'>
+
+  <!--через метод-->
+  <p>
+    {{message1}}
+    <button v-on:click='method1'>Перевернуть сообщение</button>
+    <button @click='method1'>Сокращенная запись v-on</button>
+  </p>
+
+  <!--через свойство-->
+  <button v-on:click='counter1 += 1'>
+    Кнопка нажата {{counter1}} раз
+  </button>
+
+  <button v-on:click='method2'>this и event</button>
+
+  <!--через js-выражения-->
+  <button v-on:click='method3("hi")'>Скажи hi</button>
+  <button v-on:click='method3("what")'>Скажи what</button>
+
+  <!--через js-выражения, с передачей DOM события-->
+  <button v-on:click='method4("what", $event)'>с передачей DOM события</button>
+  <br><br>
+
+  <!--модификаторы клавиш-->
+  <input v-on:keyup.13='method5' placeholder='Enter через код'>
+  <input v-on:keyup.enter='method5' placeholder='Enter через псевдоним'>
+
+  <!--создаем свои модификаторы клавиш-->
+  <input v-on:keyup.v='method5' placeholder='клавиша v'>
+
+  <!--основные системные модификаторы клавиш в kebab-case-->
+  <input v-on:keyup.page-down='method5' placeholder='клавиша PageDown'>
+
+  <!--сочетания клавиш-->
+  <input v-on:keyup.alt.67='method5' placeholder='Alt+C'>
+  <input v-on:click.ctrl='method5' placeholder='Ctrl+Click'>
+
+  <!--мышь-->
+  <input v-on:click.left='method5' placeholder='Click'>
+  <input v-on:click.right='method5' placeholder='правый Click'>
+  <input v-on:click.middle='method5' placeholder='средний Click'>
+
+  <!--строгость-->
+  <input v-on:click.ctrl.exact='method5' placeholder='ТОЛЬКО Ctrl+Click'>
+  <input v-on:click.exact='method5' placeholder='ТОЛЬКО Click'>
+
+</div>
+
+<script>
+    var a16 = new Vue({
+        el: '#a16',
+        data: {
+            message1: 'Привет1',
+            counter1: 0,
+        },
+
+        methods: {
+            method1: function () {
+                this.message1 = this.message1.split('').reverse().join('');
+            },
+            method2: function (event1) {
+                alert(this.message1); //this - экземпляр Vue
+                alert(event1.target.tagName); //event1 - нативное событие DOM
+                console.debug(event1);
+            },
+            method3: function (message3) {
+                alert(message3);
+            },
+            method4: function (message4, event1) {
+                alert(message4);
+                console.debug(event1);
+            },
+            method5: function (event1) {
+                alert(event1.key);
+                console.debug(event1);
+            },
+        },
+    });
+
+    //создаем свои модификаторы клавиш
+    Vue.config.keyCodes = {
+        v: 86,
+    };
+</script>
+
+<!--
+a16.method1(); нажмет на кнопку
+a16.method2(); вызовет алерт
+
+method2 и method4 одинаковы по части event
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Работа с формами</h1>
+
+<div id='a17'>
+
+  <!--текст-->
+  <input v-model='message1'>
+  <p>{{message1}}</p>
+
+  <!--многострочный текст-->
+  <textarea v-model='message2'></textarea>
+  <p>{{message2}}</p>
+
+  <!--чекбокс-->
+  <p><input type='checkbox' v-model='checked1'>{{checked1}}</p>
+  <!--установка и снятие
+  a17.checked1=true;
+  a17.checked1=false;
+  после выбора мышкой, a17.checked1 будет равен true или false
+  -->
+
+  <!--список чекбоксов-->
+  <input type='checkbox' value='Джек' v-model='checked2'>Джек
+  <input type='checkbox' value='Джон' v-model='checked2'>Джон
+  <p>Отмеченные: {{checked2}}</p>
+  <!--установка и снятие
+  a17.checked2 = ['Джек'];
+  a17.checked2 = ['Джек', 'Джон'];
+  после выбора мышкой, a17.checked2 будет равен ['Джек'] или ['Джек', 'Джон']
+  -->
+
+  <!--радиокнопки-->
+  <input type='radio' value='Один' v-model='radio1'>Один
+  <input type='radio' value='Два' v-model='radio1'>Два
+  <p>Выбрано: {{radio1}}</p>
+  <!--выбор
+  a17.radio1 = 'Один';
+  a17.radio1 = 'Два';
+  после выбора мышкой, a17.radio1 будет равен 'Один' или 'Два'
+  -->
+
+  <!--селект, 1 выбор-->
+  <select v-model='select1'>
+    <option disabled value=''>Выберите</option>
+    <option>Пункт1</option>
+    <option>Пункт2</option>
+    <option>Пункт3</option>
+  </select>
+  <p>Выбрано: {{select1}}</p>
+  <!--выбор
+  a17.select1 = 'Пункт1';
+  после выбора мышкой, a17.select1 будет равен 'Пункт1' или другому выбранному пункту
+  -->
+
+  <!--селект, множественный выбор-->
+  <select v-model='select2' multiple>
+    <option>Пункт1</option>
+    <option>Пункт2</option>
+    <option>Пункт3</option>
+  </select>
+  <p>Выбрано: {{select2}}</p>
+  <!--выбор
+  a17.select2 = ['Пункт1'];
+  a17.select2 = ['Пункт1', 'Пункт2'];
+  после выбора мышкой, a17.select2 будет равен ['Пункт1'] или ['Пункт1', 'Пункт2']
+  -->
+
+  <!--селект, вывод через v-for-->
+  <select v-model='select3'>
+    <option
+        v-for='option1 in options1'
+        v-bind:value='option1.value1'>
+      {{option1.text1}}
+    </option>
+  </select>
+  <p>Выбрано: {{select3}}</p>
+
+  <!--чекбокс, который при переключении меняет строковые данные, а не true и false-->
+  <input type='checkbox' v-model='checked3' true-value='да' false-value='нет'>{{checked3}}
+  <!--установка и снятие
+  a17.checked3='да';
+  a17.checked3='нет';
+  после выбора мышкой, a17.checked3 будет равен 'да' или 'нет'
+  -->
+
+  <!--радиобуттон, при клике на который, его значением становится другое динамическое свойство-->
+  <input type='radio' v-model='radio2' v-bind:value='radio3'>{{radio2}}
+  <!--выбор
+  a17.radio2 = "123"
+
+  до клика было
+  a17.radio2 == ""
+  a17.radio3 == "123"
+  после клика стало
+  a17.radio2 == "123"
+  a17.radio3 == "123"
+  -->
+
+  <select v-model='select4'>
+    <option v-bind:value='{number: 123}'>Пункт1</option>
+    <option v-bind:value='{number: 456}'>Пункт2</option>
+    <option v-bind:value='{number: 789}'>Пункт3</option>
+    <option v-bind:value='{number: 789, aaa: 3}'>Пункт4</option>
+  </select>
+  <!--
+  a17.select4 объект со свойствами
+  typeof a17.select4 //'object'
+
+  после выбора мышкой, a17.select4.number будет равен 123 или 456 или 789
+  при выборе 'Пункт4', a17.select4.aaa равно 3
+  -->
+
+  <!--модификаторы-->
+
+  <!--по-умолчанию синхронизация по событию input(во время набора). сделаем синхронизацию по событию change(после потери фокуса)-->
+  <p><input v-model.lazy='message3'>{{message3}}</p>
+
+  <!--приведение значения к числу. a17.message4 будет не строка '1111' а число 1111-->
+  <input v-model.number='message4' type='number'>
+
+  <!--обрезать пробелы в начале и конце строки-->
+  <input v-model.trim='message5'>
+</div>
+
+<script>
+    var a17 = new Vue({
+        el: '#a17',
+        data: {
+            message1: 'Привет1',
+            message2: 'Привет2',
+            checked1: true,
+            checked2: [],
+            radio1: '',
+            select1: '',
+            select2: [],
+
+            //селект, вывод через v-for
+            select3: 'Б', // начальная установка, что будет выбрано
+            options1: [
+                {text1: 'Один', value1: 'А'},
+                {text1: 'Два', value1: 'Б'},
+                {text1: 'Три', value1: 'В'}
+            ],
+
+            checked3: 'да',
+
+            radio2: '',
+            radio3: '123',
+
+            select4: '',
+
+            message3: 'Привет3',
+            message4: '',
+            message5: '',
+        },
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Основы компонентов</h1>
+
+<div id='a18'>
+
+  <p>компонент button1 (с данными внутри)</p>
+  <button1></button1>
+  <button1></button1>
+  <button1></button1>
+
+  <p>компонент blogpost1 (передали параметры статически)</p>
+  <blogpost1 title1='Заголовок1' content1='Контент1'></blogpost1>
+  <blogpost1 title1='Заголовок2' content1='Контент2'></blogpost1>
+  <blogpost1 title1='Заголовок3' content1='Контент3'></blogpost1>
+
+  <p>компонент blogpost2 (с данными из родителя)</p>
+  <blogpost2
+      v-for='post2 in posts1'
+      v-bind:key='post2.id'
+
+      v-bind:post3='post2'
+      v-bind:a1='post2.title'
+      v-bind:a2='post2.title'
+  ></blogpost2>
+  <!--
+  v-bind:post3='post2' - это передали объект поста целиком, чтобы в компоненте выводить как поля {{post3.id}}, {{post3.title}}
+  v-bind:a1='post2.title' - это так можно передавать по отдельности свойства поста, и выводить как {{a1}}, {{a2}}
+
+  Итого именование:
+  массив данных как posts1
+  в теге как v-for post2 in posts1
+  в компонент передаем как v-bind:post3='post2'
+  и внутри компонента уже {{post3.title}} итд
+
+  v-bind:post3, v-bind:a1, v-bind:a2 - передали параметры динамически
+
+  v-bind:a3='42' - передать число
+  v-bind:a4='false' - передать булево (если просто v-bind:a4 то это true)
+  v-bind:a5='[1,2,3]' - передать массив
+  v-bind:a6='{name: "name1", company: "company"}' - передать объект. (в v-bind:post3='post2' тоже передали объект)
+  -->
+
+  <p>компонент blogpost3 (отправка события потомки->один родитель)</p>
+  <div v-bind:style='{fontSize: blogpost33 + "px"}'>
+    <blogpost3
+        v-for='post in posts1'
+        v-bind:key='post.id'
+        v-bind:post='post'
+        v-on:method3='blogpost33 += 1'
+    ></blogpost3>
+  </div>
+
+  <p>компонент blogpost4 (отправка события+данные, потомки->один родитель)</p>
+  <div v-bind:style='{fontSize: blogpost44 + "px"}'>
+    <blogpost4
+        v-for='post in posts1'
+        v-bind:key='post.id'
+        v-bind:post='post'
+
+        v-on:method4='blogpost44 += $event'
+        v-on:method100='method200'
+    ></blogpost4>
+  </div>
+
+  <!--слот-->
+  <p>слот</p>
+  <slot1>Слот</slot1>
+
+  <p>правильная вложенность тега tratata, как tr, в table</p>
+  <table>
+    <tr
+        v-for='post2 in posts1'
+        v-bind:key='post2.id'
+        v-bind:post3='post2'
+        is='tratata'
+    ></tr>
+  </table>
+
+</div>
+
+<script>
+
+    //компонент button1
+    Vue.component('button1', {
+        data: function () {
+            return {
+                count1: 0,
+            };
+        },
+        template:
+            '<button v-on:click="count1++">Колво кликов {{count1}}</button>'
+    });
+
+    //компонент blogpost1
+    Vue.component('blogpost1', {
+        props: ['title1', 'content1'],
+        template:
+            '<div><h4>{{title1}}</h4><div>{{content1}}</div></div>',
+    });
+
+    //компонент blogpost2
+    Vue.component('blogpost2', {
+        props: ['post3', 'a1', 'a2'],
+        template:
+            '<div>{{post3.title}} | {{a1}}, {{a2}}</div>',
+    });
+
+    //компонент blogpost3
+    Vue.component('blogpost3', {
+        props: ['post'],
+        template:
+            '<div class="blog-post">' +
+            '<h4>{{post.title}}</h4><div>{{post.id}}</div>' +
+            '<button v-on:click="$emit(\'method3\')">Увеличить размер текста</button>' +
+            '</div>',
+    });
+
+    //компонент blogpost4
+    Vue.component('blogpost4', {
+        props: ['post'],
+        template:
+            '<div class="blog-post">' +
+            '<h4>{{post.title}}</h4><div>{{post.id}}</div>' +
+            '<button v-on:click="$emit(\'method4\', 10)">Увеличить на 10 (данные)</button><br>' +
+            '<button v-on:click="$emit(\'method100\' ,1)">Увеличить на 1 (через метод)</button>' +
+            '</div>',
+    });
+
+    //слот
+    Vue.component('slot1', {
+        template:
+            '<div class="demo-slot1">' +
+            '<strong>Шаблон</strong>+' +
+            '<slot></slot></div>'
+    });
+
+    //правильная вложенность тега tratata, как tr, в table
+    Vue.component('tratata', {
+        props: ['post3'],
+        template:
+            '<tr>' +
+            '<td>{{post3.id}}</td>' +
+            '<td>{{post3.title}}</td>' +
+            '</tr>',
+    });
+
+
+    var a18 = new Vue({
+        el: '#a18',
+
+        data: {
+
+            //компонент blogpost2
+            posts1: [
+                {id: 1, title: 'Запись1'},
+                {id: 2, title: 'Запись2'},
+                {id: 3, title: 'Запись3'},
+            ],
+
+            blogpost33: 10,
+            blogpost44: 15,
+        },
+
+        methods: {
+            //компонент blogpost4
+            method200: function (value) {
+                //value и есть $event
+                this.blogpost44 += value;
+            },
+        },
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Типизация и валидация в props</h1>
+
+<!--
+Именование:
+если в props postTitle
+то в template {{postTitle}}
+а в теге так <component1 post-title=''></component1>
+-->
+
+<script>
+    Vue.component('component2', {
+
+        props: {
+
+            title1: String,
+            likes1: Number,
+            isPublished1: Boolean,
+            commentIds1: Array,
+            author1: Object,
+
+            val1: Date,
+            val2: Function,
+            val3: Symbol,
+
+            //несколько допустимых типов
+            title2: [String, Number],
+
+            //значение строковое, и оно обязательно
+            title3: {
+                type: String,
+                required: true,
+            },
+
+            //значение число, и по-умолчанию 100
+            title4: {
+                type: Number,
+                default: 100,
+            },
+
+            //объект, со значениями по-умолчанию
+            title5: {
+                type: Object,
+                default: function () {
+                    return {
+                        message1: 'hello1',
+                        message2: 'hello2',
+                    };
+                },
+            },
+
+            //пользовательская функция валидации. значение должно быть, одно из массива
+            title6: {
+                validator: function (value) {
+                    return ['success', 'warning', 'danger'].indexOf(value) !== -1;
+                },
+            },
+
+            //type в props, может быть пользовательской функцией, валидация будет выполняться проверкой с помощью instanceof
+            author: Person1,
+
+        },
+
+        //отключить наследование аттрибутов
+        inheritAttrs: false,
+
+        template: '',
+    });
+
+    //type в props, может быть пользовательской функцией, валидация будет выполняться проверкой с помощью instanceof
+    function Person1(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Локальная регистрация компонентов</h1>
+
+<div id='a19'>
+  <component-a></component-a>
+  <component-b></component-b>
+</div>
+
+<script>
+
+    var ComponentA = {
+        template: '<div>ComponentA</div>',
+    };
+
+    var ComponentB = {
+        template: '<div>ComponentB</div>',
+    };
+
+    var a19 = new Vue({
+        el: '#a19',
+
+        components: {
+            'component-a': ComponentA,
+            'component-b': ComponentB,
+        },
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Поток данных родитель->потомок</h1>
+
+<div id='a20'>
+  <component1 counter0='100'></component1>
+</div>
+
+<script>
+
+    Vue.component('component1', {
+
+        props: ['counter0'],
+
+        //определим локальное свойство counter1, которое использует значение родительского входного параметра counter0, в качестве начального
+        data: function () {
+            return {
+                counter1: this.counter0,
+            };
+        },
+
+        //определим вычисляемое локальное свойство counter2, которое использует значение родительского входного параметра counter0, в качестве начального
+        computed: {
+            counter2: function () {
+                return parseInt(this.counter0) + 10;
+            },
+        },
+
+        template: '<div>{{counter1}} | {{counter2}}</div>',
+    });
+
+    var a20 = new Vue({
+        el: '#a20'
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Настройка v-model у компонента</h1>
+
+<div id='a21'>
+  <component2 v-model='value_analog'></component2>
+</div>
+
+<script>
+
+    Vue.component('component2', {
+
+        model: {
+            prop: 'checked',
+            event: 'change',
+        },
+
+        props: {
+            checked: Boolean,
+        },
+
+        template: '<div><input type="checkbox" v-bind:checked="checked" ' +
+            'v-on:change="$emit(\'change\', $event.target.checked)">тратата</div>',
+    });
+
+    var a21 = new Vue({
+        el: '#a21',
+        data: {
+            value_analog: true,
+        },
+    });
+</script>
+
+<!--
+a21.value_analog = true
+a21.value_analog = false
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Поток данных родитель->потомок, и потомок->родитель. Модификатор .sync</h1>
+
+<div id='a22'>
+  <component3 v-bind.sync='doc'></component3>
+</div>
+
+<script>
+
+    Vue.component('component3', {
+        props: ['title'],
+        template:
+            '<button v-on:click="$emit(\'update:title\', \'newTitle\')">Изменить {{title}}</button>',
+    });
+
+    var a22 = new Vue({
+        el: '#a22',
+        data: {
+            doc: {
+                title: 'title1',
+            },
+        },
+    });
+</script>
+
+<!--
+a22.doc.title было "title1"
+нажали кнопку
+a22.doc.title стало "newTitle"
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Слоты</h1>
+
+<div id='a23'>
+
+  <component4 url='/profile'>Профиль</component4>
+
+  <!--вложенные слоты-->
+  <component4 url='/contact'>
+    <font-awesome-icon></font-awesome-icon>
+    Контакты
+  </component4>
+
+  <!--именованные слоты-->
+  <component5>
+    <template slot='header'><p>слот header</p></template>
+
+    <!--слот по-умолчанию. без имени. сюда упадет main-->
+    <p>слот по-умолчанию, main</p>
+
+    <template slot='footer'><p>слот footer</p></template>
+
+    <!--а можно и просто на теге юзать-->
+    <p slot='footer'>слот footer на обычном элементе</p>
+  </component5>
+
+  <!--контент по-умолчанию для слота-->
+  <component6>в этом компоненте что-то есть, контент по-умолчанию для слота - не вставляется</component6>
+  <component6></component6>
+
+  <!--слоты с ограниченной областью видимости-->
+  <component7>
+    <template slot-scope='props1'>
+      <p>username: {{props1.username}} | userage: {{props1.userage}}</p>
+    </template>
+  </component7>
+  <component8 v-bind:component8_data='component8_data'>
+    <li slot-scope='props2' class='user'>username: {{props2.username}}</li>
+  </component8>
+
+</div>
+
+<!--
+короче содержимое из тегов выше
+вставляется в компоненты ниже
+и это выводится на месте тегов выше
+-->
+
+<script>
+
+    Vue.component('component4', {
+        props: ['url'],
+        template: '<a v-bind:href="url" class="nav-link"><slot></slot></a>',
+    });
+
+    //вложенные слоты
+    Vue.component('FontAwesomeIcon', {
+        template: '<span>(иконка)<slot></slot></span>',
+    });
+
+    //именованные слоты
+    Vue.component('component5', {
+        template:
+            '<div class="container">' +
+            '<header><slot name="header"></slot></header>' +
+            '<main><slot></slot></main>' +
+            '<footer><slot name="footer"></slot></footer>' +
+            '</div>',
+    });
+
+    //контент по-умолчанию для слота
+    Vue.component('component6', {
+        template: '<div><slot>в этом компоненте ничего нет, контент по-умолчанию для слота - вставляется</slot></div>',
+    });
+
+    //слоты с ограниченной областью видимости
+    Vue.component('component7', {
+        template: '<div><slot username="Tom" userage="31"></slot></div>',
+    });
+    Vue.component('component8', {
+        props: ['component8_data'],
+        template: '<ul><slot v-for="user in component8_data" v-bind:username="user"></slot></ul>',
+    });
+
+    var a23 = new Vue({
+        el: '#a23',
+        data: {
+            component8_data: ['Tom', 'Sam', 'Bob']
+        }
+    });
+
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Асинхронный компонент</h1>
+
+<div id='a24'>
+  <component9></component9>
+</div>
+
+<script>
+    Vue.component('component9', function (resolve, reject) {
+        setTimeout(function () {
+            resolve({
+                template: '<div>Я асинхронный компонент</div>',
+            });
+        }, 1000);
+    });
+
+    var a24 = new Vue({
+        el: '#a24',
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Анимации</h1>
+
+<div id='a25'>
+
+  <button v-on:click='show1 = !show1'>Переключить</button>
+
+  <!--анимирование 1 элемента. CSS-переход-->
+  <transition name='myfade1'>
+    <div v-if='show1'>анимирование 1 элемента. CSS-переход</div>
+  </transition>
+
+  <!--тут кастомная длительность перехода-->
+  <transition name='myfade1' :duration='1000' appear>
+    <div v-if='show1'>тут кастомная длительность перехода</div>
+  </transition>
+
+  <!--тут v-show. плюс кастомная длительность начала и конца перехода. плюс первичная анимация при загрузке или F5-->
+  <transition name='myfade1' :duration='{enter: 100, leave: 8000}' appear>
+    <div v-show='show1'>v-show + кастомная длительность начала и конца перехода + первичная анимация</div>
+  </transition>
+
+  <!--CSS-анимация-->
+  <transition name='bounce'>
+    <p v-if='show1'>CSS-анимация</p>
+  </transition>
+
+  <!--пользовательские классы переходов. заюзаем либу animate.css-->
+  <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+  <transition
+      name='custom-classes-transition'
+      enter-active-class='animated tada'
+      leave-active-class='animated bounceOutRight'
+  >
+    <p v-if='show1'>пользовательские классы переходов</p>
+  </transition>
+  <!--
+  например берем либу animate.css
+  там свои классы надо навесить на элемент
+  берем классы enter-class, enter-active-class, enter-to-class, leave-class, leave-active-class, leave-to-class
+  и навешиваем
+  -->
+
+  <!--javascript-хуки-->
+  <transition
+      v-bind:css='false'
+      v-on:before-enter='beforeEnter'
+      v-on:enter='enter'
+      v-on:after-enter='afterEnter'
+      v-on:enter-cancelled='enterCancelled'
+      v-on:before-leave='beforeLeave'
+      v-on:leave='leave'
+      v-on:after-leave='afterLeave'
+      v-on:leave-cancelled='leaveCancelled'
+  >
+    <p v-if='show1'>javascript-хуки javascript-хуки javascript-хуки</p>
+  </transition>
+
+  <!--переходы между разными блоками (от блока списка, к блоку текста 'список пуст')-->
+  <transition>
+    <div v-if='list1.length > 0' key='key_for_list'>
+      <div v-for='item1 in list1' v-bind:key='item1.id'>
+        {{item1.text1}}
+      </div>
+    </div>
+
+    <div v-else key='key_for_list_empty'>
+      список пуст
+    </div>
+  </transition>
+  <!--
+  начинаем уменьшать список через
+  a25.list1.pop();
+  и всплывет надпись "ничего не найдено"
+
+  если блок списка и блок с мессагой - одинаковы (div), а не разные (например li и p), то блокам надо задать ключи key
+  -->
+
+  <!--переходы out-in и in-out -->
+  <transition name='fade2' mode='out-in'>
+    <div>
+      <button v-if='!show1' v-on:click='show1 = !show1'>on</button>
+      <button v-if='show1' v-on:click='show1 = !show1'>off</button>
+    </div>
+  </transition>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+<script>
+    var a25 = new Vue({
+        el: '#a25',
+
+        data: {
+
+            show1: true,
+
+            list1: [
+                {id1: 1, text1: 'Пункт1'},
+                {id1: 2, text1: 'Пункт2'},
+                {id1: 3, text1: 'Пункт3'},
+            ],
+        },
+
+        // javascript-хуки. заюзаем либу Velocity.js
+        methods: {
+
+            beforeEnter: function (el) {
+                console.log('beforeEnter');
+                el.style.opacity = 0;
+            },
+
+            enter: function (el, done) {
+                console.log('enter');
+                // done();
+                //если переход основан только на JavaScript, - обязателен коллбэк done();
+                Velocity(el, {opacity: 1, fontSize: '1.4em'}, {duration: 300});
+                Velocity(el, {fontSize: '1em'}, {complete: done});
+            },
+
+            afterEnter: function (el) {
+                console.log('afterEnter');
+            },
+
+            enterCancelled: function (el) {
+                console.log('enterCancelled');
+            },
+
+            beforeLeave: function (el) {
+                console.log('beforeLeave');
+            },
+
+            leave: function (el, done) {
+                console.log('leave');
+                // done();
+                //если переход основан только на JavaScript, - обязателен коллбэк done();
+                Velocity(el, {translateX: '15px', rotateZ: '50deg'}, {duration: 600});
+                Velocity(el, {rotateZ: '100deg'}, {loop: 2});
+                Velocity(el, {
+                    rotateZ: '45deg',
+                    translateY: '30px',
+                    translateX: '30px',
+                    opacity: 0
+                }, {complete: done});
+            },
+
+            afterLeave: function (el) {
+                console.log('afterLeave');
+            },
+
+            leaveCancelled: function (el) {
+                console.log('leaveCancelled');
+            },
+        },
+
+    });
+</script>
+
+<style>
+  /*классы CSS переходов*/
+  .myfade1-enter, .myfade1-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+
+  .myfade1-enter-active, .myfade1-leave-active {
+    transition: opacity .5s;
+  }
+
+  /*CSS-анимация*/
+  .bounce-enter-active {
+    animation: bounce-in .5s;
+  }
+
+  .bounce-leave-active {
+    animation: bounce-in .5s reverse;
+  }
+
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+</style>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Анимирование переходов между состояниями</h1>
+
+<div id='a26'>
+  <!--анимация чисел с помощью наблюдателей-->
+  <input v-model.number='number1' type='number' step='20'>
+  <p>{{animatedNumber}}</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+
+<script>
+    var a26 = new Vue({
+        el: '#a26',
+
+        data: {
+            number1: 0,
+            tweenedNumber: 0,
+        },
+
+        computed: {
+            animatedNumber: function () {
+                return this.tweenedNumber.toFixed(0);
+            },
+        },
+
+        watch: {
+            number1: function (newValue) {
+                TweenLite.to(this.$data, 0.5, {tweenedNumber: newValue});
+            },
+        },
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Примеси(mixins)</h1>
+
+<div id='a27'></div>
+
+<script>
+
+    //примесь
+    var myMixin1 = {
+
+        //хук
+        created: function () {
+            this.hello();
+            console.log('хук created из примеси');
+        },
+
+        //методы
+        methods: {
+            hello: function () {
+                console.log('метод hello() из примеси');
+            },
+        },
+
+        //данные
+        data: function () {
+            return {
+                message: 'свойство message из примеси',
+                foo: 'свойство foo из примеси',
+            };
+        },
+    };
+
+    //компонент
+    var Component = Vue.extend({
+        mixins: [myMixin1],
+
+        //хук
+        created: function () {
+            console.log(this.$data);
+            console.log('хук created из компонента');
+        },
+
+        //данные
+        data: function () {
+            return {
+                message: 'свойство message из компонента',
+                bar: 'свойство bar из компонента',
+            };
+        },
+    });
+
+    var a27 = new Vue({
+        el: '#a27',
+    });
+</script>
+
+<!--
+вбиваем
+var component = new Component();
+и получаем:
+
+"метод hello() из примеси"
+"хук created из примеси"
+"свойство bar из компонента", "свойство foo из примеси", "свойство message из компонента"
+"хук created из компонента"
+Когда методы с одинаковыми названиями - метод из компонента заменит метод из примеси
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Пользовательские директивы</h1>
+
+<div id='a28'>
+  <input v-focus1>
+  <input v-focus2:foo1.a1.b1='message1'>
+  <div v-focus3='{color:1, text:2}'></div>
+</div>
+
+<script>
+
+    //создам директиву v-focus1 (глобально)
+    Vue.directive('focus1', {
+        inserted: function (el) {
+            el.focus();
+        },
+    });
+
+    //хуки директив
+    Vue.directive('focus2', {
+        bind: function (el, binding, vnode) {
+            console.log('хук bind');
+            console.log(binding);
+            console.log(vnode);
+        },
+        inserted: function (el) {
+            console.log('хук inserted');
+        },
+        update: function (el) {
+            console.log('хук update');
+        },
+        componentUpdate: function (el) {
+            console.log('хук componentUpdate');
+        },
+        unbind: function (el) {
+            console.log('unbind');
+        },
+    });
+
+    //когда на директиве нужно одинаковое поведение на bind и update, а остальные хуки не нужны
+    Vue.directive('focus3', function (el, binding) {
+        el.style.backgroundColor = binding.value;
+
+        //заодно смотрим как передать параметры в директиву
+        console.log(binding.value.color);
+        console.log(binding.value.text);
+    });
+
+    //регистрируем директиву локально, в компоненте
+    Vue.component('component10', {
+        directives: {
+            focus4: {
+                inserted: function (el) {
+                    el.focus();
+                },
+            },
+        },
+        template: '<input v-focus4>',
+    });
+
+
+    var a28 = new Vue({
+        el: '#a28',
+
+        data: {
+            message1: 'message1',
+        },
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Render-функции</h1>
+
+<div id='a29'>
+  <component11 :level="1">Hello world</component11>
+  <component12 :level="1">функциональный компонент</component12>
+</div>
+
+<script>
+
+    //компонент в котором шаблон переписан на рендер-функцию
+    Vue.component('component11', {
+
+        render: function (createElement) {
+            return createElement(
+                'h' + this.level,   //имя тега
+                this.$slots.default, //массив дочерних элементов
+                [
+                    'Какой-то текст',
+                    createElement('p', 'параграф'),
+                ]
+            )
+        },
+
+        props: {
+            level: {
+                type: Number,
+                required: true,
+            },
+        },
+
+    });
+
+    //функциональный компонент
+    Vue.component('component12', {
+
+        functional: true,
+
+        render: function (createElement, context) {
+            console.log(context);
+            return createElement(
+                'h' + context.props.level,
+                context.children
+            )
+        },
+
+        props: {
+            level: {
+                type: Number,
+                required: true,
+            },
+        },
+
+    });
+
+
+    var a29 = new Vue({
+        el: '#a29',
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Создание плагина</h1>
+
+<div id='a30'></div>
+
+<script>
+
+    const MyPlugin = {};
+
+    MyPlugin.install = function (Vue, options) {
+
+        //добавление глобального свойства
+        Vue.myGlobalProperty1 = function () {
+        };
+
+        //добавление глобального метода
+        Vue.myGlobalMethod1 = function () {
+        };
+
+        //добавление глобального объекта
+        Vue.directive('my-global-directive1', {
+            bind(el, binding, vnode, oldVnode) {
+            },
+        });
+
+        //добавление опций компонентов
+        Vue.mixin({
+            created: function () {
+            },
+        });
+
+        //добавление метода в экземпляр Vue
+        Vue.prototype.$myGlobalMethod1 = function (methodOptions) {
+        };
+    };
+
+    Vue.use(MyPlugin, {option1: true});
+
+    var a30 = new Vue({
+        el: '#a30',
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Фильтры</h1>
+
+<div id='a31'>
+
+  <!--применим фильтр filter_capitalize1, к message1-->
+  {{message1 | filter_capitalize1}}
+
+  <!--применим фильтр filter_capitalize1, к message1, и к аттрибуту id, используя v-bind-->
+  <component13
+      v-bind:id='message1 | filter_capitalize1'
+      v-bind:message1='message1'>
+  </component13>
+
+  <!--цепочки фильтров-->
+  {{message1 | filter_capitalize1 | filter2}}
+
+  <br>
+
+  <!--фильтр с параметрами-->
+  {{message1 | filter3('arg1', 'arg2')}}
+</div>
+
+<script>
+
+    //создание глобального фильтра
+    Vue.filter('filter_capitalize1', function (value) {
+        if (value) {
+            return value.toString().toUpperCase();
+        } else {
+            return '';
+        }
+    });
+
+    //создание локального фильтра внутри компонента
+    Vue.component('component13', {
+        props: ['message1'],
+        filters: {
+            filter_capitalize1: function (value) {
+                if (value) {
+                    return value.toString().toUpperCase();
+                } else {
+                    return '';
+                }
+            },
+        },
+        template: '<div>{{message1 | filter_capitalize1}}</div>',
+    });
+
+    //еще глобальный фильтр
+    Vue.filter('filter2', function (value) {
+        if (value) {
+            return value.toString().toUpperCase() + '_2';
+        } else {
+            return '';
+        }
+    });
+
+    //фильтр с параметрами
+    Vue.filter('filter3', function (value, arg1, arg2) {
+        if (value) {
+            return value.toString() + '_' + arg1 + '_' + arg2;
+        } else {
+            return '';
+        }
+    });
+
+    var a31 = new Vue({
+        el: '#a31',
+        data: {
+            message1: 'message1',
+        },
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Роутер</h1>
+
+<div id='a32'></div>
+
+<script>
+
+    const Home = {template: '<p>страница Home</p>'};
+    const About = {template: '<p>страница About</p>'};
+    const NotFound = {template: '<p>страница NotFound</p>'};
+
+    const routes = {
+        '/--VUE--/2.html': Home,
+        '/about': About,
+    };
+
+    var a32 = new Vue({
+        el: '#a32',
+
+        data: {
+            currentRoute: window.location.pathname
+        },
+
+        computed: {
+            ViewComponent() {
+                return routes[this.currentRoute] || NotFound
+            },
+        },
+
+        render(h) {
+            return h(this.ViewComponent);
+        },
+    })
+
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Контейнер состояния. Хранилище</h1>
+
+<div id='a33'></div>
+
+<script>
+
+    //1. Простейший "контейнер состояния"
+
+    //исходный объект data
+    const sourceOfTruth = {a: 1, b: 2};
+
+    //экземпляры Vue
+    const vmA = new Vue({data: sourceOfTruth});
+    const vmB = new Vue({data: sourceOfTruth});
+
+    /*
+    меняем объект data:
+    sourceOfTruth.a=100;
+    sourceOfTruth.b=200;
+
+    и видим что в экземплярах тоже меняется:
+    vmA.a //100
+    vmA.b //200
+    vmB.a //100
+    vmB.b //200
+    */
+
+    //2. Простое хранилище
+    var store = {
+
+        //данные
+        state: {
+            a: 3,
+        },
+
+        //методы работы с данными
+        setMessageAction(newValue) {
+            this.state.a = newValue;
+            console.log('setMessageAction() вызвано с ', newValue);
+        },
+        clearMessageAction() {
+            this.state.a = '';
+            console.log('clearMessageAction() вызвано');
+        },
+    };
+
+    //экземпляры Vue
+    var vmD = new Vue({
+        data: {
+            privateState: {a: 1},
+            sharedState: store.state,
+        },
+    });
+    var vmF = new Vue({
+        data: {
+            privateState: {a: 2},
+            sharedState: store.state,
+        },
+    });
+
+    /*
+    Приватные свойства экземпляров:
+    vmD.privateState.a //1
+    vmF.privateState.a //2
+
+    Хранилище
+    vmD.sharedState.a //3
+    vmF.sharedState.a //3
+
+    Теперь меняем store.state.a напрямую (так не надо):
+    store.state.a=111;
+    и видим что в экземплярах тоже меняется:
+    vmD.sharedState.a //111
+    vmF.sharedState.a //111
+
+    Теперь меняем store.state.a через метод (так надо):
+    store.setMessageAction(222);
+    и видим что в экземплярах тоже меняется:
+    vmD.sharedState.a //222
+    vmF.sharedState.a //222
+    */
+
+    var a33 = new Vue({
+        el: '#a33',
+    });
+</script>
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>О реактивности</h1>
+
+<div id='a34'></div>
+
+<script>
+    var a34 = new Vue({
+        el: '#a34',
+
+        data: {
+            //исходный объект
+            object1: {
+                a: 1,
+            },
+        },
+
+        methods: {
+
+            //добавим в объект object1, новое реактивное свойство
+            method1: function () {
+                this.$set(this.object1, 'c', 3);
+                //или так
+                Vue.set(a34.object1, 'd', 4);
+            },
+
+            //добавим в объект object1, несколько реактивных свойств
+            method2: function () {
+                this.object1 = Object.assign({}, this.object1, {cc: 33, dd: 44});
+            },
+        },
+    });
+
+    //добавим в объект object1, новое реактивное свойство
+    Vue.set(a34.object1, 'b', 2);
+
+    //добавим в объект object1, несколько реактивных свойств
+    a34.object1 = Object.assign({}, a34.object1, {aa: 11, bb: 22});
+
+</script>
+
+<!--
+в a34.object1 будет:
+a: 1
+aa: 11
+b: 2
+bb: 22
+
+потом вызываем метод a34.method1()
+
+и в a34.object1 будет:
+a: 1
+aa: 11
+b: 2
+bb: 22
+c: 3
+d: 4
+
+потом вызываем метод a34.method2()
+
+и в a34.object1 будет:
+a: 1
+aa: 11
+b: 2
+bb: 22
+c: 3
+cc: 33
+d: 4
+dd: 44
+-->
+
+<br>-----------------------------------------------------------------------------<br>
+
+<h1>Асинхронная очередь</h1>
+
+<div id='a35'>{{message}}</div>
+
+<script>
+    var a35 = new Vue({
+        el: '#a35',
+
+        data: {
+            message: '123'
+        },
+
+        methods: {
+            //а это тоже самое, только реализация внутри компонента
+            updateMessage: function () {
+                this.message = 'новое сообщение'; // изменяем данные
+                console.log(this.$el.textContent === 'новое сообщение'); // false. не обновлено
+                this.$nextTick(function () {
+                    console.log(this.$el.textContent === 'новое сообщение'); // true. обновлено
+                });
+            },
+        },
+
+    });
+
+    a35.message = 'новое сообщение'; // изменяем данные
+    console.log(a35.$el.textContent === 'новое сообщение'); // false. не обновлено
+    Vue.nextTick(function () {
+        console.log(a35.$el.textContent === 'новое сообщение'); // true. обновлено
+    });
+
+</script>
+
+<!--
+Если выполнить код a35.message = 'новое значение', то компонент не будет отрисован сразу.
+Он обновится в следующей итерации при разборе очереди.
+Иногда бывает нужно дождаться состояния, в которое DOM перейдёт после обновления.
+Чтобы выполнить какой-нибудь код после того, как завершится обновление DOM, можно передать коллбэк в метод Vue.nextTick(callback).
+Он будет вызван после обновления DOM.
+-->
+
+</body>
+</html>
