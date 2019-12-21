@@ -1,0 +1,73 @@
+Скрыть что-то
+.d-{sm,md,lg,xl}-none
+
+Тип тега блоковый строковый итд
+.d-{sm,md,lg,xl}-value: d-inline, d-none, d-block, d-table, d-flex
+---------------------------------------------------------------------------------------------------
+
+Размеры экрана
+xs, sm, md, lg, xl
+
+SM - базовый класс для манипуляций
+
+Extra small <576px
+Max container width: None (auto)
+Prefix: .col-
+
+Small ≥576px
+540px
+.col-sm-
+
+Medium ≥768px
+720px
+.col-md-
+
+Large ≥992px
+960px
+.col-lg-
+
+Extra large ≥1200px
+1140px
+.col-xl-
+
+Вертикальное выравнивание всех столбцов:
+<div class="row align-items-start">
+<div class="row align-items-center">
+<div class="row align-items-end">
+
+Вертикальное выравнивание по столбцово:
+<div class="col align-self-start">
+<div class="col align-self-center">
+<div class="col align-self-end">
+
+Горизонтальное выравнивание
+<div class="row justify-content-start">
+<div class="row justify-content-center">
+<div class="row justify-content-end">
+<div class="row justify-content-around">
+<div class="row justify-content-between">
+
+Удалить margin для rows, и padding для columns
+<div class="row no-gutters">
+
+Смещение столбцов
+.col-md-3 .offset-md-3
+.col-md-6 .offset-md-0
+.col-sm-5 .offset-sm-2
+
+Удаление столбцов друг от друга
+.ml-auto, .ml-md-auto, .mr-auto, col-auto
+
+Маргин и паддинг
+m - маргин
+p - паддинг
+t,b,l,r - стороны
+x - для left и right сразу
+y - для top и bottom сразу
+можно просто m или p - сразу для 4 сторон
+
+размеры от 0 до 5, и "auto" для "margin: 0px auto;" (например .mx-auto)
+
+примеры
+.mr-3, .mr-md-3, pr-3
+---------------------------------------------------------------------------------------------------

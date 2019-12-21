@@ -238,6 +238,10 @@ certbot certificates
 )
 ---------------------------------------------------------------------------------------------------
 
+Правила .htaccess
+
+.htaccess достаточно только в родительскую папку бросить, а не по всем подпапкам.
+
 Редирект с www на без www
 RewriteCond %{HTTP_HOST} ^www\.(.*)$
 RewriteRule ^(.*)$ http://%1/$1 [L,R=301]
@@ -248,9 +252,6 @@ find . -name .htaccess -print
 - применить
 find . -name .htaccess | xargs chmod 0644
 
-.htaccess достаточно только в родительскую папку бросить, а не по всем подпапкам.
-
-
 Права на файлы
 .htaccess - 644
 .htpasswd - 640
@@ -258,9 +259,62 @@ find . -name .htaccess | xargs chmod 0644
 конфиги config.php - 400
 для папок с загружаемыми ресурсами - 766 (если не заработало то 775)
 
-Запуск крона кажные 3 секунды
-*/1 * * * * php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3;
+#заблокировать доступ к .htaccess
+<Files .htaccess>
+ order allow,deny
+ deny from all
+</Files>
+
+Выполнение SSI-директив, не показывать содержимое папки, следовать символическим ссылкам)
+Options Includes -Indexes FollowSymLinks
+
+Ускорение времени загрузки за счет сжатия файлов:
+AddOutputFilterByType DEFLATE text/html #для сжатия HTML-файлов
+AddOutputFilterByType DEFLATE text/plain #для сжатия текстовых файлов
+AddOutputFilterByType DEFLATE application/javascript #сжать javascript
+
+Запретить добавление ссылок на изображения со сторонних ресурсов:
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?yourdomain.com [NC]
+RewriteRule \.(jpg|jpeg|png|gif)$ - [NC,F,L]
+
+Кэширование файлов:
+<FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf|js|css|pdf)$">
+Header set Cache-Control "max-age=2592000"
+</FilesMatch>
+
+Отключение кэширования для разных типов файлов:
+<FilesMatch ".(pl|php|cgi|spl|scgi|fcgi)$">
+Header unset Cache-Control
+</FilesMatch>
+---------------------------------------------------------------------------------------------------
 
 Проверка колва редиректов
+
 wget domain.com 2>&1 | grep Location
 https://a.pr-cy.ru/domain.com
+---------------------------------------------------------------------------------------------------
+
+Правила Cron
+
+Предотвращение двойного запуска задач
+*/1 * * * * php index.php >> index.log 2>&1 (2>&1 не даст)
+
+Посмотреть кроны
+crontab -l
+
+Запустить кроны
+service cron start
+
+Остановить кроны
+service cron stop
+
+Сам файл крон
+/var/spool/cron/root
+
+Правка крона
+crontab -e
+
+Запуск крона каждые 3 секунды
+*/1 * * * * php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3;
