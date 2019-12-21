@@ -16,138 +16,138 @@
 Сайт демонстрации и предзаказа деревянных моделей кораблей. Каталог моделей, страницы моделей, описание, фотографии, статичные страницы, формы заказа. Многоязычный интерфейс.
 http://lsmodel.ru
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/22.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/22.png)
 
 ###Магазин сантехники
 
 Доработка личного кабинета. Размещение на главной 3 товара-акции, доработка блока "Распродажа". Доработка категорий. Доработка меню. Доработка страницы покупки товара.
 http://santeh-shop.com.ua
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/20.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/20.png)
 
 ###Агрегатор отзывов
 
 Система отзывов на объекты по карте, в городах Москва и Санкт-Петербург. Оставление отзывов по 4м каналам: через Веб, QR-code, СМС, АТС. Создание объектов (название, описание, адрес, фотографии). Создание опроса (типы вопросов: одиночный выбор, множественный выбор, цифровая шкала, ответ текстом). Статистика по отзывам. Комментарии к отзывам. Создание и рассылка акций по пользователям системы.
 http://otzivchivo.ru
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/19.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/19.png)
 
 ###Каталог музыкальных исполнителей
 
 Сайт музыкального сообщества. На каждого артиста своя страница с фото, плейлист треков, подборка видео, биография, выборка последних постов с твиттера и фейсбука, данного артиста, последние новости цитаты и концерты. Создан на Kohana.
 http://albertaugustine.com
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/18.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/18.png)
 
 ###Проект для компании "Фотострана"
 
 Организация взаимодействия рекламных партнеров фотостраны. Контентные страницы: О проекте, Статистика, Возможности, Стоимость, Кейсы, FAQ, Контакты. Административная часть: работа с партнерами, кейсами, страницами, событиями. Создан на Kohana.
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/17.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/17.png)
 
 ###Гостиница-отель
 
 Доработка административной части сайта congresscomplex.ru. Создание мета-полей для сео-тегов, на каждой странице. Создание полей в админке и базе данных. Доработка редактора CKeditor. Движок кастомный. Фреймворк Codeigniter.
 http://congresscomplex.ru
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/16.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/16.png)
 
 ###Радио-поздравления на заказ
 
 Радио-подарки. Радио по заказу. Поздравления. Юбилеи. Тамада. Персонализированный радио-эфир с диджеем для вас и вашей вечеринки. Выбор плейлиста. Личный кабинет.
 http://radiopodarok.ru
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/14.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/14.png)
 
 ###Строительная компания Мир Домов
 
 Производитель-застройщик малоэтажного коттеджного строительства. Прайс-лист, услуги, главная, проектирование, производство, фотогаллереи, новости, блоки под яндекс-директ и баннеры.
 http://mirdomov.ru
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/13.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/13.png)
 
 ###Сеть автосервисов Колесо
 
 Сеть московских автосервисов. Выбор шин и дисков по производителю, размеру, автомобилю. Контентные страницы. Прайсы. Статьи. Техническая информация. Акции. Личный кабинет. Создан на базе shopScript.
 http://koleso.ru
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/12.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/12.png)
 
 ###Магазин сантехники Акварим
 
 Доработка админки, и страниц каталога и товара. Верстка сайта компании Акварим. Онлайн-магазин сантехники. Страницы каталога, спецпредложений, услуги, контакты, о компании, статичные страницы. Вертикальная выкладка товара.
 http://aquarome.ru
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/1.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/1.png)
 
 ###Плагин системы рерайта к блогу на Wordpress
 
 Плагин организующий систему работы с пулом сторонних рерайтеров, из админки блога. Суть работы: выбираются черновики блога, раздаются рерайтерам сгенерированные ссылки. Обработанный текст посылается на утверждение автору блога. Далее принимается положительное решение о качестве рерайта и утверждение его, с дальнейшей оплатой.
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/4.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/4.png)
 
 ###Система онлайн-заказа
 
 Организация корзины на онлайн-магазине, позволяющая положить товары в корзину, перейти на страницу заказов, поменять кол-во каждого товара, сразу посмотреть цену с пересчетом, заполнить контактную форму. После отправки заказа, информация о заказе появляется в админке сайта. Клиенту на почту уходит письмо с уведомлением.
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/15.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/15.png)
 
 ###Скрипт работы с яндекс-почтой
 
 Автоматический финдер-активатор-кликер ссылок (подтверждение регистраций, апрув всего чего угодно) на почтовых ящиках Яндекс. Проход по всем папкам (входящие, спам,...), открывание всех(или определенных) писем, нахождение определенной ссылки, клик, переход на страницу, определение результативности по открывшейся странице.
 https://mail.yandex.ru
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/11.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/11.png)
 
 ###Скрипт работы с биржей ссылок
 
 Автоматический загрузчик множества блогов в Liex. Настройка названия площадки, описания, настройка всех полей (инпутов, чекбоксов, радиобуттонов). Настройка ценовой политики (цена за ссылку за месяц/год/навсегда), указание тематик.
 http://liex.ru
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/10.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/10.png)
 
 ###Скрипт работы с wordpress-блогами
 
 Комплексный многопоточный авто-настройщик админок wordpress-блогов (блог-платфомы/standalone) на основе Selenium, с функциями генерации данных для полей. Настройка любых полей и вкладок, чекбоксов, радиобуттонов. Навигация по админке.
 https://wordpress.com
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/9.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/9.png)
 
 ###Скрипт снятия seo-параметров доменов
 
 Определения для множества доменов Google PR(тулбарный), кол-ва страниц в индексе, кол-во обратных ссылок, кол-во упоминаний домена в ruGoogle, comGoogle. Яндекс ТИЦ(тулбарный, каталожный), кол-во страниц в индексе, кол-во упоминаний домена в Яндекс. Определение на склейку(каталожная и тулбарная). Полный whois на домены.
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/8.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/8.png)
 
 ###Скрипт работы с Blogger, Wordpress, LiveJournal
 
 Система многопоточного автоматического постинга контента на указанные платформы. С возможностью добавления в пост рекламы, баннеров, простановка ката, автозалив картинок в блог. Автогенерация категории и тегов на основе статьи. Прокси. Без использования непосредственно админки блога, по протоколу xml-rpc. Написана как часть системы полуавтоматического постинга из админки, для веб-сервиса генерации контента.
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/7.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/7.png)
 
 ###Скрипт парсинга rss-каналов
 
 Автоматический парсинг указанных в базе RSS-каналов. Забор урла поста, заголовка, переход на страницу поста и забор полного тела статьи по указанным в базе селекторам. Запуск по крону. Автообновление. Контроль уникальности спарсенных статей. Прокси.
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/6.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/6.png)
 
 ###Скрипт загрузки картинок в Google Picasa
 
 Автоматический загрузчик картинок в аккаунт Picasa в указанный фотоальбом пользователя. Авторизация, определение типа и расширения картинки, выбор имени для картинки. Получение урла залитого изображения.
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/5.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/5.png)
 
 ###Скрипт парсера ютуб-сайтов
 
 Парсеры для 6 ютубо-подобных сайта: drtuber.com, hardsextube.com, overthumbs.com, pornerbros.com, pornoxo.com, pornper.com. Парсинг категорий, названий, описаний, длительности, тегов, embed-кода, урла роликов во всех категориях с поддержкой заданной глубины пагинации.
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/3.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/3.png)
 
 ###Скрипт чистки баз данных от спам-мусора
 
 Оперативная чистка MySQL баз данных после взлома, внедрения вредоносного кода, ссылок, мусора, нецензурного контента, и прочего. Автоматическая чистка по ключевым словам и словосочетаниям.
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/2.png)
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/2.png)
 
 
 
