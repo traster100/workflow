@@ -1,4 +1,4 @@
-# Навыки и инструменты
+# Портфолио
 - 10 лет опыта в программировании.
 - PHP, Kohana, CodeIgniter, Yii, Laravel.
 - MySQL, PDO, ORM.
@@ -8,6 +8,17 @@
 - HTML, CSS, JavaScript, jQuery, Bootstrap, Микроформаты.
 - написание сайтов, админок, консольных скриптов, парсеров, регалок, сабмиттеров, автопостеров.
 - Использую PhpStorm, Workbench, Open Server, HeidiSQL, Putty, Git.
+
+# Portfolio
+- 10 years of programming experience.
+- Backend: PHP, CodeIgniter, MySQL.
+- Frontend: HTML, CSS, jQuery, Bootstrap.
+- APIs: GoogleMaps, GoogleTranslate, YandexMaps, Facebook, Instagram, Telegram, Vk.
+- Projects: Shops, Catalogs, Admin Panels, Dashboards, Console Scripts.
+- Tools: PhpStorm, Workbench, HeidiSQL, Git.
+Working time: Monday - Friday, 10:00 - 18:00
+Timezone: Europe/Moscow UTC+3:00 MSK
+
 
 # Выполненные работы
 
