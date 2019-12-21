@@ -1,6 +1,8 @@
 <?php
 // An example of using php-webdriver.
 
+//Либа https://github.com/facebook/php-webdriver
+
 //в консоли запустить сервер
 //java -jar C:\YD\domains\selenium.loc\server\selenium-server-standalone.jar
 
@@ -31,13 +33,13 @@ print_r($cookies);
 
 // click the link 'About'
 $link = $driver->findElement(
-  WebDriverBy::id('menu_about')
+    WebDriverBy::id('menu_about')
 );
 $link->click();
 
 // wait until the page is loaded
 $driver->wait()->until(
-  WebDriverExpectedCondition::titleContains('About')
+    WebDriverExpectedCondition::titleContains('About')
 );
 
 // print the title of the current page
@@ -48,17 +50,17 @@ echo "The current URI is '" . $driver->getCurrentURL() . "'\n";
 
 // write 'php' in the search box
 $driver->findElement(WebDriverBy::id('q'))
-  ->sendKeys('php');
+    ->sendKeys('php');
 
 // submit the form
 $driver->findElement(WebDriverBy::id('submit'))
-  ->click(); // submit() does not work in Selenium 3 because of bug https://github.com/SeleniumHQ/selenium/issues/3398
+    ->click(); // submit() does not work in Selenium 3 because of bug https://github.com/SeleniumHQ/selenium/issues/3398
 
 // wait at most 10 seconds until at least one result is shown
 $driver->wait(10)->until(
-  WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
-    WebDriverBy::className('gsc-result')
-  )
+    WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
+        WebDriverBy::className('gsc-result')
+    )
 );
 
 // close the Firefox

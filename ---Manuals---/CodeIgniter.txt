@@ -47,6 +47,7 @@ $this->db->where_in('field', ['one', 'two']);
 $this->db->where_not_in('field', ['one', 'two']);
 
 $this->db->join('table2', 'table.id = table2.id');
+$this->db->join('table2', 'table.id = table2.id', 'left');
 
 $this->db->order_by('field');
 $this->db->order_by('field', 'DESC');
