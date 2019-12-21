@@ -1,5 +1,46 @@
+Операции с многобайтовыми строками
+
+Длинна строки в любой кодировке
+
+$a1 = 'абвгд';
+$a2 = 'abvgd';
+
+echo strlen($a1); // 10
+echo strlen($a2); // 5
+
+echo mb_strlen($a1); // 10
+echo mb_strlen($a2); // 5
+
+echo iconv_strlen($a1); // 10
+echo iconv_strlen($a2); // 5
+
+echo mb_strlen($a1, 'utf-8'); // 5
+echo mb_strlen($a2, 'utf-8'); // 5
+
+echo iconv_strlen($a1, 'utf-8'); // 5
+echo iconv_strlen($a2, 'utf-8'); // 5
+
+Вырезать кусок строки
+iconv_substr($login, 0, 29, 'UTF-8');
+
+Смена кодировки строки
+iconv('UTF-8', 'Windows-1251', $string);
+---------------------------------------------------------------------------------------------------
+
+Замена переводов строки ['\n', '\r', '\r\n'] на <br> в textarea
+
+- при сохранении в базу
+str_replace(PHP_EOL, '<br>', $text);
+
+- при выводе
+str_replace('<br>', PHP_EOL, $text);
+---------------------------------------------------------------------------------------------------
+
+Первая буква из строки UTF-8
+mb_substr($v->name, 0, 1);
+
 Урлы подключения js и css, со сбросом кеша. В параметр ставим время изменения файла
-?filemtime=filemtime(pathtifile)
+'?filemtime=filemtime(pathtofile)'
 ---------------------------------------------------------------------------------------------------
 
 Оператор Элвиса
@@ -15,26 +56,26 @@ $amount = round($amount + (($amount * 0.5) / 100), 0);
 ---------------------------------------------------------------------------------------------------
 
 TIMESTAMP из БД вывести в нужном формате
-date('d.m.Y H:i:s', strtotime($order->created));
-date('d.m.Y H:i:s', $order->created);
+date('d.m.Y H:i:s', strtotime($order->created))
+date('d.m.Y H:i:s', $order->created)
+
+Так вставит текущее время пхп date("Y-m-d H:i:s")
+А так вставит текущее время mysql $this->db->set('last_visit', 'NOW()', false)
 ---------------------------------------------------------------------------------------------------
 
-Вставка в базу времени "текущее время + 3 месяца"
+Вставка в базу времени 'текущее время + 3 месяца'
 
 1 метод. генерим время из php
-$validate_expired = new DateTime('+ 3 month');
-$validate_expired = $validate_expired->format('Y-m-d');
-$this->model_user->update(['validate_expired' => ($value == 0) ? $validate_expired : NULL], $id);
+$expired = new DateTime('+ 3 month');
+$this->model_user->update(['expired' => $expired->format('Y-m-d')], $id);
 
 2 метод. генерим время на стороне MYSQL
-$validate_expired = 'NOW() + INTERVAL 3 MONTH';
 $this->db->where('id', $id);
-if ($value == 0) {
-    $this->db->set('validate_expired', $validate_expired, false);
-} else {
-    $this->db->set('validate_expired', NULL);
-}
+$this->db->set('expired', 'NOW() + INTERVAL 3 MONTH', false);
 $this->db->update('users');
+
+3 метод
+DATE_ADD(NOW(), INTERVAL 2 HOUR) - вставит дату, прибавив 2 часа
 ---------------------------------------------------------------------------------------------------
 
 Онлайн на сайте
@@ -43,7 +84,7 @@ $this->db->update('users');
 в футере админки js скрипт раз в N минут обновляет время last_visit посылая post-ajax запрос
 
 отображение время последнего захода
-если now() > last_visit+5мин, то считаем что админ офлайн. и выводим время "бы в сети "now() - last_visit минут назад"
+если 'NOW() > last_visit + 5мин', то считаем что админ офлайн. и выводим время 'бы в сети "NOW() - last_visit минут назад'
 ---------------------------------------------------------------------------------------------------
 
 ИЗ МАССИВА ВЫБИРАЕМ IDs КАК МАССИВ
@@ -63,36 +104,38 @@ $schedules = [
   1 =>
     object(stdClass)[39]
       public 'users_id' => string '4'
-      public 'schedules_id' => string '1'
       public 'anytime' => string '1'
   2 =>
     object(stdClass)[40]
       public 'users_id' => string '4'
-      public 'schedules_id' => string '2'
       public 'anytime' => string '1'
 ];
 
 Найдем сумму по полю anytime:
-      array_reduce(
-        $schedules,
-        function ($total, $schedule) {
-          return $total + $schedule->anytime;
-        },
-        0);
+array_reduce(
+    $schedules,
+    function ($total, $schedule) {
+        return $total + $schedule->anytime;
+    },
+0);
 ---------------------------------------------------------------------------------------------------
 
 Защита от XSS
 
-htmlspecialchars - Преобразует специальные символы в HTML сущности.
-htmlentities - Преобразует все символы в HTML сущности. Идентична htmlspecialchars, но htmlentities преобразует все символы.
-htmlspecialchars_decode - Преобразует сущности HTML обратно в символы. Обратная к htmlspecialchars.
-html_entity_decode - Преобразует сущности HTML обратно в символы. Обратная к  htmlentities.
+1. Символы -> HTML-сущности ("&" в "&amp;" , "<" в "&lt;")
+htmlspecialchars - преобразует специальные символы
+htmlentities - преобразует все символы (флаг ENT_NOQUOTES)
+
+2. HTML-сущности -> символы ("&amp;" в "&" , "&lt;" в "<")
+htmlspecialchars_decode - обратная к htmlspecialchars
+html_entity_decode - обратная к  htmlentities (флаг ENT_NOQUOTES)
+
 strip_tags - Удаляет HTML теги.
 HTMLPurifier - библиотека безопастной очистки HTML.
 
 Стандарт защиты
 $name = strip_tags($_POST['name']);
-$name = htmlentities($_POST['name'], ENT_QUOTES, "UTF-8");
+$name = htmlentities($_POST['name'], ENT_QUOTES, "UTF-8"); // или флаг ENT_NOQUOTES?
 $name = htmlspecialchars($_POST['name'], ENT_QUOTES);
 ---------------------------------------------------------------------------------------------------
 
@@ -319,19 +362,6 @@ C:\YD\domains\test.loc\index3.php : A3
 A1\N : A1
 ---------------------------------------------------------------------------------------------------
 
-Замена переводов строки ['\n', '\r', '\r\n'] на <br> в textarea
-
-- при сохранении в базу
-str_replace(PHP_EOL, '<br>', $text);
-
-- при выводе
-str_replace('<br>', PHP_EOL, $text);
----------------------------------------------------------------------------------------------------
-
-Первая буква из строки UTF-8
-mb_substr($v->name, 0, 1);
----------------------------------------------------------------------------------------------------
-
 PDO
 
 Если в запрос не передаются переменные, то юзать query().
@@ -366,3 +396,240 @@ try {
 } catch (PDOException $e) {
   $db->rollBack();
 }
+---------------------------------------------------------------------------------------------------
+
+Исключения (Exception)
+
+function name($v) {
+ if ($v < 0) {
+  throw new Exception("мессага", 123);
+ }
+}
+
+try {
+
+ name(-100);
+
+// при срабатывании тут код не выполняется
+
+} catch (Exception $e) {
+
+// при срабатывании тут код выполняется
+
+ echo 'Код' . $e->getCode();
+ echo 'Сообщение' . $e->getMessage();
+ echo 'Файл' . $e->getFile();
+ echo 'Строка' . $e->getLine();
+
+}
+---------------------------------------------------------------------------------------------------
+
+Процессы и потоки
+У каждого процесса свое адресное пространство (переменные и функции). Один процесс не может влезть к другому в переменные и память.
+У каждого потока общее адресное пространство их родительского процесса и общие переменные.
+
+Многопоточность на файлах
+1. разлок всех неразлоченных строк, вследствие ошибок и падений, которым больше N минут (установка поля лока в NULL)
+2. блокировка лок-файла
+3. забор незалоченой строки
+4. лок этой строки в бд (установка поля лока в NOW())
+5. разблокировка лок-файла
+6. запись постданных в бд
+7. разлок этой строки в бд (установка поля лока в NULL)
+---------------------------------------------------------------------------------------------------
+
+1. Файлы по 32к в папке
+
+$filename = 100000; // имя файла
+
+$folder = ''; // папка с которой работаем
+
+$generate_folder = intval(floor($id / 32000)); // папка генерируется взависимости от имени файла
+
+$fullpath = $folder . '/' . $generate_folder;
+
+
+// ЗАПИСЬ ФАЙЛА В ПАПКУ
+if (!file_exists($fullpath)) {
+ mkdir($fullpath, 0777); // создаем папку
+}
+file_put_contents($fullpath . '/' . $filename, $filestring);
+
+
+// ЧТЕНИЕ ФАЙЛА ИЗ ПАПКИ
+if (file_exists($fullpath . '/' . $filename)) {
+ $filestring = file_get_contents($fullpath . '/' . $filename);
+}
+
+// УДАЛЕНИЕ ФАЙЛА ИЗ ПАПКИ
+if (file_exists($fullpath . '/' . $filename)) {
+ unlink($fullpath . '/' . $filename);
+}
+
+
+2. способ разбиения на папки (когда названия файлов в виде хеша)
+for ($i = 1; $i < 1000; $i++) {
+
+    $filename = sha1($i) . '.png';
+
+    $dir =
+        substr(
+            sha1(microtime()),
+            mt_rand(0, 30),
+            2
+        ) .
+        '/' .
+        substr(
+            sha1(microtime()),
+            mt_rand(0, 30),
+            2
+        );
+
+    $path = $dir . '/' . $filename; // по этому пути сохраняем файл
+    echo $path . "\n"; // 9e/78/356a192b7913b04c54574d18c28d46e6395428ab.png
+}
+
+
+3. Рекурсивный обход папки
+
+function scan_folder($dir, $level = 1) {
+
+ // если не папка
+ if (!is_dir($dir)) {
+  return;
+ }
+
+ // если не прочиталась папка
+ $files = scandir($dir);
+ if ($files == false) {
+  return;
+ }
+
+ foreach ($files as $file) {
+
+  // полный путь до файла
+  $full_file = $dir . '/' . $file;
+
+  if (is_file($full_file)) {
+   $GLOBALS['result'][] = [$file => $full_file];
+   continue;
+  }
+
+  if ($file == '.' OR $file == '..') {
+   continue;
+  }
+
+  scan_folder($full_file, $level + 1);
+  echo N;
+
+ }
+}
+
+scan_folder(CONTENT_RAW);
+
+foreach ($GLOBALS['result'] as $v1) {
+ foreach ($v1 as $k2 => $v2) {
+
+  //приводим к виду 11000 => /home/user/folder/content/raw/0/11000
+  $result1[$k2] = $v2;
+ }
+}
+
+// удаляем '.' и '..' и другие подпапки из массива
+$files = scandir($dir);
+foreach ($files as $k => &$v) {
+ if (!is_file($dir . '/' . $v)) {
+  unset ($files[$k]);
+ }
+}
+
+
+4. Построчное чтение файла
+
+$file = fopen('ddd', 'r');
+if ($file == false) {
+ exit ('файл не открылся');
+}
+$count = 0;
+while (feof($file) == false) {
+ $string = fgets($file);
+
+ // удалим концевые "\n"
+ $string = trim($string);
+
+ // посчет числа пройденных строк в файле
+ echo ++$count . N;
+}
+fclose($file);
+
+
+5. Вывод массива по N элементов в строке
+$a = range(1, 25);
+$i = 1;
+foreach ($a as $v) {
+ $bn = '';
+ if (fmod($i, 5) == 0) {
+  $bn = '';
+ }
+ $str[] = $v . $bn;
+ $i++;
+}
+echo implode('', $str);
+
+6. Вывод массива по N элементов в столбце
+
+$a = range(1, 25);
+$per_column = ceil(count($a) / 3); // кол-во элементов в колонке. 3 колонки
+$objs_columns = array_chunk($a, $per_column); // разбиваем на подмассивы
+
+echo '<div>';
+ foreach ($objs_columns as $v1) {
+ echo '<ul>';
+  foreach ($v1 as $v2) {
+  echo '<li>' . $v2 . '</li>';
+  }
+  echo '</ul>';
+ }
+ echo '</div>';
+---------------------------------------------------------------------------------------------------
+
+Парсинг XML
+
+$xml = simplexml_load_string($string);
+$videos = [];
+
+foreach ($xml->video as $video) {
+ $video->id;
+ $video->category;
+ foreach ($video->images->url as $url) {
+  $images_params[$id][] = [
+   'url' => $url,
+  ];
+ }
+}
+---------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
