@@ -1,23 +1,14 @@
-# Портфолио
-- 10 лет опыта в программировании.
-- PHP, Kohana, CodeIgniter, Yii, Laravel.
-- MySQL, PDO, ORM.
-- OOP, MVC, HMVC.
-- WordPress, PhpBB.
-- работа с API социальных сетей.
-- HTML, CSS, JavaScript, jQuery, Bootstrap, Микроформаты.
-- написание сайтов, админок, консольных скриптов, парсеров, регалок, сабмиттеров, автопостеров.
-- Использую PhpStorm, Workbench, Open Server, HeidiSQL, Putty, Git.
-
 # Portfolio
 - 10 years of programming experience.
-- Backend: PHP, CodeIgniter, MySQL.
+- Backend: PHP, CodeIgniter, Laravel, MySQL.
 - Frontend: HTML, CSS, jQuery, Bootstrap.
+- CMS: WordPress, PhpBB.
 - APIs: GoogleMaps, GoogleTranslate, YandexMaps, Facebook, Instagram, Telegram, Vk.
 - Projects: Shops, Catalogs, Admin Panels, Dashboards, Console Scripts.
-- Tools: PhpStorm, Workbench, HeidiSQL, Git.
-Working time: Monday - Friday, 10:00 - 18:00
-Timezone: Europe/Moscow UTC+3:00 MSK
+
+*Tools: PhpStorm, Workbench, HeidiSQL, Git.
+*Working time: Monday - Friday, 10:00 - 18:00
+*Timezone: Europe/Moscow UTC+3:00 MSK
 
 
 # Выполненные работы
