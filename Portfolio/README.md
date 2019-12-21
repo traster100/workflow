@@ -16,7 +16,5 @@
 Сайт демонстрации и предзаказа деревянных моделей кораблей. Каталог моделей, страницы моделей, описание, фотографии, статичные страницы, формы заказа. Многоязычный интерфейс.
 http://lsmodel.ru
 
-
-
-[logo]: "https://github.com/traster100/workflow/blob/master/Portfolio/22.png"
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/22.png)
 
