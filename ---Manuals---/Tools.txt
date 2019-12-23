@@ -23,8 +23,15 @@ Docker (\plugins\Docker)
 Twig Support (\plugins\twig)
 
 Поставить плагины
-Php Inspections ​EA Extended. Плагин проверки на уязвимости кода. Отключить сбор статистики Settings->Php Inspections->Automatically collect crash-reports. https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended-
-BrowseWordAtCaret. Плагин подсвечивающий одинаковые слова. https://plugins.jetbrains.com/plugin/201-browsewordatcaret
+
+1. Php Inspections EA Extended
+https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended
+Плагин проверки на уязвимости кода
+Отключить сбор статистики Settings->Php Inspections->Automatically collect crash-reports
+
+2. BrowseWordAtCaret
+https://plugins.jetbrains.com/plugin/201-browsewordatcaret
+Плагин подсвечивающий одинаковые слова
 
 Установить кряк, в файле \bin\phpstorm64.exe.vmoptions
 -javaagent:/fullpath/crack.jar
@@ -108,10 +115,7 @@ Editor->General->Appearance->Show parameter names hints
 
 Увеличить кеш, в файле \bin\phpstorm64.exe.vmoptions
 Было: -Xms128m, -Xmx750m
-Поставил: -Xms256m, -Xmx1500m
-Поставил: -Xms512m, -Xmx3000m
-Поставил: -Xms1024m, -Xmx6000m
-(Протестить: -Xms1024m, -Xmx2048m, -XX:MaxPermSize=1024m)
+Увеличить в 2 раза
 
 Создать макрос "Форматировать и Сохранить"
 Edit->Macros->Start Recording запускаем, из меню нажимаем Форматировать и Сохранить. Останавливаем запись. Называем макрос reformat_save. Edit->Macros->Edit Macros смотрим что записалось Action:ReformatCode, Action:SaveAll.
