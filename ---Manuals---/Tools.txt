@@ -1,8 +1,9 @@
 PHPSTORM
 
-Скачать отсюда ZIP https://www.jetbrains.com/phpstorm/download/other.html
+Скачать отсюда ZIP
+https://www.jetbrains.com/phpstorm/download/other.html
 
-Чтобы профиль был в папке PhpStorm, в файле \bin\idea.properties
+Чтобы профиль был в папке PhpStorm, в файле \bin\idea.properties:
 idea.config.path=${idea.home}/.PhpStorm/config
 idea.system.path=${idea.home}/.PhpStorm/system
 
@@ -33,7 +34,7 @@ https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended
 https://plugins.jetbrains.com/plugin/201-browsewordatcaret
 Плагин подсвечивающий одинаковые слова
 
-Установить кряк, в файле \bin\phpstorm64.exe.vmoptions
+Установить кряк, в файле \bin\phpstorm64.exe.vmoptions:
 -javaagent:/fullpath/crack.jar
 Перейти Configure->Manage License->License server->http://jetbrains-license-server
 https://rutracker.org/forum/viewtopic.php?t=5764245
@@ -115,7 +116,7 @@ Editor->General->Appearance->Show parameter names hints
 
 Увеличить кеш, в файле \bin\phpstorm64.exe.vmoptions
 Было: -Xms128m, -Xmx750m
-Увеличить в 2 раза
+Увеличить в 2 раза и посмотреть
 
 Создать макрос "Форматировать и Сохранить"
 Edit->Macros->Start Recording запускаем, из меню нажимаем Форматировать и Сохранить. Останавливаем запись. Называем макрос reformat_save. Edit->Macros->Edit Macros смотрим что записалось Action:ReformatCode, Action:SaveAll.
@@ -182,20 +183,14 @@ Tools->Web Browsers->Show browser popup in the editor
 Отключить анимацию появления, тулзов в режиме Undock
 Appearance & Behavior->Appearance->Animate windows
 
-1. в файле \bin\idea.properties
+1. в файле \bin\idea.properties:
 Удалить задержку IDE при печатании
 editor.zero.latency.typing=true
 
 2. в файле \bin\phpstorm64.exe.vmoptions
-
-Сглаживание шрифтов
--Dawt.useSystemAAFontSettings=lcd
-
-Аппаратное ускорение
--Dawt.java2d.opengl=true
-
-Отключение поддержки мониторов HiDPI
--Dsun.java2d.uiScale.enabled=false
+Сглаживание шрифтов -Dawt.useSystemAAFontSettings=lcd
+Аппаратное ускорение -Dawt.java2d.opengl=true
+Отключение поддержки мониторов HiDPI -Dsun.java2d.uiScale.enabled=false
 
 PHPSTORM цвета в старом редакторе
 Editor->Font: Monospaced 18, 1.0
@@ -204,11 +199,6 @@ Editor->Color Scheme->Color Scheme Font: Monospaced 18, 1.0
 Appearance&Behavior->Appearance: Segoe UI 15
 Цвет фона F7FAFF
 Цвет синей полосы CDCDE2
-
-Плагин RIPS Security Analysis
-https://plugins.jetbrains.com/plugin/10447-rips-security-analysis/
-требует регистрации. пока отключил
-
 
 6. настроить xDebug
 
