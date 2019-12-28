@@ -116,7 +116,7 @@ Editor->General->Appearance->Show parameter names hints
 
 Увеличить кеш, в файле \bin\phpstorm64.exe.vmoptions
 Было: -Xms128m, -Xmx750m
-Увеличить в 2 раза и посмотреть
+Стало: -Xms256m, -Xmx1500m
 
 Создать макрос "Форматировать и Сохранить"
 Edit->Macros->Start Recording запускаем, из меню нажимаем Форматировать и Сохранить. Останавливаем запись. Называем макрос reformat_save. Edit->Macros->Edit Macros смотрим что записалось Action:ReformatCode, Action:SaveAll.
@@ -139,6 +139,9 @@ https://www.jetbrains.com/help/phpstorm/minifying-javascript.html
 -для обоих путь до C:\Users\u\node_modules\.bin\yuicompressor.cmd
 -сжимает CSS просто в строку, удаляя комменты.
 -сжимает JS просто в строку, удаляя комменты, меняет названия переменных.
+
+Добавить горячие клавиши
+Ctrl + Shift + F11 - Full Screen
 
 
 
