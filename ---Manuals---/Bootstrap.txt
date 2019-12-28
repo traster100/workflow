@@ -1,73 +1,88 @@
 Скрыть что-то
 .d-{sm,md,lg,xl}-none
+---------------------------------------------------------------------------------------------------
 
-Тип тега блоковый строковый итд
+Тип тега блоковый, строковый, итд
 .d-{sm,md,lg,xl}-value: d-inline, d-none, d-block, d-table, d-flex
 ---------------------------------------------------------------------------------------------------
 
 Размеры экрана
-xs, sm, md, lg, xl
+xs, sm, md, lg, xl (SM - базовый класс для манипуляций)
 
-SM - базовый класс для манипуляций
+Extra small <576px, Max container width: None (auto), Prefix: .col-
+Small ≥576px, 540px, .col-sm-
+Medium ≥768px, 720px, .col-md-
+Large ≥992px, 960px, .col-lg-
+Extra large ≥1200px, 1140px, .col-xl-
+---------------------------------------------------------------------------------------------------
 
-Extra small <576px
-Max container width: None (auto)
-Prefix: .col-
+Вертикальное выравнивание всех столбцов
+<div class='row align-items-start'>
+<div class='row align-items-center'>
+<div class='row align-items-end'>
 
-Small ≥576px
-540px
-.col-sm-
-
-Medium ≥768px
-720px
-.col-md-
-
-Large ≥992px
-960px
-.col-lg-
-
-Extra large ≥1200px
-1140px
-.col-xl-
-
-Вертикальное выравнивание всех столбцов:
-<div class="row align-items-start">
-<div class="row align-items-center">
-<div class="row align-items-end">
-
-Вертикальное выравнивание по столбцово:
-<div class="col align-self-start">
-<div class="col align-self-center">
-<div class="col align-self-end">
+Вертикальное выравнивание по столбцам
+<div class='col align-self-start'>
+<div class='col align-self-center'>
+<div class='col align-self-end'>
 
 Горизонтальное выравнивание
-<div class="row justify-content-start">
-<div class="row justify-content-center">
-<div class="row justify-content-end">
-<div class="row justify-content-around">
-<div class="row justify-content-between">
+<div class='row justify-content-start'>
+<div class='row justify-content-center'>
+<div class='row justify-content-end'>
+<div class='row justify-content-around'>
+<div class='row justify-content-between'>
+---------------------------------------------------------------------------------------------------
 
 Удалить margin для rows, и padding для columns
-<div class="row no-gutters">
+<div class='row no-gutters'>
+---------------------------------------------------------------------------------------------------
 
 Смещение столбцов
 .col-md-3 .offset-md-3
 .col-md-6 .offset-md-0
 .col-sm-5 .offset-sm-2
+---------------------------------------------------------------------------------------------------
 
 Удаление столбцов друг от друга
 .ml-auto, .ml-md-auto, .mr-auto, col-auto
+---------------------------------------------------------------------------------------------------
 
 Маргин и паддинг
-m - маргин
-p - паддинг
+m - маргин p - паддинг - сразу для 4 сторон
 t,b,l,r - стороны
-x - для left и right сразу
-y - для top и bottom сразу
-можно просто m или p - сразу для 4 сторон
+x - сразу для left и right
+y - сразу для top и bottom
 
-размеры от 0 до 5, и "auto" для "margin: 0px auto;" (например .mx-auto)
+размеры от 0 до 5, и 'auto' для 'margin: 0px auto;' (.mx-auto)
 
 примеры
 .mr-3, .mr-md-3, pr-3
 ---------------------------------------------------------------------------------------------------
+
+ANCHOR BOOTSTRAP UI KIT
+https://www.wowthemes.net/anchor-free-bootstrap-ui-kit
+https://wowthemesnet.github.io/Anchor-Bootstrap-UI-Kit
+https://github.com/wowthemesnet/Anchor-Bootstrap-UI-Kit (33 звезд 3 наблюдателя 14 форков)
+хороший. сразу подцепился. поменялись только цвета и кнопки. в наборе хорошее верхнее меню, фиолетовая палитра, круглые баджеты кнопки поля, джанботрон + еще 2 вида такого плана, футер, страницы контента. активно развивается, на версии Bootstrap 4.1.3. подключил, ничего не поменялось кроме некоторых цветов.
+
+MATERIAL KIT
+https://www.creative-tim.com/product/material-kit
+https://github.com/creativetimofficial/material-kit (5300 звезд 120 наблюдателя 569 форков)
+кнопки хорошие. формы без контуров. ридиобуттоны и чекбоксы свои. меню стандартное, цвета есть разные. шрифты хорошие. иконки. активно развивается. есть меню-выдвигашка. подключил, меняет заметно сильнее.
+
+NOW UI KIT
+https://www.creative-tim.com/product/now-ui-kit
+https://github.com/creativetimofficial/now-ui-kit (1600 звезд 48 наблюдателя 226 форков)
+хороший оранжевый. формы круглые. радиобуттоны чекбоксы кастомные. шапка разных цветов. набор иконок. активно развивается. есть меню-выдвигашка. подключил, меняет но красоты не даёт.
+
+PAPER KIT 2
+https://github.com/creativetimofficial/paper-kit-2 (175 звезд 21 наблюдателя 49 форков)
+https://demos.creative-tim.com/paper-kit-2
+https://www.creative-tim.com/product/paper-kit-2
+приятный модный современый оранжевый дизайн. активно развивается. есть меню-выдвигашка. подключил, меняет но красоты не даёт.
+
+STREAM UI KIT
+https://htmlstream.com/templates/stream-ui-kit
+https://github.com/htmlstreamofficial/stream-ui-kit (310 звезд 20 наблюдателя 38 форков)
+своя шапка хорошая. разные цвета. нормальный широкий дизайн. круглые кнопки есть. красивые радиобуттоны и чекбоксы. формы прямоугольные и круглые. иконки. обновлялся 2 года назад. подключил, меняет но красоты не даёт.
