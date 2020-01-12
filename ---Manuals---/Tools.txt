@@ -103,7 +103,7 @@ Keymap->Commeent with Line Comment Ctrl+.
 Keymap->Commeent with Block Comment Ctrl+Shift+.
 
 Добавить на тулбар кнопки
-Open, Close Project, Push, Deployment
+Open, Close Project, Push, Deployment, Show History
 
 Отключить верхний тулбар путей до файла
 View->Appearance->Navigation Bar
