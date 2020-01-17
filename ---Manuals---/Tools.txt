@@ -143,11 +143,17 @@ https://www.jetbrains.com/help/phpstorm/minifying-javascript.html
 Добавить горячие клавиши
 Ctrl + Shift + F11 - Full Screen
 
+PhpStorm форматирование
+File->Settings->Editor->Code Style->PHP
+File->Settings->Editor->Code Style->HTML
+File->Settings->Editor->Code Style->JavaScript
+File->Settings->Editor->Code Style->Style Sheets->CSS
+Везде поставил 2
 
+Правильное форматирование комментариев
+File->Settings->Editor->Code Style->PHP -> Line comment in first column
 
 ------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
-
-
 
 Когда синхроним папку Deployment->Synchronize
 Ставим галку, чтобы удаляло файлы с хоста, которых нет локально

@@ -22,7 +22,7 @@ Computer Configuration > Administrative Templates > Windows Components > OneDriv
 Отключить Windows lock screen
 Computer Configuration > Administrative Templates > Control Panel > Personalization
 -Do not display the lock screen - в Enabled
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Win+R и regedit
 
@@ -46,7 +46,13 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer
 Удалить библиотеки из Проводника
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace
 заходим на ветку и удаляем все цифробуквенные папки
----------------------------------------------------------------------------------------------------
+
+По сочетанию Alt+Tab, сделать чтобы только иконки
+HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer
+AltTabSettings DWORD
+0 = Thumbnails
+1 = Classic icons
+-------------------------------------------------
 
 Остановить и отключить службы
 
@@ -85,7 +91,7 @@ Windows Search
 Windows Update
 Xbox Live Auth Manager
 Xbox Live Game Save
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Отключить телеметрию
 
@@ -95,7 +101,7 @@ sc stop DiagTrack
 sc stop dmwappushservice
 sc delete DiagTrack
 sc delete dmwappushservice
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Отключить задачи в Планировщике задач
 
@@ -105,7 +111,7 @@ Application Experience: Microsoft Compatibility Appraiser, ProgramDataUpdater, S
 Autochk: Proxy
 Customer Experience Improvement Program: Consolidator, KernelCeipTask, UsbCeip, Microsoft-Windows-DiskDiagnosticDataCollector
 NetTrace: GatherNetworkInfo
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Оптимизировать
 
@@ -119,7 +125,7 @@ NetTrace: GatherNetworkInfo
 На ноуте в Intel Graphic Control Panel отключить горячие клавиши
 Удалить компоненты: Internet Explorer 11, Work Folders Client, Windows PowerShell 2.0, Microsoft XPS Document Writer
 Ускорение загрузки Windows со всех процессоров (Win+R, msconfig, вкладка Boot, Advanced options -> number of processors: колво процов
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Программы
 
@@ -149,11 +155,11 @@ https://www.sordum.org/7615/easy-context-menu-v1-6/ , https://www.sordum.org/108
 
 Работа с фаерволом
 https://www.sordum.org/8125/firewall-app-blocker-fab-v1-6/
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Драйвера
 Если в Диспетчере Устройств написано что драйвер от Микрософт (Manufacturer: Microsoft), то найти драйвер на сайте производителя
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Всё по винде
 https://remontka.pro/windows-10-page
