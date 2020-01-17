@@ -76,11 +76,17 @@ Languages & Frameworks->PHP
 Попап с браузерами убрать, и выбрать 1 браузер
 Tools->Web Browsers
 
+Убрать попап с браузерами
+Tools->Web Browsers->Show browser popup in the editor
+
 Шрифт в редакторе
 Editor->Font->Size 18
 
 Размер шрифта в редакторе, менять колесом мыши
 Editor->General->Change font size (Zoom) with Ctrl+MouseWheel
+
+Изменение размера шрифта в редакторе
+Increase Font Size, Decrease Font Size, Resent Font Size: Alt+, Alt-, Alt+0
 
 Открытый файл и метод - подсвечен в Project и Structure
 Таб Project->Autoscroll from Source, Autoscroll to Source
@@ -141,7 +147,7 @@ https://www.jetbrains.com/help/phpstorm/minifying-javascript.html
 -сжимает JS просто в строку, удаляя комменты, меняет названия переменных.
 
 Добавить горячие клавиши
-Ctrl + Shift + F11 - Full Screen
+Ctrl+Shift+F11 - Full Screen
 
 PhpStorm форматирование
 File->Settings->Editor->Code Style->PHP
@@ -153,6 +159,12 @@ File->Settings->Editor->Code Style->Style Sheets->CSS
 Правильное форматирование комментариев
 File->Settings->Editor->Code Style->PHP -> Line comment in first column
 
+На табах в редакторе, не показывать расширения файлов
+Editor->General->Editor Tabs->Show file extension
+
+На табах в редакторе, не показывать крестик закрытия вкладки
+Editor->General->Editor Tabs->Close button position->None
+
 ------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
 
 Когда синхроним папку Deployment->Synchronize
@@ -162,14 +174,8 @@ File->Settings->Build, Execution, Deployment->Deployment->Options
 
 //Appearance & Behavior->Appearance->Disable mnemonics in menu (не работает. а нужно чтобы работало с alt+v пунто свитчера)
 
-На табах в редакторе, не показывать крестик закрытия вкладки
-Editor->General->Editor Tabs->Close button position->None
-
 На табах в редакторе, показывать звездочку что файл не сохранен
 Editor->General->Editor Tabs->Mark modified (*)
-
-На табах в редакторе, не показывать расширения файлов
-Editor->General->Editor Tabs->Show file extension
 
 Appearance & Behavior->Quick Lists->создаем кастомное меню mymenu1
 В Keymap находим mymenu1 и вешаем хоткей Alt+D
@@ -185,9 +191,6 @@ Appearance & Behaviour->Appearance->Widescreen tool window layout
 
 Попап с кодом, который вне видимости, в данном положении (например верхняя скобка)
 Editor->General->Appearance->Show code lens on scrollbar hover
-
-Убрать попап с браузерами
-Tools->Web Browsers->Show browser popup in the editor
 
 Отключить анимацию появления, тулзов в режиме Undock
 Appearance & Behavior->Appearance->Animate windows
