@@ -27,7 +27,7 @@ Twig Support (\plugins\twig)
 
 1. Php Inspections EA Extended
 https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended
-Плагин проверки на уязвимости кода
+Плагин проверки на уязвимости кода, статический анализ
 Отключить сбор статистики Settings->Php Inspections->Automatically collect crash-reports
 
 2. BrowseWordAtCaret
@@ -164,6 +164,9 @@ Editor->General->Editor Tabs->Show file extension
 
 На табах в редакторе, не показывать крестик закрытия вкладки
 Editor->General->Editor Tabs->Close button position->None
+
+Маленький шрифт на вкладках
+File->Settings->Editor->General->Editor Tabs->Use small font for labels
 
 ------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
 
@@ -399,6 +402,7 @@ File->Automate->Batch, выбрать макрос, выбрать папки fo
 1. Плагин PhpStorm "Php Inspections ​(EA Extended)​"
 https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended
 Доки по ошибкам https://github.com/kalessil/phpinspectionsea/tree/master/docs
+Статический анализ
 
 Проверка файла - Alt+Shift+I
 Проверка папки - правый клик на папке, и Inspect Code
@@ -412,6 +416,7 @@ Ctrl+Shift+F4 - закрыть результаты проверки
 https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 https://segment.com/blog/hacking-with-a-heads-up-display/
 https://www.youtube.com/channel/UC-3qyzm4f29C12KGp3-12bQ
+Динамический анализ
 ---------------------------------------------------------------------------------------------------
 
 OPENSERVER

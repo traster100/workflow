@@ -1,36 +1,3 @@
-Валидация полей
-
-HTML
-<input type='text' class='form-control' id='password'>
-<input type='text' class='form-control' id='password_1'>
-<input type='text' class='form-control' id='password_2'>
-
-PHP
-$this->form_validation->set_rules('password', ' ', 'trim|required|callback_check_password');
-
-$this->form_validation->set_rules('password_1', ' ', 'trim|required');
-
-$this->form_validation->set_rules('password_2', ' ', 'trim|required|matches[password_1]');
-
-проверка что старый пароль введен верно
-public function check_password($password) {
-
-получаем юзера из базы
-$this->db->select('password_hash, password_code');
-$this->db->where('id', $this->user->item('id'));
-$query = $this->db->get('users');
-$user = $query->row();
-
-старый пароль введен верно
-if ($user->password_hash == md5($user->password_code . $password . $user->password_code)) {
-return true;
-}
-
-$this->form_validation->set_message('check_password', 'Старый пароль введен неверно');
-return false;
-}
----------------------------------------------------------------------------------------------------
-
 QueryBuilder
 
 $this->db->select('field');
@@ -64,7 +31,7 @@ $query = $this->db->get('table');
 
 $result = $query->result(); // вся выборка
 $result = $query->row(); // 1 строка
-$result = $query->row()->field; // 1 строка 1 столбец
+$result = $query->row()->field; // 1 строка, 1 столбец
 $result = $query->num_rows(); // колво строк (сначала будет выполнен запрос, потом посчитано колво строк.)
 $result = $query->count_all_results(); // колво строк (сразу посчитано колво строк. быстрее! но проверить.)
 -------------------------------------------------
@@ -74,29 +41,36 @@ $this->db
 ->where('id', 100)
 ->update('table', ['field' => 0]);
 
-UPDATE increment field
+установка времени NOW()
+$this->db->set('created', 'NOW()', false);
+
+установка инкремента
+$this->db->set('count', 'count+1', false);
+
+UPDATE установка инкремента
 $this->db
 ->where('id', 100)
 ->set('field', 'field+1', FALSE)
 ->update('table');
 ИЛИ
-"UPDATE `table` SET `field` = (`field` + " . $this->db->escape($field) . ") WHERE `id` = " . $this->db->escape($field);
+"UPDATE `table`
+SET `field` = (`field` + " . $this->db->escape($field) . ")
+WHERE `id` = " . $this->db->escape($field);
 
 для UPDATE запросов, сколько рядов затронуло
 $this->db->affected_rows();
 
-UPDATE построчно:
+UPDATE обновление построчно:
 foreach ($objects as $v) {
     $this->db->where(['id' => $v->id]);
     $this->db->update('table', ['field' => 0]);
 }
 
-UPDATE много строк сразу
+UPDATE обновление много строк сразу
 $update_batch = [];
 foreach ($objects as $v) {
     $update_batch[] = ['id' => $v->id, 'field' => 0];
 }
-
 if ($update_batch) {
     $this->db->update_batch('table', $update_batch, 'id');
 }
