@@ -168,7 +168,13 @@ Editor->General->Editor Tabs->Close button position->None
 Маленький шрифт на вкладках
 File->Settings->Editor->General->Editor Tabs->Use small font for labels
 
+Колво вкладок без закрытия самых старых
+File->Settings->Editor->General->Editor Tabs->Tab Limit 50
+
 ------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
+
+Открывать новые вкладки только справа в конце (убрал. неудобно)
+File->Settings->Editor->General->Editor Tabs->Open the tabs at the end
 
 Когда синхроним папку Deployment->Synchronize
 Ставим галку, чтобы удаляло файлы с хоста, которых нет локально
