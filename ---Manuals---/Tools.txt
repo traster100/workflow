@@ -506,9 +506,3 @@ GIT
 Переключимся на главную ветку git checkout master
 Слить ветку с главной веткой git merge branchname
 Удалим ветку git branch -d branchname
--------------------------------------------------
-
-Android
-
-Удалить ненужные приложения
-https://github.com/Szaki/XiaomiADBFastbootTools
