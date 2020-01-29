@@ -1,0 +1,60 @@
+Content-Security-Policy
+Нужно для защиты от XSS
+
+Общее написание
+<meta http-equiv='Content-Security-Policy' content="">
+
+Написание для тестирования
+<meta http-equiv='Content-Security-Policy-Report-Only' content="">
+-------------------------------------------------
+
+Виды ресурсов
+
+default-src: для всего. обязательна
+font-src: шрифты
+frame-src: фреймы
+img-src: картинки
+media-src: видео и аудио
+object-src: flash и плагины
+script-src: js
+style-src: css
+-------------------------------------------------
+
+Значения
+
+'none' - ничего
+'self' - текущий домен, но не поддомены
+'unsafe-inline' - позволяет встроенный js и css
+'unsafe-eval' - позволяет js eval
+-------------------------------------------------
+
+Примеры
+
+Скрипты только с текущего домена. Не будут работать встроенные js-скрипты, js-аттрибуты тегов, встроенные css-стили
+script-src 'self'
+
+Скрипты только с текущего домена. И домена jquery.com
+script-src 'self' https://jquery.com
+
+Всё только с текущего домена. Скрипты только с текущего домена. И домена jquery.com
+default-src 'self'; script-src 'self' https://jquery.com
+
+Включить встроенный css
+style-src 'unsafe-inline'
+
+Включить встроенный js
+script-src 'unsafe-inline'
+
+Включить встроенный js для 1 места
+<script type='text/javascript' nonce='tratata123'>
+  // код
+</script>
+<meta http-equiv='Content-Security-Policy' content="script-src 'self' 'nonce-tratata123';">
+
+Разрешить картинки отовсюду
+img-src *
+
+Разрешить картинки внутри data:image base64
+img-src data:
+
+ман https://developers.google.com/web/fundamentals/security/csp

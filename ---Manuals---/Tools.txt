@@ -123,6 +123,7 @@ Editor->General->Appearance->Show parameter names hints
 Увеличить кеш, в файле \bin\phpstorm64.exe.vmoptions
 Было: -Xms128m, -Xmx750m
 Стало: -Xms256m, -Xmx1500m
+Вернул опять на 128 и 256
 
 Создать макрос "Форматировать и Сохранить"
 Edit->Macros->Start Recording запускаем, из меню нажимаем Форматировать и Сохранить. Останавливаем запись. Называем макрос reformat_save. Edit->Macros->Edit Macros смотрим что записалось Action:ReformatCode, Action:SaveAll.
