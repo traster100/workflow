@@ -123,7 +123,7 @@ Editor->General->Appearance->Show parameter names hints
 Увеличить кеш, в файле \bin\phpstorm64.exe.vmoptions
 Было: -Xms128m, -Xmx750m
 Стало: -Xms256m, -Xmx1500m
-Вернул опять на 128 и 256
+Вернул опять на 128 и 750
 
 Создать макрос "Форматировать и Сохранить"
 Edit->Macros->Start Recording запускаем, из меню нажимаем Форматировать и Сохранить. Останавливаем запись. Называем макрос reformat_save. Edit->Macros->Edit Macros смотрим что записалось Action:ReformatCode, Action:SaveAll.
@@ -171,6 +171,10 @@ File->Settings->Editor->General->Editor Tabs->Use small font for labels
 
 Колво вкладок без закрытия самых старых
 File->Settings->Editor->General->Editor Tabs->Tab Limit 50
+
+Цвет закладки
+File->Settings->Editor->Color Scheme->General->Bookmarks
+Background #C8FFC8
 
 ------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
 
