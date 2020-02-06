@@ -440,55 +440,77 @@ try {
 
 1. Файлы по 32к в папке
 
-$filename = 100000; // имя файла
+// имя файла
+$filename = 100000;
 
-$folder = ''; // папка с которой работаем
+// папка с которой работаем
+$folder = '';
 
-$generate_folder = intval(floor($id / 32000)); // папка генерируется взависимости от имени файла
+// папка генерируется взависимости от имени файла
+$generate_folder = intval(floor($id / 32000));
 
 $fullpath = $folder . '/' . $generate_folder;
 
-
-// ЗАПИСЬ ФАЙЛА В ПАПКУ
+// сохранение файла
 if (!file_exists($fullpath)) {
- mkdir($fullpath, 0777); // создаем папку
+ mkdir($fullpath, 0777);
 }
 file_put_contents($fullpath . '/' . $filename, $filestring);
 
-
-// ЧТЕНИЕ ФАЙЛА ИЗ ПАПКИ
+// чтение файла
 if (file_exists($fullpath . '/' . $filename)) {
  $filestring = file_get_contents($fullpath . '/' . $filename);
 }
 
-// УДАЛЕНИЕ ФАЙЛА ИЗ ПАПКИ
+// удаление файла
 if (file_exists($fullpath . '/' . $filename)) {
  unlink($fullpath . '/' . $filename);
 }
 
+2. Файлы на N папок
 
-2. способ разбиения на папки (когда названия файлов в виде хеша)
-for ($i = 1; $i < 1000; $i++) {
+//имя файла в виде хеша 1f4b8d3509fd68ebdfc3c8391d963c0d32e8b5acf7962736db8d92761a9bed6c.png
+$fullname= hash('sha256', 'personphotos' . date('U')) . '.png';
 
-    $filename = sha1($i) . '.png';
+//папка с файлами
+$sourcefolder = 'C:/Users/u/Desktop/1/';
 
-    $dir =
-        substr(
-            sha1(microtime()),
-            mt_rand(0, 30),
-            2
-        ) .
-        '/' .
-        substr(
-            sha1(microtime()),
-            mt_rand(0, 30),
-            2
-        );
+//3 буквенная папка (из имени файла)
+$folder = substr($fullname, 0, 3);
 
-    $path = $dir . '/' . $filename; // по этому пути сохраняем файл
-    echo $path . "\n"; // 9e/78/356a192b7913b04c54574d18c28d46e6395428ab.png
+//3 буквенная папка / имя файла
+$path = $folder . '/' . $fullname;
+
+//если нет папки, то создаем
+if (!is_dir($sourcefolder . $folder)) {
+  mkdir($sourcefolder . $folder);
 }
 
+if (is_dir($sourcefolder . $folder)) {
+    save($sourcefolder . $path);
+}
+
+2.1 Теория
+
+Вариант "2 буквенная папка"
+
+256папок/файлы
+все файлы в 256 папках
+256 папок * 32.000 файлов = 8.192.000 файлов
+
+256папок/256папок/файлы
+все файлы в 256 * 256 = 65.536 папках
+65.536 папок * 32.000 файлов = 2.097.152.000 файлов
+
+256папок/256папок/256папок/файлы
+все файлы в 256 * 256 * 256 = 16.777.216 папках
+16.777.216 папок * 32.000 файлов = 536.870.912.000 файлов
+
+Вариант "3 буквенная папка" - САМЫЙ ОПТИМАЛЬНЫЙ
+
+4096папок/файлы
+все файлы в 4096 папках
+4096 папок * 32.000 файлов = 131.072.000 файлов
 
 3. Рекурсивный обход папки
 

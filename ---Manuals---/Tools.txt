@@ -176,6 +176,10 @@ File->Settings->Editor->General->Editor Tabs->Tab Limit 50
 File->Settings->Editor->Color Scheme->General->Bookmarks
 Background #C8FFC8
 
+Цвет текущей строки
+File->Settings->Editor->Color Scheme->General->Caret row
+Background #C8FFC8
+
 ------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
 
 Открывать новые вкладки только справа в конце (убрал. неудобно)
