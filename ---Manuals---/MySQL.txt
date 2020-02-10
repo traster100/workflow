@@ -150,7 +150,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 Ключи в Workbench для дочерних таблиц делать
 On Update CASCADE
-On Delete SET NULL
+On Delete SET NULL (но тогда нельзя ставить галку "NOT NULL" для таких полей)
 ---------------------------------------------------------------------------------------------------
 
 Проблема mysql sql_mode=only_full_group_by
