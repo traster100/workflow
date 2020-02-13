@@ -174,11 +174,11 @@ File->Settings->Editor->General->Editor Tabs->Tab Limit 50
 
 Цвет закладки
 File->Settings->Editor->Color Scheme->General->Bookmarks
-Background #C8FFC8
+Background #D2D2FF
 
 Цвет текущей строки
 File->Settings->Editor->Color Scheme->General->Caret row
-Background #C8FFC8
+Background #D2FFD2
 
 ------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
 
