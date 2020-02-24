@@ -41,8 +41,10 @@ httpd -v
 httpd -M
 
 настроить виртуальный хост
-Мануал https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-centos-7
-Отсюда взял Options -Indexes +FollowSymLinks https://linuxize.com/post/how-to-set-up-apache-virtual-hosts-on-centos-7/
+https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-centos-7
+
+взять отсюда Options -Indexes +FollowSymLinks
+https://linuxize.com/post/how-to-set-up-apache-virtual-hosts-on-centos-7/
 -------------------------------------------------
 
 Установка MySQL
@@ -53,53 +55,65 @@ systemctl start mysqld
 
 сменить пароль для root юзера
 grep 'temporary password' /var/log/mysqld.log
-Видим временный пароль qwerty123
-Меняем на свой
+- видим временный пароль qwerty123
+- меняем на свой
 mysql -uroot -p
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'root123';
-Проверка mysql -uroot -p'root123'
+- проверить mysql -uroot -p'root123'
 
-Проверим версию
+проверить версию
 mysql -V
 
-Расположение файла my.cnf
-mysql --help покажет все места
-/etc/my.cnf
+конфиг /etc/my.cnf
 
-Создадим базу данных
+создать базу данных
 CREATE DATABASE database123;
 SHOW DATABASES;
 
-Создадим нового юзера (для php-скриптов)
+создать нового юзера для php-скриптов
 CREATE USER 'user1'@'localhost' IDENTIFIED BY 'pass1';
 GRANT ALL PRIVILEGES ON database123.* TO 'user1'@'localhost';
 FLUSH PRIVILEGES;
 systemctl restart mysqld
-Проверка mysql -uuser1 -p'pass1'
+проверить mysql -uuser1 -p'pass1'
 
-Создадим нового юзера (для HeidiSQL)
+создать нового юзера для HeidiSQL
 CREATE USER 'user2'@'%' IDENTIFIED BY 'pass2';
 GRANT ALL PRIVILEGES ON database123.* TO 'user2'@'%';
 FLUSH PRIVILEGES;
 systemctl restart mysqld
-Проверка mysql -uuser2 -p'pass2'
+проверить mysql -uuser2 -p'pass2'
 
-Настройка SSL
+настроить SSL
 SHOW GLOBAL VARIABLES LIKE '%ssl%';
 mysql> STATUS; (смотреть строку SSL: Not in use)
-В /etc/my.cnf пишем:
+
+В /etc/my.cnf пишем
 [mysqld]
+
 bind-address = *
+
+collation-server = utf8mb4_unicode_ci
+character-set-server = utf8mb4
+
 ssl-ca=/var/lib/mysql/ca.pem
 ssl-cert=/var/lib/mysql/server-cert.pem
 ssl-key=/var/lib/mysql/server-key.pem
+
 [client]
 ssl-ca=/var/lib/mysql/ca.pem
 ssl-cert=/var/lib/mysql/client-cert.pem
 ssl-key=/var/lib/mysql/client-key.pem
 
 systemctl restart mysqld
+
+проверить
 mysql> STATUS; (видим SSL: Cipher in use is DHE-RSA-AES256-SHA)
+
+закрыть удаленный доступ
+/etc/my.cnf
+[mysqld]
+bind-address = 127.0.0.1
 -------------------------------------------------
 
 Установка PHP 7.3
@@ -332,5 +346,86 @@ crontab -e
 
 Запуск крона каждые 3 секунды
 */1 * * * * php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3;
+-------------------------------------------------
+
+Установка Nginx
+
+добавить репозиторий EPEL
+yum install epel-release
+
+установить
+yum install nginx
+
+запустить
+systemctl start nginx
+
+включить в автозагрузку
+systemctl enable nginx
+
+проверить
+nginx -t
+nginx -T
+nginx -v
+netstat -tulpn | grep nginx
+
+настройки /etc/nginx/nginx.conf
+логи /var/log/nginx
+
+команды
+systemctl start nginx
+systemctl restart nginx
+systemctl stop nginx
+systemctl status nginx
+-------------------------------------------------
+
+Настройка таймзоны, и синхронизации времени
+
+timedatectl set-timezone UTC
+
+yum install chrony
+systemctl start chronyd
+systemctl enable chronyd
+systemctl status chronyd
+-------------------------------------------------
+
+Установка PHP-FPM
+
+yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+yum install epel-release yum-utils
+yum-config-manager --disable remi-php54
+yum-config-manager --enable remi-php73
+yum install php php-cli php-fpm php-mysql php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json
+
+проверить
+php -v
+php-fpm -v
+
+настроить /etc/php.ini
+cgi.fix_pathinfo=0
+
+настроить /etc/php-fpm.d/www.conf
+user = nginx
+group = nginx
+listen = /var/run/php-fpm/php-fpm.sock
+listen.owner = nginx
+listen.group = nginx
+listen.mode = 0660
+
+включить в автозагрузку
+systemctl enable php-fpm
+
+запустить
+systemctl start php-fpm
+
+конфиги
+/etc/php-fpm.d/www.conf
+/etc/php.ini
+/etc/php.d
+
+команды
+systemctl start php-fpm
+systemctl restart php-fpm
+systemctl stop php-fpm
+systemctl status php-fpm
 -------------------------------------------------
 
