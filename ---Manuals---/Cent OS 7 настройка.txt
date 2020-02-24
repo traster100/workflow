@@ -9,6 +9,9 @@ VMWare, LDoms, KVM, Microsoft Hyper-V, XEN
 
 Настройка Cent OS 7
 
+посмотреть разделы ФС
+df -h
+
 посмотреть версию
 cat /proc/version
 cat /etc/centos-release
@@ -145,26 +148,27 @@ HASH="$(wget -q -O - https://composer.github.io/installer.sig)"
 php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
-Проверим версию
+проверить версию
 composer -V
 
-Установка пакетов
+установить пакет
 composer require nesbot/carbon
 
 Если такая установка не сработала, то юзать
 yum install composer
 
+
 Работа с Composer
 
-создали папку /home/user/test
-перешли в папку cd /home/user/test
+создать папку /home/user/test
+перейти в папку cd /home/user/test
 
-инициализируем композер
+инициализировать композер
 composer init
 это создаст пустой composer.json
 
-например нужен пакет https://github.com/guzzle/guzzle
-ставим пакет composer require guzzlehttp/guzzle
+поставить пакет https://github.com/guzzle/guzzle
+composer require guzzlehttp/guzzle
 
 появится папка /home/user/test/vendor в которой:
 vendor/autoload.php - файл автозагрузчика composer
@@ -176,8 +180,8 @@ vendor/guzzlehttp - папка пакета
    "guzzlehttp/guzzle": "^6.3"
 }
 
-например нам нужен еще пакет https://github.com/Seldaek/monolog
-ставим пакет composer require monolog/monolog
+поставить пакет https://github.com/Seldaek/monolog
+composer require monolog/monolog
 появится папка vendor/monolog
 
 composer.json станет выглядеть так:
@@ -186,18 +190,16 @@ composer.json станет выглядеть так:
    "monolog/monolog": "^1.23"
 }
 
-создадим файл /home/user/test/index.php:
+работать в php
 <?php
-require 'vendor/autoload.php'; // подключили автолоадер composer
+require 'vendor/autoload.php';
 $client = new \GuzzleHttp\Client();
-//далее код
 ?>
 
-через год обновим либы
+обновить пакеты
 composer update
-это автоматически скачает новые версии всех пакетов, и все их зависимости
 
-удалим ненужный пакет
+удалить пакет
 composer remove guzzlehttp/guzzle
 это удалит папку vendor/guzzlehttp
 
@@ -205,6 +207,10 @@ composer.json станет выглядеть так:
 "require": {
     "monolog/monolog": "^1.23"
 }
+
+посмотреть установленные пакеты
+cd foldername
+composer show
 -------------------------------------------------
 
 Установка HTTPS
@@ -215,28 +221,21 @@ yum -y install epel-release
 yum -y install yum-utils
 yum -y install certbot-apache
 certbot
-ввести мыло example@gmail.com
-поделиться мылом для новостей с Electronic Frontier Let's Encrypt? Нет
-Вбить сайты для которых хостим установить HTTPS
 
-Вылезла ошибка
-The server could not connect to the client to verify the domain :: dns :: DNS problem: NXDOMAIN looking up A for www
+вбили мыло, отказались от новостей, согласились на условия использования, согласились на редиректы с http на https
 
-Проверить что в DNS есть обе А-записи:
-domain.info A 11.111.11.111
-www.domain.info A 11.111.11.111
+вылезла надпись
+Created an SSL vhost at
+/etc/httpd/sites-available/domain.info-le-ssl.conf
 
-Пробуем заново
-certbot
+Создан файл
+/etc/httpd/sites-available/domain.info-le-ssl.conf
+в котором всё тоже самое что и тут
+/etc/httpd/sites-available/domain.info.conf
+плюс добавлены настройки SSLCertificateFile, SSLCertificateKeyFile, SSLCertificateChainFile
 
-Всё прошло. Далее надпись
-Created an SSL vhost at /etc/httpd/sites-available/domain.info-le-ssl.conf
-И создан файл /etc/httpd/sites-available/domain.info-le-ssl.conf в котором всё тоже самое
-что и тут /etc/httpd/sites-available/domain.info.conf плюс добавлены настройки SSLCertificateFile, SSLCertificateKeyFile, SSLCertificateChainFile
-
-Далее идет вопрос
-Please choose whether or not to redirect HTTP traffic to HTTPS, removing HTTP access.
-Ответ 2: Redirect - Make all requests redirect to secure HTTPS access.
+На вопрос
+Please choose whether or not to redirect HTTP traffic to HTTPS, removing HTTP access. Ответ 2: Redirect - Make all requests redirect to secure HTTPS access.
 
 Проверка
 https://www.ssllabs.com/ssltest/analyze.html?d=domain.info
@@ -252,18 +251,12 @@ curl http://domain.info
 curl https://domain.info
 certbot certificates
 
-Добавим в крон автопродление сертификата 2 раза в день
-- создадим файл /var/spool/cron/root
-- положим туда строку * */12 * * * /usr/bin/certbot renew >> /var/log/le-renew.log
-- посмотрим список кронов crontab -l
-- применим крон crontab /var/spool/cron/root
-
-(Не запускать крон от рута!
-создать файл /var/spool/cron/projectname
-посмотреть задачи crontab -l -u projectname
-а вот применить так не работает crontab /var/spool/cron/projectname эта команда перезаписывает файл root тоже
-нужно юзать как-то через crontab -e
-)
+Добавим в крон автопродление сертификата
+crontab -e
+i
+* */12 * * * /usr/bin/certbot renew >> /var/log/le-renew.log
+:wq
+crontab -l
 -------------------------------------------------
 
 Правила .htaccess
@@ -427,5 +420,18 @@ systemctl start php-fpm
 systemctl restart php-fpm
 systemctl stop php-fpm
 systemctl status php-fpm
+-------------------------------------------------
+
+Установка oPcache
+
+установить
+yum install php-opcache
+
+настроить /etc/php.d/10-opcache.ini
+opcache.enable = 1
+opcache.enable_cli = 1
+
+systemctl restart nginx
+systemctl restart php-fpm
 -------------------------------------------------
 
