@@ -1,16 +1,31 @@
+VPS
+
+Виртуализация методами операционной системы
+FreeBSD Jail, Parallels Virtuozzo Containers, iCore Virtual Accounts, OpenVZ
+
+Виртуализация на аппаратном уровне
+VMWare, LDoms, KVM, Microsoft Hyper-V, XEN
+-------------------------------------------------
+
 Настройка Cent OS 7
 
-Версия сервера
+посмотреть версию
 cat /proc/version
 cat /etc/centos-release
-cat /etc/system-release
-uname -a
-rpm --query centos-release
-hostnamectl
 
-Обновимся целиком
+обновиться целиком
 yum update
----------------------------------------------------------------------------------------------------
+
+сменить root пароль
+sudo passwd root
+
+добавить обычного юзера
+adduser myuser1
+passwd myuser1
+
+чтобы под обычным юзером, запускать команды sudo
+gpasswd -a myuser1 wheel
+-------------------------------------------------
 
 Установка Apache
 
@@ -19,25 +34,24 @@ systemctl start httpd.service
 systemctl enable httpd.service
 папка /var/www/html/
 
-Проверим версию
+проверить версию
 httpd -v
 
-Список модулей
+список модулей
 httpd -M
 
-Настройка виртуальных хостов
+настроить виртуальный хост
 Мануал https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-centos-7
 Отсюда взял Options -Indexes +FollowSymLinks https://linuxize.com/post/how-to-set-up-apache-virtual-hosts-on-centos-7/
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Установка MySQL
 
 yum install http://dev.mysql.com/get/mysql57-community-release-el7-7.noarch.rpm
 yum install mysql-server
 systemctl start mysqld
-mysql_secure_installation
 
-Пароль для root-юзера
+сменить пароль для root юзера
 grep 'temporary password' /var/log/mysqld.log
 Видим временный пароль qwerty123
 Меняем на свой
@@ -86,7 +100,7 @@ ssl-key=/var/lib/mysql/client-key.pem
 
 systemctl restart mysqld
 mysql> STATUS; (видим SSL: Cipher in use is DHE-RSA-AES256-SHA)
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Установка PHP 7.3
 
@@ -108,7 +122,7 @@ yum info php-gd
 
 Установка модуля
 yum install php-gd
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Установка Composer
 
@@ -177,7 +191,7 @@ composer.json станет выглядеть так:
 "require": {
     "monolog/monolog": "^1.23"
 }
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Установка HTTPS
 
@@ -236,7 +250,7 @@ certbot certificates
 а вот применить так не работает crontab /var/spool/cron/projectname эта команда перезаписывает файл root тоже
 нужно юзать как-то через crontab -e
 )
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Правила .htaccess
 
@@ -288,13 +302,13 @@ Header set Cache-Control "max-age=2592000"
 <FilesMatch ".(pl|php|cgi|spl|scgi|fcgi)$">
 Header unset Cache-Control
 </FilesMatch>
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Проверка колва редиректов
 
 wget domain.com 2>&1 | grep Location
 https://a.pr-cy.ru/domain.com
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Правила Cron
 
@@ -318,3 +332,5 @@ crontab -e
 
 Запуск крона каждые 3 секунды
 */1 * * * * php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3; php index.php; /bin/sleep 3;
+-------------------------------------------------
+
