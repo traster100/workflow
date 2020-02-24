@@ -140,9 +140,9 @@ yum info php-gd
 Установка модуля
 yum install php-gd
 
-Максимальный размер загружаемого файла
-/etc/php.ini
-upload_max_filesize = 20M
+настроить /etc/php.ini
+upload_max_filesize = 20M - максимальный размер загружаемого файла
+display_errors = Off - отключить показ php ошибок
 -------------------------------------------------
 
 Установка Composer
