@@ -180,6 +180,11 @@ Background #D2D2FF
 File->Settings->Editor->Color Scheme->General->Caret row
 Background #D2FFD2
 
+Корректная работа Punto Switcher
+File->Settings->Appearance->Behavior->Appearance
+Disable mnemonics in menu
+Disable mnemonics in controls
+
 ------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
 
 Открывать новые вкладки только справа в конце (убрал. неудобно)
@@ -189,8 +194,6 @@ File->Settings->Editor->General->Editor Tabs->Open the tabs at the end
 Ставим галку, чтобы удаляло файлы с хоста, которых нет локально
 File->Settings->Build, Execution, Deployment->Deployment->Options
 "Delete target items when source ones do not exist (when transferring from Project view or Remote Host view)"
-
-//Appearance & Behavior->Appearance->Disable mnemonics in menu (не работает. а нужно чтобы работало с alt+v пунто свитчера)
 
 На табах в редакторе, показывать звездочку что файл не сохранен
 Editor->General->Editor Tabs->Mark modified (*)
