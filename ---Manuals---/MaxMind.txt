@@ -1,4 +1,4 @@
-Установка системы определения страны и города, по IP
+Система определения страны и города, по IP
 https://maxmind.com
 https://github.com/maxmind/GeoIP2-php
 https://maxmind.github.io/GeoIP2-php
@@ -7,7 +7,8 @@ https://github.com/maxmind/MaxMind-DB-Reader-php
 
 1. либу MaxMind-DB-Reader можно поставить через Composer
 curl -sS https://getcomposer.org/installer | php
-php composer.phar require geoip2/geoip2:~2.0
+php composer.phar require geoip2/geoip2
+(это должно доставить и пакет maxmind-db/reader нужный для варианта 2)
 
 
 2. ставим либу MaxMind-DB-Reader как PHP C Extension (быстрее в 6-7 раз чем вариант 1)
@@ -41,13 +42,12 @@ yum search php-maxminddb
 
 
 4. Использование
-- в composer.json бросить строку "geoip2/geoip2": "v2.9.0"
+- в composer.json бросить строку "geoip2/geoip2"
 - на сервере сделать composer update
 - с сайта https://maxmind.com скачать GeoLite2-Country.mmdb и залить на сервер
 
 
 maxmind.php:
-
 <?php
 
 // 1. MaxMind установлен как PHP C Extension
