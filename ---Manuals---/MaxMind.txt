@@ -50,7 +50,7 @@ maxmind.php:
 
 <?php
 
-// TODO вариант 1. MaxMind установлен как PHP C Extension
+// 1. MaxMind установлен как PHP C Extension
 require 'vendor/autoload.php';
 use MaxMind\Db\Reader;
 
@@ -71,7 +71,7 @@ function getisobyip($ip) {
   }
 }
 
-// TODO вариант 2. MaxMind установлен через Composer
+// 2. MaxMind установлен через Composer
 require 'vendor/autoload.php';
 use GeoIp2\Database\Reader;
 
@@ -123,10 +123,9 @@ function getisobyip_debug($ip) {
 - запускать так
 /var/www/html/maxmind/update_GeoLite2_Country_mmdb.sh
 /var/www/html/maxmind/update_GeoLite2_Country_mmdb.sh >> /var/www/html/maxmind/update.log
-- в крон на каждый 1й день месяца (раз в месяц)
+- в крон на каждый 1й день месяца
 0 0 1 * * update_GeoLite2_Country_mmdb.sh
-*/1 * * * * - для тестов раз в минуту
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 #!/bin/sh
 
@@ -157,4 +156,3 @@ rm -f $folder1/GeoLite2-Country.tar.gz
 
 # перезагрузим апач
 systemctl restart httpd.service
----------------------------------------------------------------------------------------------------

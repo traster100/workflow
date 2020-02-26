@@ -143,6 +143,7 @@ yum install php-gd
 настроить /etc/php.ini
 upload_max_filesize = 20M - максимальный размер загружаемого файла
 display_errors = Off - отключить показ php ошибок
+systemctl restart php-fpm
 -------------------------------------------------
 
 Установка Composer
