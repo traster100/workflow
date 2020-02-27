@@ -178,7 +178,7 @@ Background #D2D2FF
 
 Цвет текущей строки
 File->Settings->Editor->Color Scheme->General->Caret row
-Background #D2FFD2
+Background #D2FFD2. Отключил - снял галку
 
 Корректная работа Punto Switcher
 File->Settings->Appearance->Behavior->Appearance
