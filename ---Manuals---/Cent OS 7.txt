@@ -440,3 +440,35 @@ systemctl restart nginx
 systemctl restart php-fpm
 -------------------------------------------------
 
+Команды SSH
+
+посмотреть разделы ФС
+df -h
+
+удалить папку
+cd path/parentfoldername
+rm -rf foldername
+
+удалить файл
+rm filename.txt
+
+размер папки
+du -sh path/foldername
+
+колво файлов в папке
+find path/foldername -type f | wc -l
+-------------------------------------------------
+
+UnZip
+
+посмотреть версию
+unzip -v
+
+посмотреть содержимое архива
+cd path/foldername
+unzip -l archivename.zip
+
+извлечь в папку с названием archivename
+cd path/foldername
+unzip archivename.zip
+-------------------------------------------------
