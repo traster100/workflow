@@ -159,6 +159,10 @@ composer -V
 установить пакет
 composer require nesbot/carbon
 
+установить пакет под конкретной версией PHP
+/opt/php73/bin/php /usr/bin/composer COMMANDNAME
+/opt/php73/bin/php /usr/bin/composer require nesbot/carbon
+
 Если такая установка не сработала, то юзать
 yum install composer
 
