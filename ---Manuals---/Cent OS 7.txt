@@ -472,8 +472,9 @@ unzip -v
 unzip -l /path/folder/archive.zip
 
 извлечь архив
-unzip /path/folder/archive.zip /path/folder/archive/
+unzip /path/folder/archive.zip
+unzip /path/folder/archive.zip -d /path/folder/archive/
 
-заархивировать папку в архив
+папку в архив
 zip -r /path/folder/archive.zip /path/folder/archive/
 -------------------------------------------------
