@@ -475,4 +475,7 @@ unzip -l archivename.zip
 извлечь в папку с названием archivename
 cd path/foldername
 unzip archivename.zip
+
+заархивировать папку в архив
+zip -r path/foldername/archivename.zip path/foldername/archivename/
 -------------------------------------------------
