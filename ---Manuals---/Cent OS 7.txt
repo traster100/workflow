@@ -469,13 +469,11 @@ UnZip
 unzip -v
 
 посмотреть содержимое архива
-cd path/foldername
-unzip -l archivename.zip
+unzip -l /path/folder/archive.zip
 
-извлечь в папку с названием archivename
-cd path/foldername
-unzip archivename.zip
+извлечь архив
+unzip /path/folder/archive.zip /path/folder/archive/
 
 заархивировать папку в архив
-zip -r path/foldername/archivename.zip path/foldername/archivename/
+zip -r /path/folder/archive.zip /path/folder/archive/
 -------------------------------------------------
