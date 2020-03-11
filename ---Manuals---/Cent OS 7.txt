@@ -328,20 +328,24 @@ https://a.pr-cy.ru/domain.com
 
 Правила Cron
 
-Предотвращение двойного запуска задач
+предотвратить двойной запуск задач
 */1 * * * * php index.php >> index.log 2>&1 (2>&1 не даст)
 
-Посмотреть кроны
+посмотреть кроны
 crontab -l
 
-Запустить кроны
+посмотреть конкретный крон
+crontab -l -u filename
+
+запустить кроны
 service cron start
 
-Остановить кроны
+остановить кроны
 service cron stop
 
-Сам файл крон
+сам файл крон
 /var/spool/cron/root
+/var/spool/cron/filename
 
 Правка крона
 crontab -e
