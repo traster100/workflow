@@ -34,9 +34,14 @@ https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended
 https://plugins.jetbrains.com/plugin/201-browsewordatcaret
 Плагин подсвечивающий одинаковые слова
 
+Активировать
+
 Установить кряк, в файле \bin\phpstorm64.exe.vmoptions:
 -javaagent:/fullpath/crack.jar
-Перейти Configure->Manage License->License server->http://jetbrains-license-server
+
+Перейти Configure->Manage License->License server
+http://fls.jetbrains-agent.com
+
 https://rutracker.org/forum/viewtopic.php?t=5764245
 https://zhile.io/2018/08/17/jetbrains-license-server-crack.html
 
