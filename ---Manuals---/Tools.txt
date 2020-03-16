@@ -9,19 +9,20 @@ idea.system.path=${idea.home}/.PhpStorm/system
 
 Запуск \bin\phpstorm64.exe, пробный период
 
-Отключить и удалить плагины, и удалить папки
-Angular and AngularJS (папка \plugins\AngularJS)
-ASP (\plugins\asp)
-Drupal Support (\plugins\drupal)
-Joomla! Support (\plugins\joomla)
-Mercurial (\plugins\hg4idea)
-Vue.js (\plugins\vuejs)
-Vagrant (\plugins\vagrant)
-WordPress Support (\plugins\wordPress)
-Subversion (\plugins\svn4idea)
-PHP Docker (\plugins\phpstorm-docker)
-Docker (\plugins\Docker)
-Twig Support (\plugins\twig)
+Отключить и удалить плагины, и удалить папки в /plugins
+
+Angular and AngularJS (папка AngularJS)
+ASP (asp)
+Drupal Support (drupal)
+Joomla! Support (joomla)
+Mercurial (hg4idea)
+Vue.js (vuejs)
+Vagrant (vagrant)
+WordPress Support (wordPress)
+Subversion (svn4idea)
+PHP Docker (phpstorm-docker)
+Docker (Docker)
+Twig Support (twig)
 
 Поставить плагины
 
