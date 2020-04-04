@@ -17,7 +17,7 @@
 
 Бот работает в связке VK-Telegram. Состоит из 2 частей. Первая часть это бот для VK, его можно добавить в любой чат, и он может читать все сообщения в чате. Вторая часть это бот для Telegram, он занимается тем, что собирает сообщения из чата VK, переводит на английский язык, и пересылает в Telegram. Кроме английского языка, доступны любые другие языки, потому что перевод работает на базе API Google Translate.  
 
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/24.png "Бот-переводчик для Telegram")
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/24_1.png "Бот-переводчик для Telegram")
 
 ## Биржа фриланса для удалённых работников
 
