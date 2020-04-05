@@ -4,11 +4,16 @@ https://github.com/Szaki/XiaomiADBFastbootTools
 Магазин F-Droid
 скачать apk- файл магазина и установить
 
-AnySoftKeyboard — клавиатура
-Timber — аудиопроигрыватель
-DuckDuckGo, Tor Browser — браузер
-VLC — видеопроигрыватель
-Riseup VPN — vpn-клиент
-Files — файловый менеджер
-NetGuard - фаервол с закрытием сети для всех, кроме разрешенных
-Shelter - изоляция закрытых приложений в песочницах
+Приложения
+AnySoftKeyboard клавиатура
+Timber аудиопроигрыватель
+DuckDuckGo, Tor Browser браузер
+VLC видеопроигрыватель
+Riseup VPN vpn-клиент
+Files файловый менеджер
+NetGuard фаервол с закрытием сети для всех, кроме разрешенных
+Shelter изоляция закрытых приложений в песочницах
+
+Для управления с компа
+MyPhoneExplorer
+Vysor
