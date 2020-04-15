@@ -338,21 +338,38 @@ CHROMIUM
 флаг sync - версия с API-ключами для авторизации в гугле
 
 смена путей до профиля, и папки кеша:
+
 смотрим тут chrome://version
 делаем ярлык приложения и там пишем:
-G:\soft\Chromium\chrome.exe --user-data-dir=G:\soft\Chromium\Profile --disk-cache-dir=C:\Users\u\AppData\Local\Temp\ChromiumCache --disable-reading-from-canvas
+G:\soft\Chromium\chrome.exe --user-data-dir=G:\soft\Chromium\Profile --disk-cache-dir=C:\Users\u\AppData\Local\Temp\ChromiumCache
 
-флаг --disable-reading-from-canvas нужен для анонимности. проверка тут:
-https://browserleaks.com/canvas
-https://panopticlick.eff.org
+отключить превьюшки на табах
+флаг в disabled chrome://flags/#tab-hover-cards
 
-отключить превьюшки на табах, флаг в disabled chrome://flags/#tab-hover-cards
-отключить большую панель громкости, флаг в disabled chrome://flags/#hardware-media-key-handling
-включить DNS через HTTPS (DoH), флаг в enabled chrome://flags/#dns-over-https
+отключить большую панель громкости
+флаг в disabled chrome://flags/#hardware-media-key-handling
+
+включить DNS через HTTPS (DoH)
+флаг в enabled chrome://flags/#dns-over-https
 
 Закладка на чистый лист
 data:text/html, <html><textarea style='width:100%; height:100%; font-size: 20px; padding:0; margin:0; border:none; outline:none;'>
 
+Расширения
+
+Canvas Fingerprint Defender
+https://browserleaks.com/canvas
+https://webbrowsertools.com/canvas-fingerprint
+
+Font Fingerprint Defender
+https://webbrowsertools.com/font-fingerprint
+
+WebGL Fingerprint Defender
+https://webbrowsertools.com/webgl-fingerprint
+
+AudioContext Fingerprint Defender
+https://webbrowsertools.com/audiocontext-fingerprint
+-------------------------------------------------
 
 Benchmarking
 console.time('point1');
