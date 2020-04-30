@@ -1,4 +1,4 @@
-# Portfolio
+# Портфолио
 - 10 years of programming experience.
 - Backend: PHP, CodeIgniter, Laravel, MySQL.
 - Frontend: HTML, CSS, jQuery, Bootstrap.
@@ -10,7 +10,7 @@
 - Working time: Monday - Friday, 10:00 - 18:00
 - Timezone: Europe/Moscow UTC+3:00 MSK
 
-# Contacts
+# Контакты
 https://t.me/traster100
 
 # Выполненные работы
