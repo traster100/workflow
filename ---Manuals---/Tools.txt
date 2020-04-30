@@ -239,6 +239,10 @@ Appearance&Behavior->Appearance: Segoe UI 15
 Цвет фона F7FAFF
 Цвет синей полосы CDCDE2
 
+Горячие клавиши
+Shift + F4 - открепить вкладку, когда внутри файла
+Shift + Enter - открепить вкладку, когда на дереве файлов
+
 6. настроить xDebug
 
 Указать путь до php.exe
