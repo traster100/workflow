@@ -10,6 +10,8 @@
 - Working time: Monday - Friday, 10:00 - 18:00
 - Timezone: Europe/Moscow UTC+3:00 MSK
 
+# Contacts
+https://t.me/traster100
 
 # Выполненные работы
 
