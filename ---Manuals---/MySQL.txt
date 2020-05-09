@@ -382,6 +382,20 @@ SELECT * FROM table1 LEFT [RIGHT|FULL] JOIN table2 ON (table1.col1 = table2.col2
 SELECT * FROM table1 LEFT JOIN table2 USING (col1,col2,col3);
 эквивалентно
 SELECT * FROM table1 LEFT JOIN table2 ON (table1.col1 = table2.col1 AND table1.col2 = table2.col2 AND table1.col3 = table2.col3);
+-------------------------------------------------
+
+SELECT *
+FROM table1
+LEFT JOIN table2
+ON table1.id = table2.id;
+
+Будут выбраны все строки из table1 и table2, которые совпадают по условию table1.id = table2.id.
+Плюс все остальные строки из table1, для которых в table2 вставится NULL.
+
+JOIN - вернет всё что строго совпадает
+LEFT JOIN - вернет всё что строго совпадает, плюс всё из левой, забив правое NULL
+RIGHT JOIN - вернет всё что строго совпадает, плюс всё из правой, забив левое NULL
+-------------------------------------------------
 
 В ON() можно юзать все что во WHERE.
 
