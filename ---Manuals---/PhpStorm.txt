@@ -1,13 +1,23 @@
-Скачать отсюда ZIP
+Скачивание
+
+zip
 https://www.jetbrains.com/phpstorm/download/other.html
 
-Чтобы профиль был в папке PhpStorm, в файле \bin\idea.properties:
-idea.config.path=${idea.home}/.PhpStorm/config
-idea.system.path=${idea.home}/.PhpStorm/system
+Делаем портабельным
+\bin\idea.properties
+idea.config.path=${idea.home.path}/.PhpStorm/config
+idea.system.path=${idea.home.path}/.PhpStorm/system
+idea.plugins.path=${idea.config.path}/plugins
+idea.log.path=${idea.system.path}/log
 
-Запуск \bin\phpstorm64.exe, пробный период
+Запуск
+\bin\phpstorm64.exe
+пробный период
+-------------------------------------------------
 
-Отключить и удалить плагины, и удалить папки в /plugins
+Плагины
+
+Сначала отключить, потом удалить, потом удалить сами папки в /plugins
 
 Angular and AngularJS (папка AngularJS)
 ASP (asp)
@@ -22,29 +32,20 @@ PHP Docker (phpstorm-docker)
 Docker (Docker)
 Twig Support (twig)
 
-Поставить плагины
+Поставить
 
-1. Php Inspections EA Extended
-https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended
-Плагин проверки на уязвимости кода, статический анализ
-Отключить сбор статистики Settings->Php Inspections->Automatically collect crash-reports
+Php Inspections EA Extended
+Проверка кода на уязвимость
+Отключить сбор статистики
+File | Settings | Php Inspections (EA Extended)
+Automatically collect crash-reports
 
-2. BrowseWordAtCaret
-https://plugins.jetbrains.com/plugin/201-browsewordatcaret
-Плагин подсвечивающий одинаковые слова
+BrowseWordAtCaret
+Подсветка одинаковых слов
+-------------------------------------------------
 
-Активировать
+Удаление лишнего
 
-Установить кряк, в файле \bin\phpstorm64.exe.vmoptions:
--javaagent:/fullpath/crack.jar
-
-Перейти Configure->Manage License->License server
-http://fls.jetbrains-agent.com
-
-https://rutracker.org/forum/viewtopic.php?t=5764245
-https://zhile.io/2018/08/17/jetbrains-license-server-crack.html
-
-Удалить папки и файлы
 \jbr
 \license
 \help
@@ -54,194 +55,254 @@ https://zhile.io/2018/08/17/jetbrains-license-server-crack.html
 \bin\IdeaWin32.dll
 \bin\jumplistbridge.dll
 \bin\runnerw.exe
+-------------------------------------------------
 
-Отключить обновления
-Appearance & Behavior->System Settings->Updates->Automatically check updates for
+Настройки
 
-Не отправлять статистику использования
-Appearance & Behavior->System Settings->Data Sharing->Send usage statistics
+Отключить обновление
+File | Settings | Appearance & Behavior | System Settings | Updates
+Automatically check updates for
 
-Путь до \bin\git.exe
-Version Control->Git->Path to Git executable
+Не отправлять статистику
+File | Settings | Appearance & Behavior | System Settings | Data Sharing
+Send usage statistics
+
+Путь до git.exe
+File | Settings | Version Control | Git
+Path to Git executable G:\soft\Git\bin\git.exe
+
+Путь до php.exe
+File | Settings | Languages & Frameworks | PHP
+G:\soft\OSPanel\modules\php\PHP-7.2-x64\php.exe
 
 Окончание строки
-Editor->Code Style->Line separator - Unix
+File | Settings | Editor | Code Style
+Line separator - Unix and macOS (\n)
 
-Поправить шаблон создания js-файлов
-Editor->File and Code Templates->JavaScript File
-В начало шаблона написать 'use strict';
+Шаблон JS-файлов
+File | Settings | Editor | File and Code Templates
+JavaScript File
+Написать 'use strict';
 
-Маркеры
-Editor->TODO-> todo, fixme, note
+Маркеры в коде
+File | Settings | Editor | TODO
+\b(NOTE)\b.* Case Sensitive
 
-Путь до \modules\php\PHP-7.2-x64\php.exe
-Languages & Frameworks->PHP
+Попап с браузерами убрать
+File | Settings | Tools | Web Browsers
+Show browser popup in the editor
 
-Попап с браузерами убрать, и выбрать 1 браузер
-Tools->Web Browsers
+Выбрать 1 браузер
+File | Settings | Tools | Web Browsers
+Name Chromium, family Chrome, Path G:\soft\Chromium\chrome.exe
+Default Browser: First Listed
 
-Убрать попап с браузерами
-Tools->Web Browsers->Show browser popup in the editor
+Размер шрифта в редакторе
+File | Settings | Editor | Font
+Size 18
 
-Шрифт в редакторе
-Editor->Font->Size 18
+Размер шрифта в редакторе менять колесом мыши
+File | Settings | Editor | General
+Change font size with Ctrl + Mouse Wheel
 
-Размер шрифта в редакторе, менять колесом мыши
-Editor->General->Change font size (Zoom) with Ctrl+MouseWheel
+Размер шрифта в редакторе менять хоткеями
+File | Settings | Keymap
+Increase Font Size Alt+
+Decrease Font Size Alt-
+Reset Font Size Alt0
 
-Изменение размера шрифта в редакторе
-Increase Font Size, Decrease Font Size, Resent Font Size: Alt+, Alt-, Alt+0
+Вкладка Project
+Open Files with Single Click
+Always Select Opened File
 
-Открытый файл и метод - подсвечен в Project и Structure
-Таб Project->Autoscroll from Source, Autoscroll to Source
-Таб Structure->Autoscroll from Source, Autoscroll to Source
+Вкладка Structure
+Navigate with Single Click
+Always Select Opened Element
 
-Табы в редакторе, показывать в несколько строк
-Editor->General->Editor Tabs->Show tabs in one row
+Табы в редакторе в несколько строк
+File | Settings | Editor | General | Editor Tabs
+Show tabs in one row снять
 
 Перенос текста в редакторе
-Editor->General->Soft-wrap files *.*
+File | Settings | Editor | General
+Soft-wrap these files: *.*
 
-Открывать проекты всегда в отдельном окне
-Appearance & Behavior->System Settings->Open project in new window
+Открывать проекты в отдельном окне
+File | Settings | Appearance & Behavior | System Settings
+Open project in new window
 
-Дефолтовая директория, которая открывается при выборе открытия проекта
-Appearance & Behavior->System Settings->Default directory
+Дефолтовая директория при открытии
+File | Settings | Appearance & Behavior | System Settings
+Default directory G:\domains
 
-Добавить горячие клавиши на комменты (чтобы на русском тоже срабатывало)
-Keymap->Commeent with Line Comment Ctrl+.
-Keymap->Commeent with Block Comment Ctrl+Shift+.
+Удалить хоткеи
+File | Settings | Keymap
+Fold Selection / Remove region: Ctrl+.
+Fold Code Block: Ctrl+Shift+.
 
-Добавить на тулбар кнопки
-Open, Close Project, Push, Deployment, Show History
+Добавить хоткеи
+File | Settings | Keymap
+Comment with Line Comment: Ctrl+/ Ctrl+.
+Comment with Block Comment: Ctrl+Shift+/ Ctrl+Shift+.
+Toggle Full Screen mode: Ctrl+Shift+F11
 
-Отключить верхний тулбар путей до файла
-View->Appearance->Navigation Bar
+Включить тулбар с иконками
+View -> Appearance -> Toolbar
 
-Отключить нижний тулбар хлебных крошек до кода
-Editor->General->Breadcrumbs->Show breadcrumbs
+Выключить тулбар с путями
+View -> Appearance -> Navigation Bar
 
-Отключить подсказки параметров серым цветом, по всему коду
-Editor->General->Appearance->Show parameter names hints
+Выключить тулбар хлебных крошек кода
+File | Settings | Editor | General | Breadcrumbs
+Show breadcrumbs
 
-Увеличить кеш, в файле \bin\phpstorm64.exe.vmoptions
-Было: -Xms128m, -Xmx750m
-Стало: -Xms256m, -Xmx1500m
-Вернул опять на 128 и 750
+Добавить кнопки на тулбаре
+VCS -> Show History
+File -> Open
+File -> Close Project
+VCS -> Git -> Push
+Tools -> Deployment
+Tools -> Deployment -> Upload to Default Server
+Tools -> Deployment -> Sync Local Subtree with Deployed
 
-Создать макрос "Форматировать и Сохранить"
-Edit->Macros->Start Recording запускаем, из меню нажимаем Форматировать и Сохранить. Останавливаем запись. Называем макрос reformat_save. Edit->Macros->Edit Macros смотрим что записалось Action:ReformatCode, Action:SaveAll.
-Тут Keymap->Save All удалить сочетание Ctrl+S.
-Тут Keymap->reformat_save ставим сочетание Ctrl+S.
+Выключить инспекцию проверки грамматики
+File | Settings | Editor | Inspections
+Proofreading
 
-Скобка "{" у класса и метода, на этой же строке
-Editor->Code Style->PHP->Wrapping and Braces->Braces placement->(In class declaration, In function declaration)->End of line
+На табах не показывать расширения файлов
+File | Settings | Editor | General | Editor Tabs
+Show file extension
 
-Убрать инспекцию проверки грамматики слов
-Editor->Inspections->Spelling->Typo
+На табах не показывать крестик
+File | Settings | Editor | General | Editor Tabs
+Close button position -> None
 
-YUI Compressor сжатие CSS и JS
-https://www.jetbrains.com/help/phpstorm/compressing-css.html
-https://www.jetbrains.com/help/phpstorm/minifying-javascript.html
--скачать nodejs.org
--поставить  npm install yuicompressor
--добавить ватчер "YUI Compressor CSS" File->Settings->Tools->File Watchers
--добавить ватчер "YUI Compressor JS" File->Settings->Tools->File Watchers
--для обоих путь до C:\Users\u\node_modules\.bin\yuicompressor.cmd
--сжимает CSS просто в строку, удаляя комменты.
--сжимает JS просто в строку, удаляя комменты, меняет названия переменных.
-
-Добавить горячие клавиши
-Ctrl+Shift+F11 - Full Screen
-
-PhpStorm форматирование
-File->Settings->Editor->Code Style->PHP
-File->Settings->Editor->Code Style->HTML
-File->Settings->Editor->Code Style->JavaScript
-File->Settings->Editor->Code Style->Style Sheets->CSS
-Везде поставил 2
-
-Правильное форматирование комментариев
-File->Settings->Editor->Code Style->PHP -> Line comment in first column
-
-На табах в редакторе, не показывать расширения файлов
-Editor->General->Editor Tabs->Show file extension
-
-На табах в редакторе, не показывать крестик закрытия вкладки
-Editor->General->Editor Tabs->Close button position->None
-
-Маленький шрифт на вкладках
-File->Settings->Editor->General->Editor Tabs->Use small font for labels
-
-Колво вкладок без закрытия самых старых
-File->Settings->Editor->General->Editor Tabs->Tab Limit 50
-
-Цвет закладки
-File->Settings->Editor->Color Scheme->General->Bookmarks
-Background #D2D2FF
+Колво вкладок без закрытия остальных
+File | Settings | Editor | General | Editor Tabs
+Tab Limit 50
 
 Цвет текущей строки
-File->Settings->Editor->Color Scheme->General->Caret row
-Background #D2FFD2. Отключил - снял галку
+File | Settings | Editor | Color Scheme | General
+Editor -> Caret row (Background 210 255 210)
+было FCFAED
+
+Цвет строки закладки
+File | Settings | Editor | Color Scheme | General
+Editor -> Bookmarks (Background: 210 210 255)
+
+На табах звездочка если файл не сохранен
+File | Settings | Editor | General | Editor Tabs
+Mark modified (*)
 
 Корректная работа Punto Switcher
-File->Settings->Appearance->Behavior->Appearance
+File | Settings | Appearance & Behavior | Appearance
 Disable mnemonics in menu
 Disable mnemonics in controls
 
-------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
-
-Открывать новые вкладки только справа в конце (убрал. неудобно)
-File->Settings->Editor->General->Editor Tabs->Open the tabs at the end
-
-Когда синхроним папку Deployment->Synchronize
-Ставим галку, чтобы удаляло файлы с хоста, которых нет локально
-File->Settings->Build, Execution, Deployment->Deployment->Options
-"Delete target items when source ones do not exist (when transferring from Project view or Remote Host view)"
-
-На табах в редакторе, показывать звездочку что файл не сохранен
-Editor->General->Editor Tabs->Mark modified (*)
-
-Appearance & Behavior->Quick Lists->создаем кастомное меню mymenu1
-В Keymap находим mymenu1 и вешаем хоткей Alt+D
+Отключить анимацию появления тулзов в режиме Undock
+File | Settings | Appearance & Behavior | Appearance
+Animate windows
 
 Перенос текста в консоли
-Editor->General->Console->Use soft wraps in console
+File | Settings | Editor | General | Console
+Use soft wraps in console
 
-Горизонтальная линия между методами, в классе
-Editor->General->Appearance->Show method separators
+Попап для кода вне видимости
+File | Settings | Editor | General | Appearance
+Show code lens on scrollbar hover
 
-Тулзы в горизонтальном виде, раскрываются только на ширину редактора
-Appearance & Behaviour->Appearance->Widescreen tool window layout
+Выключить подсказки параметров в коде
+File | Settings | Editor | Inlay Hints
 
-Попап с кодом, который вне видимости, в данном положении (например верхняя скобка)
-Editor->General->Appearance->Show code lens on scrollbar hover
+Форматирование, комментарии
+File | Settings | Editor | Code Style | PHP
+File | Settings | Editor | Code Style | HTML
+File | Settings | Editor | Code Style | JavaScript
+Code Generation -> Line comment in first column
 
-Отключить анимацию появления, тулзов в режиме Undock
-Appearance & Behavior->Appearance->Animate windows
+Форматирование, отступы
+File | Settings | Editor | Code Style | PHP
+File | Settings | Editor | Code Style | HTML
+File | Settings | Editor | Code Style | JavaScript
+File | Settings | Editor | Code Style | Style Sheets
+Tabs and Indents всё на 2
 
-1. в файле \bin\idea.properties:
-Удалить задержку IDE при печатании
-editor.zero.latency.typing=true
+Маленький шрифт на вкладках
+File | Settings | Editor | General | Editor Tabs
+Use small font for labels
 
-2. в файле \bin\phpstorm64.exe.vmoptions
-Сглаживание шрифтов -Dawt.useSystemAAFontSettings=lcd
-Аппаратное ускорение -Dawt.java2d.opengl=true
-Отключение поддержки мониторов HiDPI -Dsun.java2d.uiScale.enabled=false
+Открывать новые вкладки с правого края
+File | Settings | Editor | General | Editor Tabs
+Open new tabs at the end
 
-PHPSTORM цвета в старом редакторе
-Editor->Font: Monospaced 18, 1.0
-Editor->Color Scheme->Console Font: Monospaced 18, 1.0
-Editor->Color Scheme->Color Scheme Font: Monospaced 18, 1.0
-Appearance&Behavior->Appearance: Segoe UI 15
+Горизонтальная линия между методами в классе
+File | Settings | Editor | General | Appearance
+Show method separators
+
+Тулзы открываются горизонтально на всю ширину
+File | Settings | Appearance & Behavior | Appearance
+Widescreen tool window layout
+
+Кастомное меню
+File | Settings | Appearance & Behavior | Quick Lists
+создаем кастомное меню menu1
+в Keymap находим menu1 и вешаем хоткей Alt+D
+
+Скобка { у класса и метода на этой же строке
+File | Settings | Editor | Code Style | PHP
+Wrapping and Braces -> Braces placement: всё на End of line
+-------------------------------------------------
+
+Макрос "Форматировать и Сохранить"
+
+Edit -> Macros -> Start Macro Recording
+Из меню нажимаем Форматировать, Сохранить
+Edit -> Macros -> Stop Macro Recording
+
+Называем макрос reformat_save
+
+Edit -> Macros -> Edit Macros
+Смотрим чтобы записалось Action:ReformatCode, Action:SaveAll
+
+File | Settings | Keymap
+Save All удалить хоткей Ctrl+S
+reformat_save добавить хоткей Ctrl+S
+
+При синхронизации Deployment -> Synchronize несуществующие локально файлы удаляем и с хоста
+File | Settings | Build, Execution, Deployment | Deployment | Options
+Delete target items when source ones do not exist (when transferring from Project view or Remote Host view)
+-------------------------------------------------
+
+YUI Compressor сжатие CSS и JS
+
+https://www.jetbrains.com/help/phpstorm/compressing-css.html
+https://www.jetbrains.com/help/phpstorm/minifying-javascript.html
+
+Скачать и поставить nodejs.org
+Поставить пакет  npm install yuicompressor
+
+File | Settings | Tools | File Watchers
+Добавить ватчер "YUI Compressor CSS"
+Добавить ватчер "YUI Compressor JS"
+Для обоих путь C:\Users\u\node_modules\.bin\yuicompressor.cmd
+
+Сжимает CSS в строку, удаляет комменты.
+Сжимает JS в строку, удаляет комменты, меняет названия переменных.
+-------------------------------------------------
+
+Параметры из старого редактора
+Шрифт Consolas
 Цвет фона F7FAFF
-Цвет синей полосы CDCDE2
+Цвет текущей строки CDCDE2
 
-Горячие клавиши
+Хоткеи
 Shift + F4 - открепить вкладку, когда внутри файла
 Shift + Enter - открепить вкладку, когда на дереве файлов
 
-6. настроить xDebug
+
+
+
+xDebug
 
 Указать путь до php.exe
 Languages & Frameworks->PHP->PHP language level
@@ -327,6 +388,17 @@ Alt+Enter->Check RegExp
 Очистка кода. Разобраться что это
 Code->Code Cleanup
 -------------------------------------------------
+
+Активировать
+
+Установить кряк, в файле \bin\phpstorm64.exe.vmoptions:
+-javaagent:/fullpath/crack.jar
+
+Перейти Configure->Manage License->License server
+http://fls.jetbrains-agent.com
+
+https://rutracker.org/forum/viewtopic.php?t=5764245
+https://zhile.io/2018/08/17/jetbrains-license-server-crack.html
 
 ПРОВЕРКА КОДА НА УЯЗВИМОСТЬ
 
