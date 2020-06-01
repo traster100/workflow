@@ -1,0 +1,171 @@
+Win+R и gpedit.msc
+
+Отключить Windows Defender
+Computer Configuration > Administrative Templates > Windows Components > Windows Defender Antivirus
+-Turn off Windows - в Enabled
+Зайти в диспетчер задач, на вкладку Startup, найти Windows Defender и по правому клику - в Disabled, тогда и иконка пропадёт с трея
+
+Отключить Windows Search
+Computer Configuration > Administrative Templates > Windows Components > Search
+-Do not allow web search - в Enabled
+-Don’t search the web or display web results in Search - в Enabled
+-Don’t search the web or display web result in Search over metered connections - в Enabled
+
+Отключить Windows Telemetry
+Computer Configuration > Administrative Templates > Windows Components > Data Collection and Preview Builds
+-Allow Telemetry - в Disabled
+
+Отключить Windows OneDrive
+Computer Configuration > Administrative Templates > Windows Components > OneDrive
+-Prevent the usage of OneDrive for file storage - в Enabled
+
+Отключить Windows lock screen
+Computer Configuration > Administrative Templates > Control Panel > Personalization
+-Do not display the lock screen - в Enabled
+-------------------------------------------------
+
+Win+R и regedit
+
+Включить Windows Photo Viewer
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations
+И создать строковые параметры
+- с ключом ".png" и значением "PhotoViewer.FileAssoc.Tiff"
+- с ключом ".jpg" и значением "PhotoViewer.FileAssoc.Tiff"
+- с ключом ".jpeg" и значением "PhotoViewer.FileAssoc.Tiff"
+
+Отключить эскизы окон на панели задач
+HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+- создать DWORD-параметр, с ключом ExtendedUIHoverTime и значением 60000
+
+Отключить стрелочки на ярлыках
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer
+клик на Explorer и создать папку Shell Icons
+внутри папки создать String Value, назвать 29
+Если пропали иконки в Проводнике при накатывании бекапа винды - то удалить из реестра и снова создать
+
+Удалить библиотеки из Проводника
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace
+заходим на ветку и удаляем все цифробуквенные папки
+
+По сочетанию Alt+Tab, сделать чтобы только иконки
+HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer
+AltTabSettings DWORD
+0 = Thumbnails
+1 = Classic icons
+-------------------------------------------------
+
+Остановить и отключить службы
+
+AllJoyn Router Service
+BitLocker Drive Encryption Service
+Bluetooth Support Service
+Connected User Experiences and Telemetry
+Diagnostic Policy Service
+Downloaded Maps Manager
+Fax
+File History Service
+Geolocation Service
+Infrared monitor service
+Internet Connection Sharing (ICS)
+Netlogon
+Offline Files
+Parental Controls
+Phone Service
+Portable Device Enumerator Service
+Print Spooler
+Remote Desktop Configuration
+Remote Desktop Services
+Remote Registry
+Retail Demo Service
+Secondary Logon
+Smart Card
+TCP/IP NetBIOS Helper
+Windows Biometric Service
+Windows Defender Firewall
+Windows Error Reporting Service
+Windows Image Acquisition (WIA)
+Windows Insider Service
+Windows Media Player Network Sharing Service
+Windows Mobile Hotspot Service
+Windows Search
+Windows Update
+Xbox Live Auth Manager
+Xbox Live Game Save
+-------------------------------------------------
+
+Отключить телеметрию
+
+В командной строке под администратором:
+sc config DiagTrack start=disabled
+sc stop DiagTrack
+sc stop dmwappushservice
+sc delete DiagTrack
+sc delete dmwappushservice
+-------------------------------------------------
+
+Отключить задачи в Планировщике задач
+
+Win+R и taskschd.msc, далее Microsoft->Windows:
+
+Application Experience: Microsoft Compatibility Appraiser, ProgramDataUpdater, StartupAppTask
+Autochk: Proxy
+Customer Experience Improvement Program: Consolidator, KernelCeipTask, UsbCeip, Microsoft-Windows-DiskDiagnosticDataCollector
+NetTrace: GatherNetworkInfo
+-------------------------------------------------
+
+Оптимизировать
+
+Отключение индексации дисков
+Отключение контроля учетных записей (UAC)
+Отключить восстановление системы и удалить точки восстановления
+Отключение доступа через удаленный помощник
+Дефрагментация раз в неделю по расписанию
+Очистка диска раз в неделю
+На ноуте план питания поставить на Высокая Производительность
+На ноуте в Intel Graphic Control Panel отключить горячие клавиши
+Удалить компоненты: Internet Explorer 11, Work Folders Client, Windows PowerShell 2.0, Microsoft XPS Document Writer
+Ускорение загрузки Windows со всех процессоров (Win+R, msconfig, вкладка Boot, Advanced options -> number of processors: колво процов
+-------------------------------------------------
+
+Программы
+
+Destroy Windows 10 Spying
+новый форк. отключит слежение. самая популярная. открытый код. последняя версия июль 2019.
+https://github.com/Wohlstand/Destroy-Windows-10-Spying/releases
+
+Ashampoo AntiSpy for Windows 10
+трастовый софт. отключит слежение + некоторые настройки
+https://www.ashampoo.com/ru/usd/pin/1004/security-software/Antispy-for-Windows-10
+
+O&O ShutUp10
+хорошее грамотное большое. много настроек. портабельное
+https://www.oo-software.com/en/shutup10
+
+Win10 Privacy
+хорошее грамотное большое. много настроек. 1 файл
+https://www.winprivacy.de
+
+Easy Service Optimizer
+хорошее. портабельное. отключит ненужные службы.
+https://www.sordum.org/8637/easy-service-optimizer-v1-2/
+
+Работа с контекстным меню
+https://www.sordum.org/7615/easy-context-menu-v1-6/ , https://www.sordum.org/10830/sendto-menu-editor-v1-1/
+
+Работа с фаерволом
+https://www.sordum.org/8125/firewall-app-blocker-fab-v1-6/
+-------------------------------------------------
+
+Драйвера
+Если в Диспетчере Устройств написано что драйвер от Микрософт (Manufacturer: Microsoft), то найти драйвер на сайте производителя
+-------------------------------------------------
+
+Всё по винде
+https://remontka.pro/windows-10-page
+-------------------------------------------------
+
+Рабочие столы
+
+Ctrl + Win + D – создать рабочий стол
+Ctrl + Win + F4 – закрыть рабочий стол
+Ctrl + Win + стрелки - сменить рабочий стол

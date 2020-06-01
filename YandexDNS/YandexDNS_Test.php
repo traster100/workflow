@@ -2,8 +2,7 @@
 
 require_once 'vendor/autoload.php';
 require_once 'HTTP/Request2.php';
-$domain = 'tratata.ru';
-
+$domain = 'domain.ru';
 
 //require_once 'HTTP/Request2.php';
 //require_once 'HTTP/Request2/CookieJar.php';

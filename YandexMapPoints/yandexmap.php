@@ -68,7 +68,7 @@
       zoom: 2
     });
 
-//центровка по городам, по клику на ссылках городов
+    //центровка по городам, по клику на ссылках городов
     $('a').click(function () {
       var latlong = $(this).data('latlong');
       latlong = latlong.split(',');
@@ -76,7 +76,7 @@
       return false;
     });
 
-//сетап точек
+    //сетап точек
     for (var i = 0; i < points.length; i++) {
       mymap.geoObjects.add(new ymaps.Placemark(
         points[i].center,

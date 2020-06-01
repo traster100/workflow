@@ -1,0 +1,187 @@
+Скачивание
+
+https://chromium.woolyss.com
+Archive • Marmaduke all-codecs+ sync win64
+
+Проверить архив на VirusTotal
+
+Флаги
+автор - Marmaduke, RobRichavx, Chromium Authors
+widevine - плагин для DRM
+all-codecs - открытые аудио и видео кодеки (H.264 + AAC)
+all-codecs+ - открытые аудио и видео кодеки (H.264 + H.265 + AAC + MPEG-4 + AMR)
+sync - ключи Google API для синхронизации
+no-sync - без ключей Google API для синхронизации
+win64 - версия 64bit
+up-to-date - современная версия как у Chrome
+avx - для новых процессоров с инструкциями AVX
+ungoogled - без интеграции с Google и повышенной конфиденциальностью
+
+Цвет
+зеленый - стабильный релиз
+синий - девелоперский или бета
+желтый - канари
+оранжевый - девелоперский официальный
+-------------------------------------------------
+
+Настройка
+
+смена путей до профиля и кеша
+в ярлыке пишем
+G:\soft\Chromium\chrome.exe --user-data-dir=G:\soft\Chromium\Profile --disk-cache-dir=C:\Users\u\Documents\ChromiumCache
+проверяем тут chrome://version
+
+добавляем русский язык
+chrome://settings/languages
+
+логинимся в аккаунт
+вводим кодовую фразу
+
+отключить превьюшки на табах
+chrome://flags/#tab-hover-cards в disabled
+
+отключить большую панель громкости
+chrome://flags/#hardware-media-key-handling в disabled
+
+включить DNS через HTTPS (DoH)
+chrome://flags/#dns-over-https в enabled
+
+удалить пункт меню "Отправить на устройство"
+Settings - Sync and Google services - Manage sync - Turn off "Open Tabs"
+chrome://settings/syncSetup/advanced
+
+Проходимся по всем настройкам
+-------------------------------------------------
+
+Расширения
+
+Общие настройки для всех расширений
+включено на всех сайтах
+разрешить использование в режиме инкогнито
+разрешить открывать локальные файлы по ссылкам - нет
+
+Список
+AdBlock — лучший блокировщик рекламы
+AudioContext Fingerprint Defender
+Canvas Fingerprint Defender
+Font Fingerprint Defender
+HTTPS Everywhere
+Reedy
+Search the current site (Поиск по сайту)
+WebGL Fingerprint Defender
+WebRTC Leak Prevent
+
+Проходимся по настройкам всех расширений
+Настройка хоткеев
+Все расширения убрать с верхнего-правого тулбара
+
+Проверка FingerPrint
+https://webbrowsertools.com/canvas-fingerprint
+https://webbrowsertools.com/font-fingerprint
+https://webbrowsertools.com/webgl-fingerprint
+https://webbrowsertools.com/audiocontext-fingerprint
+-------------------------------------------------
+
+Консоль
+
+Benchmarking
+console.time('point1');
+//код
+console.timeEnd('point1');
+
+Profiling
+console.profile('point1');
+//код
+console.profileEnd('point1');
+
+Стек вызовов
+console.trace()
+
+Массив в виде таблицы
+console.table([1, 2, 3])
+
+Отследить все события на элементе
+monitorEvents(document.body)
+
+Посмотреть все обработчики событий элемента
+Elements->Event Listeners
+
+Скорость и объём загрузки страницы
+вкладка Network, внизу
+
+Точка останова в js
+слово debugger в коде, или Sources->Ctrl+B
+
+Точка останова в html
+Elements->Dom Breakpoints, ставить точки через правый клик на теге, и потом Break on
+
+Live Edit
+вкладка Sources->Add Folder to Workspace->Map to File System Resource
+
+Копировать ответ запроса
+Network->Copy->Copy Response
+
+Повторить ajax запрос
+Network->Replay XHR
+
+Развернуть всё дерево тегов
+Elements->Alt + клик на стрелку у тега
+
+Фильтры на вкладке Network
+https://developers.google.com/web/tools/chrome-devtools/network/reference#filter
+
+На вкладке Network включить табы
+Method, Scheme, Domain, Cookies, Set Cookies, Cache-Control, Content-Encoding, Last-Modified
+
+Изменить положение панели
+Ctrl+Shift+D
+
+Перемещаться между вкладками
+Ctrl+], Ctrl+[
+
+Очистить консоль
+Ctrl+L
+
+Перевод строки в консоли
+Shift+Enter
+
+Поиск по всем файлам
+Ctrl+Shift+F
+
+Найти действие по названию
+Ctrl+Shift+P
+
+Открыть файл на редактирование, из любой вкладки
+Ctrl+P
+
+Редактирование файлов на лету
+на вкладке Sources правим код, и он сразу работает. После F5 сброс
+Elements->правый клик на пути css или js файла->Reveal in Sources Panel
+
+Показать значения переменных на лету в коде
+Settings->Preferences->Sources->Display variable values inline while debugging
+
+В файле или сниппете выделить код и запустить в консоли
+Ctrl+Shift+E
+
+Цвет CSS-селекторов в панели Elements->Styles
+серые не совпали, черные совпали
+
+Пролистать к элементу html на странице
+Elements->правый клик на теге, и Scroll into view
+
+Посмотреть неиспользуемые участки кода
+Console->Coverage или Console->Source, красным неюзаемые участки js и css
+
+Посмотреть CSS media queries
+включить мобильный вид, далее Show Media Queries в правом верхнем меню
+
+Включить мобильный вид
+Ctrl+Shift+M
+
+Отладка js
+на вкладке Sources, выбирать файлы, ставить точки останова, бегать по коду F10, F11, F8. Справа в подвкладке Event Listener Breakpoints можно выставить события по которым дебагер сам срабатывает
+
+Вкладка Audits
+аудит сайта на тему скорости, доступности, лучших практик, сео
+мануал https://developers.google.com/web/tools/chrome-devtools

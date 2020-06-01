@@ -1,7 +1,7 @@
 <?php
 
-# Блокировка файла
-# php /home/user/folder/LockFile.php
+//Блокировка файла
+//php /home/user/folder/LockFile.php
 
 /*
   LOCK_SH -1 на чтение
@@ -26,33 +26,32 @@
 
 class LockFile {
 
- public function __construct($path) {
-  $this->file = fopen($path, "a"); # открываем файл на запись
- }
+  public function __construct($path) {
+    $this->file = fopen($path, "a"); //открываем файл на запись
+  }
 
- public function lock() {
-  flock($this->file, LOCK_EX);     # блокируем файл на запись
-  #echo 'момент лока: '. date('H:i:s').N;
- }
+  public function lock() {
+    flock($this->file, LOCK_EX);     //блокируем файл на запись
+    #echo 'момент лока: '. date('H:i:s').N;
+  }
 
- public function unlock() {
-  flock($this->file, LOCK_UN);     # разблокировка файла
-  #echo 'момент разлока: '. date('H:i:s').N;
- }
+  public function unlock() {
+    flock($this->file, LOCK_UN);     //разблокировка файла
+    #echo 'момент разлока: '. date('H:i:s').N;
+  }
 
- public function __destruct() {
-  fclose($this->file);
- }
+  public function __destruct() {
+    fclose($this->file);
+  }
 
 }
 
-# Использование
-/*
-  require_once '/home/user/folder/include_path.php'; # МЕНЯЕТСЯ
-  $lockfile=new LockFile('/home/user/folder/posting.lock');
-  $lockfile->lock();
-  echo 'код';sleep(10);
-  $lockfile->unlock();
-  unset($lockfile);
- */
-?>
+//-------------------------------------------------
+
+require_once '/home/user/folder/include_path.php';
+$lockfile = new LockFile('/home/user/folder/posting.lock');
+$lockfile->lock();
+echo 'код';
+sleep(10);
+$lockfile->unlock();
+unset($lockfile);

@@ -1,0 +1,350 @@
+Скачать отсюда ZIP
+https://www.jetbrains.com/phpstorm/download/other.html
+
+Чтобы профиль был в папке PhpStorm, в файле \bin\idea.properties:
+idea.config.path=${idea.home}/.PhpStorm/config
+idea.system.path=${idea.home}/.PhpStorm/system
+
+Запуск \bin\phpstorm64.exe, пробный период
+
+Отключить и удалить плагины, и удалить папки в /plugins
+
+Angular and AngularJS (папка AngularJS)
+ASP (asp)
+Drupal Support (drupal)
+Joomla! Support (joomla)
+Mercurial (hg4idea)
+Vue.js (vuejs)
+Vagrant (vagrant)
+WordPress Support (wordPress)
+Subversion (svn4idea)
+PHP Docker (phpstorm-docker)
+Docker (Docker)
+Twig Support (twig)
+
+Поставить плагины
+
+1. Php Inspections EA Extended
+https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended
+Плагин проверки на уязвимости кода, статический анализ
+Отключить сбор статистики Settings->Php Inspections->Automatically collect crash-reports
+
+2. BrowseWordAtCaret
+https://plugins.jetbrains.com/plugin/201-browsewordatcaret
+Плагин подсвечивающий одинаковые слова
+
+Активировать
+
+Установить кряк, в файле \bin\phpstorm64.exe.vmoptions:
+-javaagent:/fullpath/crack.jar
+
+Перейти Configure->Manage License->License server
+http://fls.jetbrains-agent.com
+
+https://rutracker.org/forum/viewtopic.php?t=5764245
+https://zhile.io/2018/08/17/jetbrains-license-server-crack.html
+
+Удалить папки и файлы
+\jbr
+\license
+\help
+\product-info.json
+\build.txt
+\bin\fsnotifier.exe
+\bin\IdeaWin32.dll
+\bin\jumplistbridge.dll
+\bin\runnerw.exe
+
+Отключить обновления
+Appearance & Behavior->System Settings->Updates->Automatically check updates for
+
+Не отправлять статистику использования
+Appearance & Behavior->System Settings->Data Sharing->Send usage statistics
+
+Путь до \bin\git.exe
+Version Control->Git->Path to Git executable
+
+Окончание строки
+Editor->Code Style->Line separator - Unix
+
+Поправить шаблон создания js-файлов
+Editor->File and Code Templates->JavaScript File
+В начало шаблона написать 'use strict';
+
+Маркеры
+Editor->TODO-> todo, fixme, note
+
+Путь до \modules\php\PHP-7.2-x64\php.exe
+Languages & Frameworks->PHP
+
+Попап с браузерами убрать, и выбрать 1 браузер
+Tools->Web Browsers
+
+Убрать попап с браузерами
+Tools->Web Browsers->Show browser popup in the editor
+
+Шрифт в редакторе
+Editor->Font->Size 18
+
+Размер шрифта в редакторе, менять колесом мыши
+Editor->General->Change font size (Zoom) with Ctrl+MouseWheel
+
+Изменение размера шрифта в редакторе
+Increase Font Size, Decrease Font Size, Resent Font Size: Alt+, Alt-, Alt+0
+
+Открытый файл и метод - подсвечен в Project и Structure
+Таб Project->Autoscroll from Source, Autoscroll to Source
+Таб Structure->Autoscroll from Source, Autoscroll to Source
+
+Табы в редакторе, показывать в несколько строк
+Editor->General->Editor Tabs->Show tabs in one row
+
+Перенос текста в редакторе
+Editor->General->Soft-wrap files *.*
+
+Открывать проекты всегда в отдельном окне
+Appearance & Behavior->System Settings->Open project in new window
+
+Дефолтовая директория, которая открывается при выборе открытия проекта
+Appearance & Behavior->System Settings->Default directory
+
+Добавить горячие клавиши на комменты (чтобы на русском тоже срабатывало)
+Keymap->Commeent with Line Comment Ctrl+.
+Keymap->Commeent with Block Comment Ctrl+Shift+.
+
+Добавить на тулбар кнопки
+Open, Close Project, Push, Deployment, Show History
+
+Отключить верхний тулбар путей до файла
+View->Appearance->Navigation Bar
+
+Отключить нижний тулбар хлебных крошек до кода
+Editor->General->Breadcrumbs->Show breadcrumbs
+
+Отключить подсказки параметров серым цветом, по всему коду
+Editor->General->Appearance->Show parameter names hints
+
+Увеличить кеш, в файле \bin\phpstorm64.exe.vmoptions
+Было: -Xms128m, -Xmx750m
+Стало: -Xms256m, -Xmx1500m
+Вернул опять на 128 и 750
+
+Создать макрос "Форматировать и Сохранить"
+Edit->Macros->Start Recording запускаем, из меню нажимаем Форматировать и Сохранить. Останавливаем запись. Называем макрос reformat_save. Edit->Macros->Edit Macros смотрим что записалось Action:ReformatCode, Action:SaveAll.
+Тут Keymap->Save All удалить сочетание Ctrl+S.
+Тут Keymap->reformat_save ставим сочетание Ctrl+S.
+
+Скобка "{" у класса и метода, на этой же строке
+Editor->Code Style->PHP->Wrapping and Braces->Braces placement->(In class declaration, In function declaration)->End of line
+
+Убрать инспекцию проверки грамматики слов
+Editor->Inspections->Spelling->Typo
+
+YUI Compressor сжатие CSS и JS
+https://www.jetbrains.com/help/phpstorm/compressing-css.html
+https://www.jetbrains.com/help/phpstorm/minifying-javascript.html
+-скачать nodejs.org
+-поставить  npm install yuicompressor
+-добавить ватчер "YUI Compressor CSS" File->Settings->Tools->File Watchers
+-добавить ватчер "YUI Compressor JS" File->Settings->Tools->File Watchers
+-для обоих путь до C:\Users\u\node_modules\.bin\yuicompressor.cmd
+-сжимает CSS просто в строку, удаляя комменты.
+-сжимает JS просто в строку, удаляя комменты, меняет названия переменных.
+
+Добавить горячие клавиши
+Ctrl+Shift+F11 - Full Screen
+
+PhpStorm форматирование
+File->Settings->Editor->Code Style->PHP
+File->Settings->Editor->Code Style->HTML
+File->Settings->Editor->Code Style->JavaScript
+File->Settings->Editor->Code Style->Style Sheets->CSS
+Везде поставил 2
+
+Правильное форматирование комментариев
+File->Settings->Editor->Code Style->PHP -> Line comment in first column
+
+На табах в редакторе, не показывать расширения файлов
+Editor->General->Editor Tabs->Show file extension
+
+На табах в редакторе, не показывать крестик закрытия вкладки
+Editor->General->Editor Tabs->Close button position->None
+
+Маленький шрифт на вкладках
+File->Settings->Editor->General->Editor Tabs->Use small font for labels
+
+Колво вкладок без закрытия самых старых
+File->Settings->Editor->General->Editor Tabs->Tab Limit 50
+
+Цвет закладки
+File->Settings->Editor->Color Scheme->General->Bookmarks
+Background #D2D2FF
+
+Цвет текущей строки
+File->Settings->Editor->Color Scheme->General->Caret row
+Background #D2FFD2. Отключил - снял галку
+
+Корректная работа Punto Switcher
+File->Settings->Appearance->Behavior->Appearance
+Disable mnemonics in menu
+Disable mnemonics in controls
+
+------------------------ДО ЭТОГО МОМЕНТА СДЕЛАЛ
+
+Открывать новые вкладки только справа в конце (убрал. неудобно)
+File->Settings->Editor->General->Editor Tabs->Open the tabs at the end
+
+Когда синхроним папку Deployment->Synchronize
+Ставим галку, чтобы удаляло файлы с хоста, которых нет локально
+File->Settings->Build, Execution, Deployment->Deployment->Options
+"Delete target items when source ones do not exist (when transferring from Project view or Remote Host view)"
+
+На табах в редакторе, показывать звездочку что файл не сохранен
+Editor->General->Editor Tabs->Mark modified (*)
+
+Appearance & Behavior->Quick Lists->создаем кастомное меню mymenu1
+В Keymap находим mymenu1 и вешаем хоткей Alt+D
+
+Перенос текста в консоли
+Editor->General->Console->Use soft wraps in console
+
+Горизонтальная линия между методами, в классе
+Editor->General->Appearance->Show method separators
+
+Тулзы в горизонтальном виде, раскрываются только на ширину редактора
+Appearance & Behaviour->Appearance->Widescreen tool window layout
+
+Попап с кодом, который вне видимости, в данном положении (например верхняя скобка)
+Editor->General->Appearance->Show code lens on scrollbar hover
+
+Отключить анимацию появления, тулзов в режиме Undock
+Appearance & Behavior->Appearance->Animate windows
+
+1. в файле \bin\idea.properties:
+Удалить задержку IDE при печатании
+editor.zero.latency.typing=true
+
+2. в файле \bin\phpstorm64.exe.vmoptions
+Сглаживание шрифтов -Dawt.useSystemAAFontSettings=lcd
+Аппаратное ускорение -Dawt.java2d.opengl=true
+Отключение поддержки мониторов HiDPI -Dsun.java2d.uiScale.enabled=false
+
+PHPSTORM цвета в старом редакторе
+Editor->Font: Monospaced 18, 1.0
+Editor->Color Scheme->Console Font: Monospaced 18, 1.0
+Editor->Color Scheme->Color Scheme Font: Monospaced 18, 1.0
+Appearance&Behavior->Appearance: Segoe UI 15
+Цвет фона F7FAFF
+Цвет синей полосы CDCDE2
+
+Горячие клавиши
+Shift + F4 - открепить вкладку, когда внутри файла
+Shift + Enter - открепить вкладку, когда на дереве файлов
+
+6. настроить xDebug
+
+Указать путь до php.exe
+Languages & Frameworks->PHP->PHP language level
+Languages & Frameworks->PHP->CLI Interpreter
+Рядом должна появится надпись Debugger: Xdebug 2.6.0
+
+в OpenServer сделать закладку на Phpstorm и оттуда его запускать
+
+в Хром поставить плагин для дебага и профилирования https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc
+
+Просмотр логов профилирования
+Tools->Analyze Xdebug Profiler Snapshot
+
+Настройка php.ini
+[Xdebug]
+zend_extension = "%sprogdir%/modules/php/%phpdriver%/ext/php_xdebug.dll"
+xdebug.remote_enable = 1 ;Включение
+xdebug.remote_handler = "dbgp" ;Протокол
+xdebug.remote_host = "localhost" ;Сервер
+xdebug.remote_port = 9000 ;Порт
+xdebug.remote_mode = "req" ;Режим дебага
+xdebug.remote_autostart = 0 ;НЕ стартовать автоматически
+
+xdebug.idekey = "PHPSTORM" ;IDE-кей
+xdebug.file_link_format = phpstorm://open?%f:%l ;чтобы кликать по строкам ошибок в браузере и сразу открывалось в phpstorm
+
+xdebug.auto_trace = 0 ;НЕ включать трассировку
+xdebug.trace_enable_trigger = 1 ;Позволяет включать трассировку на лету из IDE.
+xdebug.trace_output_name = "trace_%H_%R" ;1файл на 1URL
+xdebug.trace_output_dir = "%sprogdir%/userdata/temp/xdebug/"
+
+xdebug.profiler_enable = 0 ;НЕ включать профайлер
+xdebug.profiler_enable_trigger = 1 ;Позволяет включать профайлер на лету из IDE.
+xdebug.profiler_output_name = "profiler_%H_%R" ;1файл на 1URL
+xdebug.profiler_output_dir = "%sprogdir%/userdata/temp/xdebug/"
+
+Работа в PhpStorm
+Step Over выполнение кода построчно, минуя заходы в функции
+Step Into выполнение кода построчно, с заходами в функции
+Step Out выход из текущей функции, к строке кода сразу после неё
+Run to Cursor выполнить до курсора
+Resume Program переход к следующему брекпоинту и потом стоп
+
+Отладочные функции xDebug
+
+Все переменные в текущей области видимости
+xdebug_get_declared_vars()
+
+Трассировка стека до этого момента
+xdebug_get_function_stack()
+
+Трассировка текущего стека функции
+xdebug_print_function_stack()
+
+Глобальные массивы
+xdebug_dump_superglobals()
+
+Все заголовки
+xdebug_get_headers()
+headers_list()
+get_headers()
+
+Все классы
+get_declared_classes()
+
+Все константы
+get_defined_constants(true)
+
+Все функции
+get_defined_functions(true)
+
+Все переменные
+get_defined_vars()
+
+Разное
+
+Поиск дубликатов кода
+Code->Locate Duplicates
+
+Тестирование регулярных выражений внутри preg_*
+Alt+Enter->Check RegExp
+
+Очистка кода. Разобраться что это
+Code->Code Cleanup
+-------------------------------------------------
+
+ПРОВЕРКА КОДА НА УЯЗВИМОСТЬ
+
+1. Плагин PhpStorm "Php Inspections ​(EA Extended)​"
+https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended
+Доки по ошибкам https://github.com/kalessil/phpinspectionsea/tree/master/docs
+Статический анализ
+
+Проверка файла - Alt+Shift+I
+Проверка папки - правый клик на папке, и Inspect Code
+
+Ctrl+Alt+Shift+I - запуск проверки по имени
+Ctrl+Shift+F4 - закрыть результаты проверки
+
+Автоматическое исправление: из окна инспекции, под желтой лампочкой в коде
+
+2. OWASP ZAP
+https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+https://segment.com/blog/hacking-with-a-heads-up-display/
+https://www.youtube.com/channel/UC-3qyzm4f29C12KGp3-12bQ
+Динамический анализ

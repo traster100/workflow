@@ -1,0 +1,21 @@
+Создаем папку
+Создаем репозитарий git init
+Статус git status
+Добавим файл git add filename
+Комитим файл git commit -m 'comment'
+Добавим много файлов git add '*.txt'
+Комитим много файлов git commit -m 'comment'
+Запуск журнала git log
+
+Свяжем локальный и удаленный репозитарий git remote add origin https://github.com/tratata.git
+Пушим git push -u origin master
+Пуллим git pull origin master
+
+Посмотрим изменения git diff HEAD
+Отменим изменения git checkout
+
+Создадим ветку git branch branchname
+Переключимся на ветку git checkout branchname
+Переключимся на главную ветку git checkout master
+Слить ветку с главной веткой git merge branchname
+Удалим ветку git branch -d branchname

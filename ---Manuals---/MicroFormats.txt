@@ -1,0 +1,119 @@
+проверка
+https://search.google.com/structured-data/testing-tool
+https://webmaster.yandex.ru/tools/microtest
+---------------------------------------------------------------------------------------------------
+
+<!--товар-->
+<div itemscope itemtype='http://schema.org/Product'>
+
+  <meta itemprop='productID' content='<?= $v->id ?>'>
+  <meta itemprop='name' content='<?= $v->name ?>'>
+  <meta itemprop='description' content='<?= $v->descr ?>'>
+
+  <link itemprop='image' content="<?= upload_url(); ?>production/<?= $v->img; ?>">
+
+  <a itemprop='url' href="<?= site_url('details/' . $v->url_name) ?>" style='display: none;'>
+    <?= $v->name ?>
+  </a>
+
+  <meta itemprop='category' content='<?= $v->cat_name ?>'>
+
+  <meta itemprop='brand' content='<?= $v->gettery_name ?>'>
+
+  <span itemprop='weight' itemscope itemtype='http://schema.org/QuantitativeValue' style='display: none;'>
+          <span itemprop='value'><?= $v->weight ?></span>
+          <span itemprop='unitCode' title='grams' content='GRM'>g</span>
+  </span>
+
+  <div itemprop='offers' itemscope itemtype='http://schema.org/Offer'>
+    <meta itemprop='price' content='<?= $v->cash ?>'>
+    <meta itemprop='priceCurrency' content='RUR'>
+
+    <!--товар есть-->
+    <?php if ($v->count > 0) { ?>
+    <link itemprop='availability' href='http://schema.org/InStock'>
+    <?php } ?>
+
+    <!--товара нет-->
+    <?php if ($v->count <= 0) { ?>
+    <link itemprop='availability' href='http://schema.org/OutOfStock'>
+    <?php } ?>
+
+  </div>
+
+  <!--предложение-->
+  <div itemprop='offers' itemscope itemtype='http://schema.org/Offer'>
+    <meta itemprop='price' content='999.99'>
+    <meta itemprop='priceCurrency' content='RUR'>
+
+    <!--в наличии-->
+    <link itemprop='availability' href='http://schema.org/InStock'>
+
+    <!--нет в наличии-->
+    <link itemprop='availability' href='http://schema.org/OutOfStock'>
+  </div>
+
+</div>
+---------------------------------------------------------------------------------------------------
+
+<!--рейтинг-->
+<div itemprop='aggregateRating' itemscope itemtype='http://schema.org/AggregateRating'>
+  Рейтинг <span itemprop='ratingValue'>3.5</span>/5
+  На основе <span itemprop='reviewCount'>11</span> голосов
+</div>
+---------------------------------------------------------------------------------------------------
+
+<!--отзыв-->
+<div itemprop='review' itemscope itemtype='http://schema.org/Review'>
+  <span itemprop='name'>Заголовок отзыва</span>
+  <span itemprop='author'>Автор</span>,
+  <meta itemprop='datePublished' content='2011-12-01'>
+  Декабрь 1, 2011
+
+  <div itemprop='reviewRating' itemscope itemtype='http://schema.org/Rating'>
+    <meta itemprop='worstRating' content='1'>
+    минимум
+    <span itemprop='bestRating'>5</span> максимум
+    <span itemprop='ratingValue'>1</span> сколько поставил юзер
+  </div>
+  <span itemprop='description'>текст отзыва</span>
+</div>
+---------------------------------------------------------------------------------------------------
+
+<!--хлебные крошки-->
+<div itemscope itemtype='http://schema.org/BreadcrumbList'>
+
+  <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+    <a itemprop='item' href='https://domain.com'>
+      <span itemprop='name'>Главная</span></a>
+    <meta itemprop='position' content='1'>
+  </div>
+
+  <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+    <a itemprop='item' href='https://domain.com/marazzi'>
+      <span itemprop='name'>КОЛЛЕКЦИИ MARAZZI</span></a>
+    <meta itemprop='position' content='2'>
+  </div>
+
+  <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+    <a itemprop='item' href='https://domain.com/ital'>
+      <span itemprop='name'>Итальянская коллекция</span></a>
+    <meta itemprop='position' content='3'>
+  </div>
+
+</div>
+---------------------------------------------------------------------------------------------------
+
+<!--организация-->
+<div itemscope itemtype='http://schema.org/Organization'>
+  <span itemprop='name'>название</span>
+
+  <div itemprop='address' itemscope itemtype='http://schema.org/PostalAddress'>
+    <span itemprop='streetAddress'>м.Соколиная Гора, пр-т Будённого 27</span>
+    <span itemprop='postalCode'>105275</span>
+    <span itemprop='addressLocality'>Москва</span>
+  </div>
+
+  <span itemprop='telephone'>+7 (495) 120-27-17</span>
+</div>
+---------------------------------------------------------------------------------------------------
