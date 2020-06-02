@@ -1,0 +1,123 @@
+Путь до php.exe
+File | Settings | Languages & Frameworks | PHP
+PHP language level
+CLI Interpreter
+PHP-7.2
+G:\soft\OSPanel\modules\php\PHP-7.2-x64\php.exe
+
+Рядом должна появится надпись Debugger: Xdebug 2.6.0
+-------------------------------------------------
+
+Настройка php.ini
+
+[Xdebug]
+zend_extension = "%sprogdir%/modules/php/%phpdriver%/ext/php_xdebug.dll"
+
+;включение
+xdebug.remote_enable = 1
+
+;протокол
+xdebug.remote_handler = "dbgp"
+
+;сервер
+xdebug.remote_host = "localhost"
+
+;порт
+xdebug.remote_port = 9000
+
+;режим дебага
+xdebug.remote_mode = "req"
+
+;не стартовать отладку автоматически
+xdebug.remote_autostart = 0
+
+;ключ IDE
+xdebug.idekey = "PHPSTORM"
+
+;ссылка для ошибок для открытия в phpstorm
+xdebug.file_link_format = "phpstorm://open?%f:%l"
+
+
+;не включать трассировку
+xdebug.auto_trace = 0
+
+;включать трассировку на лету из IDE
+xdebug.trace_enable_trigger = 1
+
+;формат логов 1 файл на 1 url
+xdebug.trace_output_name = "trace_%H_%R"
+
+;папка логов
+xdebug.trace_output_dir = "%sprogdir%/userdata/temp/xdebug/"
+
+
+;не включать профайлер
+xdebug.profiler_enable = 0
+
+;включать профайлер на лету из IDE
+xdebug.profiler_enable_trigger = 1
+
+;формат логов 1 файл на 1 url
+xdebug.profiler_output_name = "profiler_%H_%R"
+
+;папка логов
+xdebug.profiler_output_dir = "%sprogdir%/userdata/temp/xdebug/"
+-------------------------------------------------
+
+Отладка в PhpStorm
+
+Поставить плагин Xdebug helper
+https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc
+В настройках плагина прописать IDE key PHPSTORM
+
+В меню OpenServer сделать закладку на Phpstorm и оттуда запускать.
+
+Просмотр логов профилирования
+Tools -> Analyze Xdebug Profiler Snapshot
+
+Step Over
+выполнение кода построчно, без заходов в функции
+
+Step Into
+выполнение кода построчно, с заходом в функции
+
+Step Out
+выход из текущей функции, к строке сразу после неё
+
+Run to Cursor
+выполнить до курсора
+
+Resume Program
+переход к следующему брекпоинту и потом стоп
+-------------------------------------------------
+
+Функции xDebug
+
+Все переменные текущей области видимости
+xdebug_get_declared_vars()
+
+Трассировка стека до этого момента
+xdebug_get_function_stack()
+
+Трассировка текущего стека функции
+xdebug_print_function_stack()
+
+Глобальные массивы
+xdebug_dump_superglobals()
+
+Все заголовки
+xdebug_get_headers()
+headers_list()
+get_headers()
+
+Все классы
+get_declared_classes()
+
+Все константы
+get_defined_constants(true)
+
+Все функции
+get_defined_functions(true)
+
+Все переменные
+get_defined_vars()

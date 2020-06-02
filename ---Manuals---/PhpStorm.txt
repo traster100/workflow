@@ -32,16 +32,32 @@ PHP Docker (phpstorm-docker)
 Docker (Docker)
 Twig Support (twig)
 
+
+Выключить но не удалять
+
+Phing
+IDE Settings Sync
+Settings Repository
+CoffeeScript
+
+
 Поставить
+
+BrowseWordAtCaret
+Подсветка одинаковых слов
 
 Php Inspections EA Extended
 Проверка кода на уязвимость
+
 Отключить сбор статистики
 File | Settings | Php Inspections (EA Extended)
 Automatically collect crash-reports
 
-BrowseWordAtCaret
-Подсветка одинаковых слов
+Alt + Shift + I - проверка файла
+Правый клик на папке -> Inspect Code - проверка папки
+Ctrl + Alt + Shift + I - запуск проверки по имени
+Ctrl + Shift + F4 - закрыть результаты проверки
+Из окна инспекции, под желтой лампочкой в коде - автоматическое исправление
 -------------------------------------------------
 
 Удаление лишнего
@@ -73,6 +89,7 @@ Path to Git executable G:\soft\Git\bin\git.exe
 
 Путь до php.exe
 File | Settings | Languages & Frameworks | PHP
+PHP-7.2
 G:\soft\OSPanel\modules\php\PHP-7.2-x64\php.exe
 
 Окончание строки
@@ -94,8 +111,8 @@ Show browser popup in the editor
 
 Выбрать 1 браузер
 File | Settings | Tools | Web Browsers
-Name Chromium, family Chrome, Path G:\soft\Chromium\chrome.exe
-Default Browser: First Listed
+Снять все галки кроме Chrome
+Default Browser: System default
 
 Размер шрифта в редакторе
 File | Settings | Editor | Font
@@ -145,6 +162,7 @@ File | Settings | Keymap
 Comment with Line Comment: Ctrl+/ Ctrl+.
 Comment with Block Comment: Ctrl+Shift+/ Ctrl+Shift+.
 Toggle Full Screen mode: Ctrl+Shift+F11
+Locate Duplicates: Ctrl + Shift + Q
 
 Включить тулбар с иконками
 View -> Appearance -> Toolbar
@@ -183,12 +201,11 @@ Tab Limit 50
 
 Цвет текущей строки
 File | Settings | Editor | Color Scheme | General
-Editor -> Caret row (Background 210 255 210)
-было FCFAED
+Editor -> Caret row (Background 230 255 230)
 
 Цвет строки закладки
 File | Settings | Editor | Color Scheme | General
-Editor -> Bookmarks (Background: 210 210 255)
+Editor -> Bookmarks (Background: 230 230 255)
 
 На табах звездочка если файл не сохранен
 File | Settings | Editor | General | Editor Tabs
@@ -290,133 +307,18 @@ File | Settings | Tools | File Watchers
 Сжимает JS в строку, удаляет комменты, меняет названия переменных.
 -------------------------------------------------
 
-Параметры из старого редактора
-Шрифт Consolas
-Цвет фона F7FAFF
-Цвет текущей строки CDCDE2
-
 Хоткеи
+
 Shift + F4 - открепить вкладку, когда внутри файла
 Shift + Enter - открепить вкладку, когда на дереве файлов
-
-
-
-
-xDebug
-
-Указать путь до php.exe
-Languages & Frameworks->PHP->PHP language level
-Languages & Frameworks->PHP->CLI Interpreter
-Рядом должна появится надпись Debugger: Xdebug 2.6.0
-
-в OpenServer сделать закладку на Phpstorm и оттуда его запускать
-
-в Хром поставить плагин для дебага и профилирования https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc
-
-Просмотр логов профилирования
-Tools->Analyze Xdebug Profiler Snapshot
-
-Настройка php.ini
-[Xdebug]
-zend_extension = "%sprogdir%/modules/php/%phpdriver%/ext/php_xdebug.dll"
-xdebug.remote_enable = 1 ;Включение
-xdebug.remote_handler = "dbgp" ;Протокол
-xdebug.remote_host = "localhost" ;Сервер
-xdebug.remote_port = 9000 ;Порт
-xdebug.remote_mode = "req" ;Режим дебага
-xdebug.remote_autostart = 0 ;НЕ стартовать автоматически
-
-xdebug.idekey = "PHPSTORM" ;IDE-кей
-xdebug.file_link_format = phpstorm://open?%f:%l ;чтобы кликать по строкам ошибок в браузере и сразу открывалось в phpstorm
-
-xdebug.auto_trace = 0 ;НЕ включать трассировку
-xdebug.trace_enable_trigger = 1 ;Позволяет включать трассировку на лету из IDE.
-xdebug.trace_output_name = "trace_%H_%R" ;1файл на 1URL
-xdebug.trace_output_dir = "%sprogdir%/userdata/temp/xdebug/"
-
-xdebug.profiler_enable = 0 ;НЕ включать профайлер
-xdebug.profiler_enable_trigger = 1 ;Позволяет включать профайлер на лету из IDE.
-xdebug.profiler_output_name = "profiler_%H_%R" ;1файл на 1URL
-xdebug.profiler_output_dir = "%sprogdir%/userdata/temp/xdebug/"
-
-Работа в PhpStorm
-Step Over выполнение кода построчно, минуя заходы в функции
-Step Into выполнение кода построчно, с заходами в функции
-Step Out выход из текущей функции, к строке кода сразу после неё
-Run to Cursor выполнить до курсора
-Resume Program переход к следующему брекпоинту и потом стоп
-
-Отладочные функции xDebug
-
-Все переменные в текущей области видимости
-xdebug_get_declared_vars()
-
-Трассировка стека до этого момента
-xdebug_get_function_stack()
-
-Трассировка текущего стека функции
-xdebug_print_function_stack()
-
-Глобальные массивы
-xdebug_dump_superglobals()
-
-Все заголовки
-xdebug_get_headers()
-headers_list()
-get_headers()
-
-Все классы
-get_declared_classes()
-
-Все константы
-get_defined_constants(true)
-
-Все функции
-get_defined_functions(true)
-
-Все переменные
-get_defined_vars()
-
-Разное
-
-Поиск дубликатов кода
-Code->Locate Duplicates
-
-Тестирование регулярных выражений внутри preg_*
-Alt+Enter->Check RegExp
-
-Очистка кода. Разобраться что это
-Code->Code Cleanup
+Alt + Enter -> Check RegExp - тестирование регулярок
 -------------------------------------------------
 
-Активировать
+Поиск ошибок
 
-Установить кряк, в файле \bin\phpstorm64.exe.vmoptions:
--javaagent:/fullpath/crack.jar
+https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+-------------------------------------------------
 
-Перейти Configure->Manage License->License server
-http://fls.jetbrains-agent.com
+Активация
 
 https://rutracker.org/forum/viewtopic.php?t=5764245
-https://zhile.io/2018/08/17/jetbrains-license-server-crack.html
-
-ПРОВЕРКА КОДА НА УЯЗВИМОСТЬ
-
-1. Плагин PhpStorm "Php Inspections ​(EA Extended)​"
-https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended
-Доки по ошибкам https://github.com/kalessil/phpinspectionsea/tree/master/docs
-Статический анализ
-
-Проверка файла - Alt+Shift+I
-Проверка папки - правый клик на папке, и Inspect Code
-
-Ctrl+Alt+Shift+I - запуск проверки по имени
-Ctrl+Shift+F4 - закрыть результаты проверки
-
-Автоматическое исправление: из окна инспекции, под желтой лампочкой в коде
-
-2. OWASP ZAP
-https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
-https://segment.com/blog/hacking-with-a-heads-up-display/
-https://www.youtube.com/channel/UC-3qyzm4f29C12KGp3-12bQ
-Динамический анализ
