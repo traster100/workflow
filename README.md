@@ -2,6 +2,7 @@
 
 - 39 years old
 - 10 years of programming experience
+
 - **Backend**: PHP, CodeIgniter, Laravel, MySQL
 - **Frontend**: HTML, CSS, jQuery, Bootstrap
 - **CMS**: WordPress, PhpBB
