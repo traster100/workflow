@@ -268,6 +268,15 @@ File | Settings | Appearance & Behavior | Quick Lists
 Скобка { у класса и метода на этой же строке
 File | Settings | Editor | Code Style | PHP
 Wrapping and Braces -> Braces placement: всё на End of line
+
+Задать Мастер Пароль
+File | Settings | Appearance & Behavior | System Settings | Passwords
+Database G:\soft\PhpStorm\.PhpStorm\config\c.kdbx
+Set Master Password ***
+
+Добавить GitHub аккаунт
+File | Settings | Version Control | GitHub
+Потом на стартовом окне Get from Version Control
 -------------------------------------------------
 
 Макрос "Форматировать и Сохранить"
@@ -312,6 +321,7 @@ File | Settings | Tools | File Watchers
 Shift + F4 - открепить вкладку, когда внутри файла
 Shift + Enter - открепить вкладку, когда на дереве файлов
 Alt + Enter -> Check RegExp - тестирование регулярок
+Ctrl + Shift + A, Jump - изменить цвет кода
 -------------------------------------------------
 
 Поиск ошибок
