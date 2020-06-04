@@ -70,6 +70,7 @@ Reedy
 Search the current site (Поиск по сайту)
 WebGL Fingerprint Defender
 WebRTC Leak Prevent
+Xdebug helper
 
 Проходимся по настройкам всех расширений
 Настройка хоткеев
