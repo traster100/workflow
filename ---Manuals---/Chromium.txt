@@ -28,7 +28,7 @@ ungoogled - без интеграции с Google и повышенной кон
 
 смена путей до профиля и кеша
 в ярлыке пишем
-G:\soft\Chromium\chrome.exe --user-data-dir=G:\soft\Chromium\Profile --disk-cache-dir=C:\Users\u\Documents\ChromiumCache
+G:\soft\Chromium\chrome.exe --user-data-dir=G:\soft\Chromium\Profile --disk-cache-dir=C:\Users\u\AppData\Local\Temp\ChromiumCache
 проверяем тут chrome://version
 
 добавляем русский язык
@@ -108,7 +108,10 @@ monitorEvents(document.body)
 Elements->Event Listeners
 
 Скорость и объём загрузки страницы
-вкладка Network, внизу
+вкладка Network, внизу:
+DOMContentLoaded - время загрузки DOM-дерева
+Load - страница загружена полностью, со всеми ресурсами
+Load - DOMContentLoaded = время загрузки всех ресурсов
 
 Точка останова в js
 слово debugger в коде, или Sources->Ctrl+B
