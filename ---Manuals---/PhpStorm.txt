@@ -1,6 +1,6 @@
 Скачивание
 
-zip
+Zip
 https://www.jetbrains.com/phpstorm/download/other.html
 
 Делаем портабельным
@@ -32,14 +32,12 @@ PHP Docker (phpstorm-docker)
 Docker (Docker)
 Twig Support (twig)
 
-
 Выключить но не удалять
 
 Phing
 IDE Settings Sync
 Settings Repository
 CoffeeScript
-
 
 Поставить
 
@@ -75,26 +73,10 @@ Ctrl + Shift + F4 - закрыть результаты проверки
 
 Настройки
 
-Отключить обновление
-File | Settings | Appearance & Behavior | System Settings | Updates
-Automatically check updates for
-
-Не отправлять статистику
-File | Settings | Appearance & Behavior | System Settings | Data Sharing
-Send usage statistics
-
-Путь до git.exe
-File | Settings | Version Control | Git
-Path to Git executable G:\soft\Git\bin\git.exe
-
 Путь до php.exe
 File | Settings | Languages & Frameworks | PHP
 PHP-7.2
 G:\soft\OSPanel\modules\php\PHP-7.2-x64\php.exe
-
-Окончание строки
-File | Settings | Editor | Code Style
-Line separator - Unix and macOS (\n)
 
 Шаблон JS-файлов
 File | Settings | Editor | File and Code Templates
@@ -118,16 +100,6 @@ Default Browser: System default
 File | Settings | Editor | Font
 Size 18
 
-Размер шрифта в редакторе менять колесом мыши
-File | Settings | Editor | General
-Change font size with Ctrl + Mouse Wheel
-
-Размер шрифта в редакторе менять хоткеями
-File | Settings | Keymap
-Increase Font Size Alt+
-Decrease Font Size Alt-
-Reset Font Size Alt0
-
 Вкладка Project
 Open Files with Single Click
 Always Select Opened File
@@ -136,14 +108,6 @@ Always Select Opened File
 Navigate with Single Click
 Always Select Opened Element
 
-Табы в редакторе в несколько строк
-File | Settings | Editor | General | Editor Tabs
-Show tabs in one row снять
-
-Перенос текста в редакторе
-File | Settings | Editor | General
-Soft-wrap these files: *.*
-
 Открывать проекты в отдельном окне
 File | Settings | Appearance & Behavior | System Settings
 Open project in new window
@@ -151,6 +115,25 @@ Open project in new window
 Дефолтовая директория при открытии
 File | Settings | Appearance & Behavior | System Settings
 Default directory G:\domains
+
+Задать Мастер Пароль
+File | Settings | Appearance & Behavior | System Settings | Passwords
+Database G:\soft\PhpStorm\.PhpStorm\config\c.kdbx
+Set Master Password ***
+
+Отключить обновление
+File | Settings | Appearance & Behavior | System Settings | Updates
+Automatically check updates for
+
+Не отправлять статистику
+File | Settings | Appearance & Behavior | System Settings | Data Sharing
+Send usage statistics
+
+Размер шрифта в редакторе менять хоткеями
+File | Settings | Keymap
+Increase Font Size Alt+
+Decrease Font Size Alt-
+Reset Font Size Alt0
 
 Удалить хоткеи
 File | Settings | Keymap
@@ -170,10 +153,6 @@ View -> Appearance -> Toolbar
 Выключить тулбар с путями
 View -> Appearance -> Navigation Bar
 
-Выключить тулбар хлебных крошек кода
-File | Settings | Editor | General | Breadcrumbs
-Show breadcrumbs
-
 Добавить кнопки на тулбаре
 VCS -> Show History
 File -> Open
@@ -187,6 +166,22 @@ Tools -> Deployment -> Sync Local Subtree with Deployed
 File | Settings | Editor | Inspections
 Proofreading
 
+Размер шрифта в редакторе менять колесом мыши
+File | Settings | Editor | General
+Change font size with Ctrl + Mouse Wheel
+
+Перенос текста в редакторе
+File | Settings | Editor | General
+Soft-wrap these files: *.*
+
+Выключить тулбар хлебных крошек кода
+File | Settings | Editor | General | Breadcrumbs
+Show breadcrumbs
+
+Табы в редакторе в несколько строк
+File | Settings | Editor | General | Editor Tabs
+Show tabs in one row снять
+
 На табах не показывать расширения файлов
 File | Settings | Editor | General | Editor Tabs
 Show file extension
@@ -199,6 +194,18 @@ Close button position -> None
 File | Settings | Editor | General | Editor Tabs
 Tab Limit 50
 
+На табах звездочка если файл не сохранен
+File | Settings | Editor | General | Editor Tabs
+Mark modified (*)
+
+Маленький шрифт на вкладках
+File | Settings | Editor | General | Editor Tabs
+Use small font for labels
+
+Открывать новые вкладки с правого края
+File | Settings | Editor | General | Editor Tabs
+Open new tabs at the end
+
 Цвет текущей строки
 File | Settings | Editor | Color Scheme | General
 Editor -> Caret row (Background 230 255 230)
@@ -206,10 +213,6 @@ Editor -> Caret row (Background 230 255 230)
 Цвет строки закладки
 File | Settings | Editor | Color Scheme | General
 Editor -> Bookmarks (Background: 230 230 255)
-
-На табах звездочка если файл не сохранен
-File | Settings | Editor | General | Editor Tabs
-Mark modified (*)
 
 Корректная работа Punto Switcher
 File | Settings | Appearance & Behavior | Appearance
@@ -220,16 +223,24 @@ Disable mnemonics in controls
 File | Settings | Appearance & Behavior | Appearance
 Animate windows
 
+Тулзы открываются горизонтально на всю ширину
+File | Settings | Appearance & Behavior | Appearance
+Widescreen tool window layout
+
+В титле окна полный путь до файла
+File | Settings | Appearance & Behavior | Appearance
+Always show full paths in window header
+
 Перенос текста в консоли
 File | Settings | Editor | General | Console
 Use soft wraps in console
 
-Попап для кода вне видимости
-File | Settings | Editor | General | Appearance
-Show code lens on scrollbar hover
-
 Выключить подсказки параметров в коде
 File | Settings | Editor | Inlay Hints
+
+Окончание строки
+File | Settings | Editor | Code Style
+Line separator - Unix and macOS (\n)
 
 Форматирование, комментарии
 File | Settings | Editor | Code Style | PHP
@@ -244,35 +255,26 @@ File | Settings | Editor | Code Style | JavaScript
 File | Settings | Editor | Code Style | Style Sheets
 Tabs and Indents всё на 2
 
-Маленький шрифт на вкладках
-File | Settings | Editor | General | Editor Tabs
-Use small font for labels
+Скобка { у класса и метода на этой же строке
+File | Settings | Editor | Code Style | PHP
+Wrapping and Braces -> Braces placement: всё на End of line
 
-Открывать новые вкладки с правого края
-File | Settings | Editor | General | Editor Tabs
-Open new tabs at the end
+Попап для кода вне видимости
+File | Settings | Editor | General | Appearance
+Show code lens on scrollbar hover
 
 Горизонтальная линия между методами в классе
 File | Settings | Editor | General | Appearance
 Show method separators
-
-Тулзы открываются горизонтально на всю ширину
-File | Settings | Appearance & Behavior | Appearance
-Widescreen tool window layout
 
 Кастомное меню
 File | Settings | Appearance & Behavior | Quick Lists
 создаем кастомное меню menu1
 в Keymap находим menu1 и вешаем хоткей Alt+D
 
-Скобка { у класса и метода на этой же строке
-File | Settings | Editor | Code Style | PHP
-Wrapping and Braces -> Braces placement: всё на End of line
-
-Задать Мастер Пароль
-File | Settings | Appearance & Behavior | System Settings | Passwords
-Database G:\soft\PhpStorm\.PhpStorm\config\c.kdbx
-Set Master Password ***
+Путь до git.exe
+File | Settings | Version Control | Git
+Path to Git executable G:\soft\Git\bin\git.exe
 
 Добавить GitHub аккаунт
 File | Settings | Version Control | GitHub
@@ -320,6 +322,7 @@ File | Settings | Tools | File Watchers
 
 Shift + F4 - открепить вкладку, когда внутри файла
 Shift + Enter - открепить вкладку, когда на дереве файлов
+
 Alt + Enter -> Check RegExp - тестирование регулярок
 Ctrl + Shift + A, Jump - изменить цвет кода
 -------------------------------------------------

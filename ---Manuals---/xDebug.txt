@@ -11,57 +11,30 @@ G:\soft\OSPanel\modules\php\PHP-7.2-x64\php.exe
 Настройка php.ini
 
 [Xdebug]
-zend_extension = "%sprogdir%/modules/php/%phpdriver%/ext/php_xdebug.dll"
 
-;включение
-xdebug.remote_enable = 1
+xdebug.default_enable = on
 
-;протокол
-xdebug.remote_handler = "dbgp"
+xdebug.remote_enable = on ;включение
+xdebug.remote_handler = "dbgp" ;протокол
+xdebug.remote_host = "localhost" ;сервер
+xdebug.remote_port = 9000 ;порт
+xdebug.remote_mode = "req" ;режим дебага. req коннект каждый раз, jit только на ошибках
 
-;сервер
-xdebug.remote_host = "localhost"
+xdebug.remote_autostart = off ;не стартовать отладку автоматически
+xdebug.idekey = "PHPSTORM" ;ключ IDE
+xdebug.file_link_format = "phpstorm://open?%f:%l" ;ссылка для ошибок для открытия в phpstorm
 
-;порт
-xdebug.remote_port = 9000
+;Трассировка
+xdebug.auto_trace = off ;не включать
+xdebug.trace_enable_trigger = on ;включать на лету из IDE
+xdebug.trace_output_name = "trace_%H_%R" ;формат логов 1 файл на 1 url
+xdebug.trace_output_dir = "%sprogdir%/userdata/temp/xdebug/" ;папка логов
 
-;режим дебага
-xdebug.remote_mode = "req"
-
-;не стартовать отладку автоматически
-xdebug.remote_autostart = 0
-
-;ключ IDE
-xdebug.idekey = "PHPSTORM"
-
-;ссылка для ошибок для открытия в phpstorm
-xdebug.file_link_format = "phpstorm://open?%f:%l"
-
-
-;не включать трассировку
-xdebug.auto_trace = 0
-
-;включать трассировку на лету из IDE
-xdebug.trace_enable_trigger = 1
-
-;формат логов 1 файл на 1 url
-xdebug.trace_output_name = "trace_%H_%R"
-
-;папка логов
-xdebug.trace_output_dir = "%sprogdir%/userdata/temp/xdebug/"
-
-
-;не включать профайлер
-xdebug.profiler_enable = 0
-
-;включать профайлер на лету из IDE
-xdebug.profiler_enable_trigger = 1
-
-;формат логов 1 файл на 1 url
-xdebug.profiler_output_name = "profiler_%H_%R"
-
-;папка логов
-xdebug.profiler_output_dir = "%sprogdir%/userdata/temp/xdebug/"
+;Профайлер
+xdebug.profiler_enable = 0 ;не включать
+xdebug.profiler_enable_trigger = 1 ;включать на лету из IDE
+xdebug.profiler_output_name = "profiler_%H_%R" ;формат логов 1 файл на 1 url
+xdebug.profiler_output_dir = "%sprogdir%/userdata/temp/xdebug/" ;папка логов
 -------------------------------------------------
 
 Отладка в PhpStorm
