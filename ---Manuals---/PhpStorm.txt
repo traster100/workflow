@@ -306,8 +306,11 @@ YUI Compressor сжатие CSS и JS
 https://www.jetbrains.com/help/phpstorm/compressing-css.html
 https://www.jetbrains.com/help/phpstorm/minifying-javascript.html
 
-Скачать и поставить nodejs.org
-Поставить пакет  npm install yuicompressor
+Поставить nodejs.org
+
+Поставить пакет
+Node.js command prompt
+npm install yuicompressor
 
 File | Settings | Tools | File Watchers
 Добавить ватчер "YUI Compressor CSS"
