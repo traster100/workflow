@@ -129,31 +129,32 @@ NetTrace: GatherNetworkInfo
 
 Программы
 
+O&O ShutUp10 (применил на ноуте)
+https://www.oo-software.com/en/shutup10
+Один файл exe. Очень много настроек.
+Защита конфиденциальности данных, История активности и клипборд, Конфиденциальность приложений, Настройка параметров безопастности, Microsoft Edge (Браузер), Синхронизация настроек Windows, Cortana, Управление службами определения местоположения, Предотвращение передачи пользовательских и диагностических данных, Управление обновлениями Windows, Проводник Windows, Windows Defender и Microsoft SpyNet, Экран блокировки, Другие настройки: Отключить всё.
+
+Win10 Privacy (применил на компе)
+https://www.winprivacy.de
+Немецкая программа. Серые галки это значения по-умолчанию. Как было. Как напоминание. Если стоит знак "!!" то это требует админских прав. Поэтому прогу лучше запускать под админом. Очень много настроек. Без перевода.
+Privacy, Apps, Search, Network, Services, Edge, Internet Explorer, OneDrive, Background-Apps: Все галки
+Telemetry все желтые и зеленые галки
+Explorer вручную глазами
+Tasks все зеленые галки
+Tweaks, Firewall не трогаем
+User-Apps, System-Apps !ATTENTION! все галки кроме Calculator
+
+Easy Service Optimizer (применил на компе)
+https://www.sordum.org/8637/easy-service-optimizer-v1-2/
+Отключит ненужные службы. Служб маловато. Всего 4 списка (Default, Safe, Tweaked, Extreme). Запустил Safe.
+
+Firewall App Blocker (применил на компе)
+https://www.sordum.org/8125/firewall-app-blocker-fab-v1-6/
+Фаерволл. Блокирует программы и процессы. По клику в контекстном меню. Режим белого списка "заблокированы все, кроме выбранных". Портабельный.
+
 Destroy Windows 10 Spying
 новый форк. отключит слежение. самая популярная. открытый код. последняя версия июль 2019.
 https://github.com/Wohlstand/Destroy-Windows-10-Spying/releases
-
-Ashampoo AntiSpy for Windows 10
-трастовый софт. отключит слежение + некоторые настройки
-https://www.ashampoo.com/ru/usd/pin/1004/security-software/Antispy-for-Windows-10
-
-O&O ShutUp10
-хорошее грамотное большое. много настроек. портабельное
-https://www.oo-software.com/en/shutup10
-
-Win10 Privacy
-хорошее грамотное большое. много настроек. 1 файл
-https://www.winprivacy.de
-
-Easy Service Optimizer
-хорошее. портабельное. отключит ненужные службы.
-https://www.sordum.org/8637/easy-service-optimizer-v1-2/
-
-Работа с контекстным меню
-https://www.sordum.org/7615/easy-context-menu-v1-6/ , https://www.sordum.org/10830/sendto-menu-editor-v1-1/
-
-Работа с фаерволом
-https://www.sordum.org/8125/firewall-app-blocker-fab-v1-6/
 -------------------------------------------------
 
 Драйвера
