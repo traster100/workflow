@@ -1,0 +1,115 @@
+<!--
+Карты Leaflet
+
+https://leafletjs.com
+
+Гитхаб (нет итогового js файла)
+https://github.com/Leaflet/Leaflet
+
+Скачал отсюда (работает)
+https://unpkg.com/leaflet@1.6.0/dist/leaflet.css
+https://unpkg.com/leaflet@1.6.0/dist/leaflet.js
+
+Скачивать архивом отсюда (итого скачал отсюда)
+https://leafletjs.com/download.html
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>Leaflet</title>
+
+  <!--стили -->
+  <link rel='stylesheet' href='leaflet.css'>
+
+  <!--скрипт-->
+  <script src='leaflet.js'></script>
+
+  <!--размер карты-->
+  <style type='text/css'>
+    #mapid {
+      width: 600px;
+      height: 400px;
+    }
+  </style>
+
+</head>
+<body>
+
+<!--блок карты-->
+<div id='mapid'></div>
+
+<!--скрипт исполнения-->
+<script>
+
+  //стартовые координаты центра карты
+  var coordinates = [55.574421, 37.470664];
+
+  //зум карты
+  var zoom = 18;
+
+  //старт карты
+  var mymap = L.map('mapid').setView(coordinates, zoom);
+
+  //-------------------------------------------------
+
+  //добавим поставщика самой карты
+  L.tileLayer(
+    'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
+    {
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      tileSize: 512,
+      zoomOffset: -1
+    }
+  ).addTo(mymap);
+
+  //-------------------------------------------------
+
+  //создадим иконку маркера
+  var markericon = L.icon({
+    iconUrl: 'icon.png', // иконка. ее левый верхний угол именно на точке
+    iconSize: [32, 32], // размер иконки
+    iconAnchor: [16, 16], // положение маркера, относительно точки
+    popupAnchor: [0, -16] // положение попапа, относительно точки
+  });
+
+
+  //добавим маркер
+  L.marker(coordinates, {icon: markericon})
+    .addTo(mymap)
+    .bindPopup('<b>Заголовок</b><br>Сам текст');
+
+
+  //клик на карту добавляет маркер
+  function onMapClick(e) {
+
+    //удалим старые маркеры
+    markers.clearLayers();
+
+    //добавим маркер
+    L.marker(e.latlng, {icon: markericon})
+      .addTo(mymap)
+      .bindPopup('<b>Новая точка</b><br>');
+
+    //добавим попап при клике
+    L.popup()
+      .setLatLng(e.latlng)
+      .setContent('lat "' + e.latlng.lat + '"' + ', lng ' + '"' + e.latlng.lng + '"')
+      .openOn(mymap);
+
+    //короткие координаты
+    console.log(e.latlng.toString());
+
+    //длинные координаты (их берем для большей точности. Хотя короткие работают с такой же точностью)
+    console.log('LatLng(' + e.latlng.lat + ', ' + e.latlng.lng + ')');
+  }
+
+  //добавим событие клика на карту
+  mymap.on('click', onMapClick);
+
+</script>
+
+</body>
+</html>
