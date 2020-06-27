@@ -19,7 +19,7 @@
 
 Реализация рендеринга карты OpenStreetMap через javascript-библиотеку LeafletJS. Установка маркеров с названием и попапом. Вывод одного или нескольких маркеров на карту. Центрирование. Прослушивание событий.
   
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/27.png "Вывод карты OpenStreetMap через библиотеку Leaflet")
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/27.gif "Вывод карты OpenStreetMap через библиотеку Leaflet")
 
 ## Яндекс-карты, вывод городов и адресов на карту
 
