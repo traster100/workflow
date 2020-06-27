@@ -81,8 +81,12 @@ SELECT TIME_FORMAT (foo_hour, '% H:% i');
 `created` TIMESTAMP
 
 Для цен
-`price` INT, NOT NULL, 0 - целое
-`price` DECIMAL(12,2), NOT NULL, 0 - с запятой
+`price` INT, NOT NULL, (0 - целое)
+`price` DECIMAL(12,2), NOT NULL, (0 - с запятой)
+
+DECIMAL(precision, scale)
+precision - максимальное количество цифр, которое может хранить число (от 1 до 65). общее количество знаков в числе с учетом дробной части.
+scale - максимальное количество цифр, которые может содержать число после запятой (от 0 до precision). количество знаков в дробной части.
 
 Для больших чисел
 `order_id` BIGINT(20)
