@@ -15,11 +15,11 @@
 
 # Выполненные работы
 
-## Вывод карты OpenStreetMap через библиотеку Leaflet
+## Работа с картой OpenStreetMap через библиотеку Leaflet
 
-Реализация рендеринга карты OpenStreetMap через javascript-библиотеку LeafletJS. Установка маркеров с названием и попапом. Вывод одного или нескольких маркеров на карту. Центрирование. Прослушивание событий.
+Реализация рендеринга карты OpenStreetMap через javascript-библиотеку Leaflet. Установка маркеров с названием и попапом. Вывод одного или нескольких маркеров на карту. Центрирование карты. Масштаб на маркер. Кастомизированные иконки маркеров. Прослушивание событий. Удаление маркеров. Поле поиска. Нечеткий поиск. Автодополнение при поиске. Библиотеки Leaflet, Esri-Leaflet, Esri-Leaflet-Geocoder.
   
-![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/27.gif "Вывод карты OpenStreetMap через библиотеку Leaflet")
+![alt text](https://github.com/traster100/workflow/blob/master/Portfolio/imgs/27.gif "Работа с картой OpenStreetMap через библиотеку LeafletJS")
 
 ## Яндекс-карты, вывод городов и адресов на карту
 
