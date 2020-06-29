@@ -1,60 +1,97 @@
-<!--
-Карты Leaflet
-
-https://leafletjs.com
-
-Гитхаб (нет итогового js файла)
-https://github.com/Leaflet/Leaflet
-
-Скачал отсюда (работает)
-https://unpkg.com/leaflet@1.6.0/dist/leaflet.css
-https://unpkg.com/leaflet@1.6.0/dist/leaflet.js
-
-Скачивать архивом отсюда (итого скачал отсюда)
-https://leafletjs.com/download.html
--->
-
 <!DOCTYPE html>
 <html>
 <head>
 
   <title>Leaflet</title>
 
-  <!--стили -->
-  <link rel='stylesheet' href='leaflet.css'>
+  <!-- Leaflet
+    https://leafletjs.com
+    https://github.com/Leaflet/Leaflet
+    https://leafletjs.com/download.html
+  -->
+  <link href='/leaflet/leaflet.css' rel='stylesheet'>
+  <script src='/leaflet/leaflet.js'></script>
 
-  <!--скрипт-->
-  <script src='leaflet.js'></script>
+  <!-- Esri
+  https://github.com/Esri/esri-leaflet
+  https://github.com/Esri/esri-leaflet/releases
+  https://esri.github.io/esri-leaflet/examples
+  -->
+  <script src='/esri/esri-leaflet.js'></script>
 
-  <!--размер карты-->
+  <!-- Geocoder
+  https://github.com/Esri/esri-leaflet-geocoder
+  https://github.com/Esri/esri-leaflet-geocoder/releases
+  https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=moscow
+  -->
+  <link href='/geocoder/esri-leaflet-geocoder.css' rel='stylesheet'>
+  <script src='/geocoder/esri-leaflet-geocoder.js'></script>
+
   <style type='text/css'>
+    /*размер карты*/
     #mapid {
       width: 600px;
       height: 400px;
     }
-  </style>
 
+    /*скроем копирайт на карте*/
+    .leaflet-bottom.leaflet-right {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
 <!--блок карты-->
 <div id='mapid'></div>
 
-<!--скрипт исполнения-->
 <script>
 
-  //стартовые координаты центра карты
-  var coordinates = [55.574421, 37.470664];
-
-  //зум карты
-  var zoom = 18;
-
-  //старт карты
+  // Старт карты
+  var coordinates = [42.342305, 12.650757]; // стартовые координаты
+  var zoom = 18; // зум
   var mymap = L.map('mapid').setView(coordinates, zoom);
 
   //-------------------------------------------------
 
-  //добавим поставщика самой карты
+  // Поиск
+
+  // поле поиска
+  var searchControl = L.esri.Geocoding.geosearch(
+    {
+      position: 'topright', // позиция кнопки поиска
+      useMapBounds: false, // границы карты для фильтрации поиска (false, от 1 до 12)
+      expanded: true, // поле поиска всегда раскрыто
+      placeholder: 'Поиск' // слово внутри поля поиска
+    }
+  ).addTo(mymap);
+
+  // слой для результатов
+  var results = new L.LayerGroup().addTo(mymap);
+
+  // прослушивание результатов и добавление на карту
+  searchControl.on('results', function (data) {
+
+    //удалим все старые маркеры со слоя результатов
+    results.clearLayers();
+
+    //удалим все старые маркеры со всех слоёв
+    mymap.eachLayer(function (layer) {
+      //главный слой карты и маркеры лежат в layer. определяем по наличию свойства dragging что это маркеры
+      if (layer.dragging) {
+        mymap.removeLayer(layer);
+      }
+    });
+
+    //добавим результаты
+    for (var i = data.results.length - 1; i >= 0; i--) {
+      results.addLayer(L.marker(data.results[i].latlng));
+    }
+  });
+
+  //-------------------------------------------------
+
+  //добавим поставщика карты
   L.tileLayer(
     'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
     {
@@ -79,31 +116,37 @@ https://leafletjs.com/download.html
   //добавим маркер
   L.marker(coordinates, {icon: markericon})
     .addTo(mymap)
-    .bindPopup('<b>Заголовок</b><br>Сам текст');
+    .bindPopup('<b>Заголовок</b><br>Описание');
 
+  //-------------------------------------------------
 
   //клик на карту добавляет маркер
   function onMapClick(e) {
 
-    //удалим старые маркеры
-    markers.clearLayers();
+    //удалим все старые маркеры
+    mymap.eachLayer(function (layer) {
+      //главный слой карты и маркеры лежат в layer. определяем по наличию свойства dragging что это маркеры
+      if (layer.dragging) {
+        mymap.removeLayer(layer);
+      }
+    });
 
     //добавим маркер
     L.marker(e.latlng, {icon: markericon})
       .addTo(mymap)
       .bindPopup('<b>Новая точка</b><br>');
 
-    //добавим попап при клике
+    //добавим попап при установке маркера
     L.popup()
       .setLatLng(e.latlng)
-      .setContent('lat "' + e.latlng.lat + '"' + ', lng ' + '"' + e.latlng.lng + '"')
+      .setContent(e.latlng.toString())
       .openOn(mymap);
 
     //короткие координаты
     console.log(e.latlng.toString());
 
-    //длинные координаты (их берем для большей точности. Хотя короткие работают с такой же точностью)
-    console.log('LatLng(' + e.latlng.lat + ', ' + e.latlng.lng + ')');
+    //длинные координаты
+    console.log(e.latlng.lat, e.latlng.lng);
   }
 
   //добавим событие клика на карту
