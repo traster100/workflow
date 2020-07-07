@@ -45,7 +45,7 @@ BrowseWordAtCaret
 Подсветка одинаковых слов
 
 Php Inspections EA Extended
-Проверка кода на уязвимость
+Проверка кода на уязвимость. Статический анализ кода.
 
 Отключить сбор статистики
 File | Settings | Php Inspections (EA Extended)
@@ -328,7 +328,7 @@ Alt + Enter -> Check RegExp - тестирование регулярок
 Ctrl + Shift + A, Jump - изменить цвет кода
 -------------------------------------------------
 
-Поиск ошибок
+Поиск ошибок. Динамический анализ кода.
 
 https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 -------------------------------------------------
