@@ -5,6 +5,7 @@ H1 с разными шрифтами под разные экраны
   font-weight: 300;
 }
 
+/*для экранов от 768px и больше*/
 @media (min-width: 768px) {
   .h_response {
     font-size: 3rem;
