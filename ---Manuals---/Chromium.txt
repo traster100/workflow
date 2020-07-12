@@ -71,6 +71,7 @@ Search the current site (Поиск по сайту)
 WebGL Fingerprint Defender
 WebRTC Leak Prevent
 Xdebug helper
+Random User-Agent
 
 Проходимся по настройкам всех расширений
 Настройка хоткеев
