@@ -15,3 +15,7 @@ H1 с разными шрифтами под разные экраны
 
 Безопастные веб-шрифты
 https://www.cssfontstack.com
+
+HTML якорь
+<a href='/full/path/to/page.php#ahchor1'>Ссылка с якорем</a>
+<h1 id='ahchor1'>Место куда перекинет</h1>
