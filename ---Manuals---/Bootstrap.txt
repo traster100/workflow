@@ -72,34 +72,36 @@ ANCHOR BOOTSTRAP UI KIT
 https://github.com/wowthemesnet/Anchor-Bootstrap-UI-Kit (33 звезд 3 наблюдателя 14 форков)
 https://www.wowthemes.net/anchor-free-bootstrap-ui-kit
 https://wowthemesnet.github.io/Anchor-Bootstrap-UI-Kit
-хороший. сразу подцепился. поменялись только цвета и кнопки. в наборе хорошее верхнее меню, фиолетовая палитра, круглые баджеты кнопки поля, джанботрон + еще 2 вида такого плана, футер, страницы контента. активно развивается, на версии Bootstrap 4.1.3. подключил, ничего не поменялось кроме некоторых цветов.
+Хороший. Сразу подцепился. Поменялись только цвета и кнопки. В наборе хорошее верхнее меню, фиолетовая палитра, круглые баджеты кнопки поля, джанботрон + еще 2 вида такого плана, футер, страницы контента. Активно развивается, на версии Bootstrap 4.1.3. подключил, ничего не поменялось кроме некоторых цветов.
 
 MATERIAL KIT
 https://github.com/creativetimofficial/material-kit (5300 звезд 120 наблюдателя 569 форков)
 https://www.creative-tim.com/product/material-kit
-https://demos.creative-tim.com/material-kit/docs/2.1/getting-started/introduction.html Мануал
-кнопки хорошие. формы без контуров. ридиобуттоны и чекбоксы свои. меню стандартное, цвета есть разные. шрифты хорошие. иконки. активно развивается. есть меню-выдвигашка. подключил, меняет заметно сильнее.
+https://demos.creative-tim.com/material-kit/docs/2.1/getting-started/introduction.html
+Кнопки хорошие. Формы без контуров. Радиобуттоны и чекбоксы свои. Меню стандартное, цвета есть разные. Шрифты хорошие. Иконки. Активно развивается. Есть меню-выдвигашка. Подключил, меняет заметно сильнее.
 
 NOW UI KIT
-https://github.com/creativetimofficial/now-ui-kit (1600 звезд 48 наблюдателя 226 форков)
+https://github.com/creativetimofficial/now-ui-kit (1.7к звезд 47 наблюдателя 239 форков)
 https://www.creative-tim.com/product/now-ui-kit
-хороший оранжевый. формы круглые. радиобуттоны чекбоксы кастомные. шапка разных цветов. набор иконок. активно развивается. есть меню-выдвигашка. подключил, меняет но красоты не даёт.
+Хороший оранжевый. Формы круглые. Радиобуттоны чекбоксы кастомные. Шапка разных цветов. Набор иконок. Активно развивается. Есть меню-выдвигашка. Подключил, меняет но красоты не даёт.
 
 PAPER KIT 2
-https://github.com/creativetimofficial/paper-kit-2 (175 звезд 21 наблюдателя 49 форков)
+https://github.com/creativetimofficial/paper-kit-2 (187 звезд 18 наблюдателя 58 форков)
 https://demos.creative-tim.com/paper-kit-2
 https://www.creative-tim.com/product/paper-kit-2
-приятный модный современый оранжевый дизайн. активно развивается. есть меню-выдвигашка. подключил, меняет но красоты не даёт.
+Приятный модный современый оранжевый дизайн. Активно развивается. Есть меню-выдвигашка. Очень красивые кнопки. Подключил, меняет но красоты не даёт.
 
 STREAM UI KIT
-https://github.com/htmlstreamofficial/stream-ui-kit (310 звезд 20 наблюдателя 38 форков)
+https://github.com/htmlstreamofficial/stream-ui-kit (321 звезд 18 наблюдателя 40 форков)
 https://htmlstream.com/templates/stream-ui-kit
-своя шапка хорошая. разные цвета. нормальный широкий дизайн. круглые кнопки есть. красивые радиобуттоны и чекбоксы. формы прямоугольные и круглые. иконки. обновлялся 2 года назад. подключил, меняет но красоты не даёт.
+Своя шапка хорошая. Разные цвета. Нормальный широкий дизайн. Круглые кнопки есть. Красивые радиобуттоны и чекбоксы. Формы прямоугольные и круглые. Иконки. Обновлялся 2 года назад. Подключил, меняет но красоты не даёт.
 
 Material Design for Bootstrap
-https://github.com/FezVrasta/bootstrap-material-design (20100 звезд 825 наблюдателя 3300 форков)
-https://fezvrasta.github.io/bootstrap-material-design/
+https://github.com/FezVrasta/bootstrap-material-design (20.2к звезд 809 наблюдателя 3.3к форков)
+https://fezvrasta.github.io/bootstrap-material-design
+Стандартный синий вид. Плоский. Красоты особой нет. Всё стандартно.
 
 Material Design for Bootstrap 4
-https://github.com/Daemonite/material (3000 звезд 202 наблюдателя 731 форков)
-https://daemonite.github.io/material/
+https://github.com/Daemonite/material (3.1к звезд 194 наблюдателя 744 форков)
+https://daemonite.github.io/material
+Хороший стандартный вид. Оранжевый. Обычный вид.
