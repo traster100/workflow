@@ -498,3 +498,7 @@ SELECT DATE_FORMAT(`created`, '%d.%m.%Y') AS `created2`, COUNT(*) AS 'countorder
 FROM `orders`
 GROUP BY `created2`
 ORDER BY `created`;
+---------------------------------------------------------------------------------------------------
+
+Сбросить AUTO_INCREMENT
+ALTER TABLE `table` AUTO_INCREMENT = 10;
