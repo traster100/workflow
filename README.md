@@ -1,9 +1,9 @@
 # Портфолио
 
 - 39 years old
-- 10 years of programming experience
+- 12 years of programming experience
 <br><br>
-- **Backend**: PHP, CodeIgniter, Laravel, MySQL
+- **Backend**: PHP, CodeIgniter, Laravel, Yii, MySQL
 - **Frontend**: HTML, CSS, jQuery, Bootstrap
 - **CMS**: WordPress, PhpBB
 - **APIs**: GoogleMaps, GoogleTranslate, YandexMaps, Facebook, Instagram, Telegram, Vk
