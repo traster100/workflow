@@ -1,6 +1,6 @@
 Portable
 - скачать ZIP-архив.
-- создать внутри папки data и tmp
+- создать внутри папки /data и /data/tmp
 
 Настройки
 File > Preferences > Settings
