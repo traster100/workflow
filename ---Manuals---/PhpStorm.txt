@@ -336,3 +336,10 @@ https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 Активация
 
 https://rutracker.org/forum/viewtopic.php?t=5764245
+
+-------------------------------------------------
+
+Кириллица в терминале SSH
+
+В файле /bin/phpstorm64.exe.vmoptions
+Добавить -Dfile.encoding=UTF-8
