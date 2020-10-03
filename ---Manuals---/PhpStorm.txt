@@ -4,20 +4,24 @@ Zip
 https://www.jetbrains.com/phpstorm/download/other.html
 
 Делаем портабельным
-\bin\idea.properties
+/bin/idea.properties
 idea.config.path=${idea.home.path}/.PhpStorm/config
 idea.system.path=${idea.home.path}/.PhpStorm/system
 idea.plugins.path=${idea.config.path}/plugins
 idea.log.path=${idea.system.path}/log
 
+Кириллица в терминале
+/bin/phpstorm64.exe.vmoptions
+-Dfile.encoding=UTF-8
+
 Запуск
-\bin\phpstorm64.exe
+/bin/phpstorm64.exe
 пробный период
 -------------------------------------------------
 
 Плагины
 
-Сначала отключить, потом удалить, потом удалить сами папки в /plugins
+Сначала отключить, потом удалить. Потом удалить папки в /plugins
 
 Angular and AngularJS (папка AngularJS)
 ASP (asp)
@@ -32,7 +36,7 @@ PHP Docker (phpstorm-docker)
 Docker (Docker)
 Twig Support (twig)
 
-Выключить но не удалять
+Выключить, но не удалять
 
 Phing
 IDE Settings Sync
@@ -41,19 +45,14 @@ CoffeeScript
 
 Поставить
 
-BrowseWordAtCaret
-Подсветка одинаковых слов
+Laravel (фреймворк Laravel)
 
-Php Inspections EA Extended
-Проверка кода на уязвимость. Статический анализ кода.
+BrowseWordAtCaret (подсветка одинаковых слов)
 
+Php Inspections EA Extended (статический анализ кода)
 Отключить сбор статистики
 File | Settings | Php Inspections (EA Extended)
 Automatically collect crash-reports
-
-Alt + Shift + I - проверка файла
-Правый клик на папке -> Inspect Code - проверка папки
-Из окна инспекции, под желтой лампочкой в коде - автоматическое исправление
 -------------------------------------------------
 
 Удаление лишнего
@@ -140,10 +139,11 @@ Fold Code Block: Ctrl+Shift+.
 
 Добавить хоткеи
 File | Settings | Keymap
-Comment with Line Comment: Ctrl+/ Ctrl+.
-Comment with Block Comment: Ctrl+Shift+/ Ctrl+Shift+.
+Comment with Line Comment: Ctrl+/, Ctrl+.
+Comment with Block Comment: Ctrl+Shift+/, Ctrl+Shift+.
 Toggle Full Screen mode: Ctrl+Shift+F11
-Locate Duplicates: Ctrl + Shift + Q
+Locate Duplicates: Ctrl+Shift+Q
+Upload to Default Server: Ctrl+Alt+Shift+Z
 
 Включить тулбар с иконками
 View -> Appearance -> Toolbar
@@ -166,7 +166,7 @@ Proofreading
 
 Размер шрифта в редакторе менять колесом мыши
 File | Settings | Editor | General
-Change font size with Ctrl + Mouse Wheel
+Change font size with Ctrl+MouseWheel
 
 Перенос текста в редакторе
 File | Settings | Editor | General
@@ -217,11 +217,11 @@ File | Settings | Appearance & Behavior | Appearance
 Disable mnemonics in menu
 Disable mnemonics in controls
 
-Отключить анимацию появления тулзов в режиме Undock
+Отключить анимацию появления окон тулзов, в режиме Undock
 File | Settings | Appearance & Behavior | Appearance
 Animate windows
 
-Тулзы открываются горизонтально на всю ширину
+Окна тулзы открываются горизонтально на всю ширину
 File | Settings | Appearance & Behavior | Appearance
 Widescreen tool window layout
 
@@ -294,12 +294,12 @@ File | Settings | Keymap
 Save All удалить хоткей Ctrl+S
 reformat_save добавить хоткей Ctrl+S
 
-При синхронизации Deployment -> Synchronize несуществующие локально файлы удаляем и с хоста
+При синхронизации Deployment -> Synchronize несуществующие локально файлы, удаляем с хоста тоже
 File | Settings | Build, Execution, Deployment | Deployment | Options
 Delete target items when source ones do not exist (when transferring from Project view or Remote Host view)
 -------------------------------------------------
 
-YUI Compressor сжатие CSS и JS
+YUI Compressor, сжатие CSS и JS
 
 https://www.jetbrains.com/help/phpstorm/compressing-css.html
 https://www.jetbrains.com/help/phpstorm/minifying-javascript.html
@@ -321,14 +321,18 @@ File | Settings | Tools | File Watchers
 
 Хоткеи
 
-Shift + F4 - открепить вкладку, когда внутри файла
-Shift + Enter - открепить вкладку, когда на дереве файлов
-
-Alt + Enter -> Check RegExp - тестирование регулярок
-Ctrl + Shift + A, Jump - изменить цвет кода
+Shift+F4 (открепить вкладку)
+Alt+Enter -> CheckRegExp (тестирование регулярок)
+Ctrl+Shift+A, Jump (изменить цвет кода)
+Alt+Shift+I (проверка файла Php Inspections EA Extended, папка -> Inspect Code, желтая лампочка в коде - автоматическое исправление)
+Alt+, Alt-, Alt0 (размер шрифта в редакторе)
+Ctrl+/, Ctrl+., Ctrl+Shift+/, Ctrl+Shift+. (комменты)
+Ctrl+Shift+F11 (полный экран)
+Ctrl+Shift+Q (поиск дубликатов)
+Ctrl+Alt+Shift+Z (аплоад на сервер)
 -------------------------------------------------
 
-Поиск ошибок. Динамический анализ кода.
+Динамический анализ кода
 
 https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 -------------------------------------------------
@@ -336,10 +340,3 @@ https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 Активация
 
 https://rutracker.org/forum/viewtopic.php?t=5764245
-
--------------------------------------------------
-
-Кириллица в терминале SSH
-
-В файле /bin/phpstorm64.exe.vmoptions
-Добавить -Dfile.encoding=UTF-8
