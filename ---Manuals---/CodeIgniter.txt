@@ -32,8 +32,30 @@ $query = $this->db->get('table');
 $result = $query->result(); // вся выборка
 $result = $query->row(); // 1 строка
 $result = $query->row()->field; // 1 строка, 1 столбец
-$result = $query->num_rows(); // колво строк (сначала будет выполнен запрос, потом посчитано колво строк.)
-$result = $this->db->count_all_results(); // колво строк (сразу посчитано колво строк. быстрее! но проверить.)
+$result = $query->num_rows(); // колво строк (сначала будет выполнен запрос, потом посчитано колво строк)
+$result = $this->db->count_all_results(); // колво строк (сразу посчитано колво строк)
+-------------------------------------------------
+
+Колво строк в таблице
+
+$this->db->count_all_results('tablename');
+SELECT COUNT(*) AS `numrows` FROM `tablename`
+время 0.06. самый правильный вариант
+
+$this->db->count_all('tablename');
+SELECT COUNT(*) AS `numrows` FROM `tablename`
+время 0.05. считает всегда без учета WHERE, просто все строки таблицы
+
+$query = $this->db->get('tablename');
+$query->num_rows();
+SELECT * FROM `tablename`
+время 0.62. самый медленный вариант
+
+$query = $this->db->get('tablename');
+$query->result();
+SELECT * FROM `tablename`
+время 1.31. выборка объектов
+
 -------------------------------------------------
 
 UPDATE
