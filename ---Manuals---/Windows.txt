@@ -22,6 +22,7 @@ Computer Configuration > Administrative Templates > Windows Components > OneDriv
 Отключить Windows lock screen
 Computer Configuration > Administrative Templates > Control Panel > Personalization
 -Do not display the lock screen - в Enabled
+
 -------------------------------------------------
 
 Win+R и regedit
@@ -52,6 +53,7 @@ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer
 AltTabSettings DWORD
 0 = Thumbnails
 1 = Classic icons
+
 -------------------------------------------------
 
 Остановить и отключить службы
@@ -91,6 +93,7 @@ Windows Search
 Windows Update
 Xbox Live Auth Manager
 Xbox Live Game Save
+
 -------------------------------------------------
 
 Отключить телеметрию
@@ -101,6 +104,7 @@ sc stop DiagTrack
 sc stop dmwappushservice
 sc delete DiagTrack
 sc delete dmwappushservice
+
 -------------------------------------------------
 
 Отключить задачи в Планировщике задач
@@ -111,6 +115,7 @@ Application Experience: Microsoft Compatibility Appraiser, ProgramDataUpdater, S
 Autochk: Proxy
 Customer Experience Improvement Program: Consolidator, KernelCeipTask, UsbCeip, Microsoft-Windows-DiskDiagnosticDataCollector
 NetTrace: GatherNetworkInfo
+
 -------------------------------------------------
 
 Оптимизировать
@@ -125,44 +130,33 @@ NetTrace: GatherNetworkInfo
 На ноуте в Intel Graphic Control Panel отключить горячие клавиши
 Удалить компоненты: Internet Explorer 11, Work Folders Client, Windows PowerShell 2.0, Microsoft XPS Document Writer
 Ускорение загрузки Windows со всех процессоров (Win+R, msconfig, вкладка Boot, Advanced options -> number of processors: колво процов
+
 -------------------------------------------------
 
 Программы
 
-O&O ShutUp10 (применил на ноуте)
+O&O ShutUp10
 https://www.oo-software.com/en/shutup10
-Один файл exe. Очень много настроек.
-Защита конфиденциальности данных, История активности и клипборд, Конфиденциальность приложений, Настройка параметров безопастности, Microsoft Edge (Браузер), Синхронизация настроек Windows, Cortana, Управление службами определения местоположения, Предотвращение передачи пользовательских и диагностических данных, Управление обновлениями Windows, Проводник Windows, Windows Defender и Microsoft SpyNet, Экран блокировки, Другие настройки: Отключить всё.
+Один файл exe. Очень много настроек. Отключить всё.
 
-Win10 Privacy (применил на компе)
-https://www.winprivacy.de
-Немецкая программа. Серые галки это значения по-умолчанию. Как было. Как напоминание. Если стоит знак "!!" то это требует админских прав. Поэтому прогу лучше запускать под админом. Очень много настроек. Без перевода.
-Privacy, Apps, Search, Network, Services, Edge, Internet Explorer, OneDrive, Background-Apps: Все галки
-Telemetry все желтые и зеленые галки
-Explorer вручную глазами
-Tasks все зеленые галки
-Tweaks, Firewall не трогаем
-User-Apps, System-Apps !ATTENTION! все галки кроме Calculator
-
-Easy Service Optimizer (применил на компе)
-https://www.sordum.org/8637/easy-service-optimizer-v1-2/
-Отключит ненужные службы. Служб маловато. Всего 4 списка (Default, Safe, Tweaked, Extreme). Запустил Safe.
-
-Firewall App Blocker (применил на компе)
+Firewall App Blocker
 https://www.sordum.org/8125/firewall-app-blocker-fab-v1-6/
 Фаерволл. Блокирует программы и процессы. По клику в контекстном меню. Режим белого списка "заблокированы все, кроме выбранных". Портабельный.
 
 Destroy Windows 10 Spying
-новый форк. отключит слежение. самая популярная. открытый код. последняя версия июль 2019.
+Новый форк. Отключит слежение. Самая популярная. Открытый код. Последняя версия июль 2019.
 https://github.com/Wohlstand/Destroy-Windows-10-Spying/releases
+
 -------------------------------------------------
 
 Драйвера
 Если в Диспетчере Устройств написано что драйвер от Микрософт (Manufacturer: Microsoft), то найти драйвер на сайте производителя
+
 -------------------------------------------------
 
 Всё по винде
 https://remontka.pro/windows-10-page
+
 -------------------------------------------------
 
 Рабочие столы
