@@ -66,12 +66,13 @@ AudioContext Fingerprint Defender
 Canvas Fingerprint Defender
 Font Fingerprint Defender
 HTTPS Everywhere
+Page Refresh
+Random User-Agent
 Reedy
 Search the current site (Поиск по сайту)
 WebGL Fingerprint Defender
 WebRTC Leak Prevent
 Xdebug helper
-Random User-Agent
 
 Проходимся по настройкам всех расширений
 Настройка хоткеев
