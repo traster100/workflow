@@ -3,7 +3,6 @@
 Подключение
 mysql --host=127.0.0.1 --port=3310 --user=myusername --password=mypassword
 
-
 Экспорт бд->файл.sql
 mysqldump --host=127.0.0.1 --port=3310 --user=myusername --password=mypassword mydbname > /var/www/mydbname.sql
 
@@ -15,7 +14,6 @@ mysqldump --host=127.0.0.1 --port=3310 --user=myusername --password=mypassword m
 
 Импорт файл.zip->бд
 gunzip < /var/www/mydbname.gz | mysql --host=127.0.0.1 --port=3310 --user=myusername --password=mypassword mydbname
-
 
 show databases; - посмотреть все базы
 show tables from mydbname; - посмотреть все таблицы базы
@@ -32,9 +30,9 @@ UPDATE user1 SET PASSWORD=PASSWORD('password1') WHERE user='user1'; FLUSH PRIVIL
 Работа со временем
 
 Флаги для INTERVAL
-- DAY_MINUTE - 'DAYS HOURS:MINUTES'
-- DAY_HOUR - 'DAYS HOURS'
-- '5 YEAR', '5 MONTH', '5 DAY', '5 HOUR', '5 MINUTE'
+  DAY_MINUTE - 'DAYS HOURS:MINUTES'
+  DAY_HOUR - 'DAYS HOURS'
+  '5 YEAR', '5 MONTH', '5 DAY', '5 HOUR', '5 MINUTE'
 
 SELECT TIMESTAMP('2010-10-10 10:10:10') + INTERVAL '1 1:1' DAY_MINUTE;
 SELECT TIMESTAMP('2010-10-10 10:10:10') + INTERVAL CONCAT(1, ' ', 1, ':', 1) DAY_MINUTE;
@@ -116,6 +114,14 @@ SELECT * FROM `orders` WHERE DAY(`added`) = DAY(NOW()) AND HOUR(`added`) = HOUR(
 
 -от текущего момента, и до часа назад
 SELECT * FROM `orders` WHERE (`added` + INTERVAL 1 HOUR) > NOW();
+---------------------------------------------------------------------------------------------------
+
+Группировка по дню, месяцу, году
+
+SELECT DATE_FORMAT(`created`, '%d.%m.%Y') AS `created1`
+FROM `table`
+GROUP BY `created1`
+ORDER BY `created1`;
 ---------------------------------------------------------------------------------------------------
 
 Regexp
