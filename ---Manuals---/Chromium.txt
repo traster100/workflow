@@ -1,19 +1,27 @@
 Скачивание
 
 https://chromium.woolyss.com
-Archive • Marmaduke all-codecs+ sync win64
 
-Проверить архив на VirusTotal
+тип Archive
+автор Marmaduke
+флаги all-codecs+, sync, win64
+
+Проверить архив
+на VirusTotal
 
 Флаги
-автор - Marmaduke, RobRichavx, Chromium Authors
+Marmaduke, RobRichavx, Chromium Authors - автор
 widevine - плагин для DRM
+
 all-codecs - открытые аудио и видео кодеки (H.264 + AAC)
-all-codecs+ - открытые аудио и видео кодеки (H.264 + H.265 + AAC + MPEG-4 + AMR)
+all-codecs+ - открытые аудио и видео кодеки (H.264 + AAC + H.265 + MPEG-4 + AMR)
+
 sync - ключи Google API для синхронизации
 no-sync - без ключей Google API для синхронизации
+
 win64 - версия 64bit
 up-to-date - современная версия как у Chrome
+
 avx - для новых процессоров с инструкциями AVX
 ungoogled - без интеграции с Google и повышенной конфиденциальностью
 
@@ -26,8 +34,7 @@ ungoogled - без интеграции с Google и повышенной кон
 
 Настройка
 
-смена путей до профиля и кеша
-в ярлыке пишем
+смена путей до профиля и кеша в ярлыке
 G:\soft\Chromium\chrome.exe --user-data-dir=G:\soft\Chromium\Profile --disk-cache-dir=C:\Users\u\AppData\Local\Temp\ChromiumCache
 проверяем тут chrome://version
 
