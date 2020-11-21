@@ -1,0 +1,126 @@
+Технический анализ сайта
+
+-------------------------------------------------
+
+1. Технические параметры
+
+Анализ скорости загрузки страниц
+Google Chrome Tools
+
+Общая оценка по PageSpeed Insights
+https://developers.google.com/speed/pagespeed/insights
+
+Общая оценка по Lighthouse
+Google Chrome Tools
+
+Проверка наличия минификации CSS и JS
+
+Проверка наличия неблокирующей загрузки CSS и JS
+
+Проверка необходимости оптимизации веса картинок
+https://tinypng.com
+
+Проверка наличия сжатия Gzip или Brotli
+Google Chrome Tools
+
+Проверка наличия HTTPS
+
+Проверка отображения сайта в мобильной версии
+
+Проверка наличия страницы "Не найдено" с кодом ответа 404
+
+Проверка валидности HTML кода
+https://validator.w3.org
+
+Проверка редиректа с WWW на без WWW
+
+Проверка сайта на вирусы
+https://virustotal.com
+https://vms.drweb.ru/online
+https://transparencyreport.google.com/safe-browsing/search
+
+-------------------------------------------------
+
+2. Внутренее SEO
+
+Проверка наличия метатегов title, description, keywords
+
+Проверка наличия alt и title для картинок
+
+Проверка наличия title для ссылок
+
+Проверка наличия иерархии заголовков H1-H6
+
+Проверка наличия ЧПУ
+
+Проверка наличия навигации, хлебных крошек
+
+Проверка на наличие внутренних битых ссылок
+
+Проверка на отсутствие дублей страниц
+
+Проверка наличия и необходимости микроформатов
+schema.org
+https://search.google.com/structured-data/testing-tool
+https://webmaster.yandex.ru/tools/microtest
+
+Проверка наличия robots.txt и sitemap.xml
+https://webmaster.yandex.ru/tools/robotstxt
+
+-------------------------------------------------
+
+3. Текст
+
+Анализ достаточности количества текста на страницах
+https://miratext.ru/seo_analiz_text
+
+Анализ качества и тошноты текста
+https://miratext.ru/seo_analiz_text
+https://copywritely.com/ru/keyword-density-checker
+
+Анализ наличия семантического ядра в текстах
+https://miratext.ru/seo_analiz_text
+
+Проверка текста на уникальность
+https://tools.pixelplus.ru/tools/unikalnost
+
+-------------------------------------------------
+
+4. Внешнее SEO
+
+Проверка на отсутствие бана домена, санкций поисковых систем
+
+Проверка наличия подключенных систем аналитики
+Google Console https://search.google.com/search-console
+Google Analytics https://analytics.google.com
+Yandex Webmaster https://webmaster.yandex.com
+Yandex Metrika https://metrika.yandex.ru
+
+Проверка наличия указания региона продвижения
+в Yandex Webmaster
+Google.Business
+Яндекс Справочник
+
+Количество страниц в индексе Google, Yandex, Bing
+
+Оценка трафика
+Google Analytics
+Yandex Metrika
+https://www.similarweb.com/website/domain.com
+
+Анализ количества внешних исходящих и входящих ссылок
+
+Проверка наличия веток обсуждений на профильных форумах
+
+Выгрузка аналитики из любого SEO-сервиса
+SimilarWeb, SEMRush, Ahrefs, Serpstat, Promopult
+
+По главному запросу анализ топ-3 конкурентов
+https://linkpad.ru
+
+-------------------------------------------------
+
+Отчет
+
+Будет представлен в виде Word и PDF документа, с перечислением количественных и качественных характеристик, выявленных ошибок, перечислений чего нет, что нужно добавить, что изменить или исправить. Далее этот отчет будет являться техническим заданием для программиста, и готовой инструкцией по исправлению найденных ошибок.
+Google Documents
