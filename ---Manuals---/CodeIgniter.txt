@@ -329,7 +329,7 @@ application/config/config.php
 $config['log_threshold'] = 0;
 ---------------------------------------------------------------------------------------------------
 
-СЕО
+SEO
 
 application/config/config.php:
 $config['meta'] = ['description' => '', 'keywords' => ''];
@@ -373,3 +373,106 @@ $this->temp->set(
 	    'keywords' => '123',
     ]
 );
+-------------------------------------------------
+
+Многоязычность
+
+ISO коды стран
+https://ru.wikipedia.org/wiki/ISO_3166-1
+
+Телефонные коды стран
+https://ru.wikipedia.org/wiki/Телефонные_коды_стран
+
+Коды языков
+https://ru.wikipedia.org/wiki/Коды_языков
+
+
+Язык и локаль браузера
+substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 3, 5);
+
+Установка локали
+application/hooks/language.php
+setlocale(LC_ALL, $langs[$CI->uri->segments[1]][2] . '.UTF8');
+var_dump(1.55); var_dump(strftime('%A %B'));)
+
+
+Урл языка
+<?php var_dump($this->config->item('lang')); ?>
+
+Папка языка
+<?php var_dump($this->config->item('language')); ?>
+
+Ссылка с автоматическим добавлением языка
+<?php var_dump(mysiteurl()); ?>
+<?php var_dump(mysiteurl('controller')); ?>
+
+site_url
+<?php var_dump(site_url()); ?>
+<?php var_dump(site_url('controller')); ?>
+
+base_url
+<?php var_dump(base_url()); ?>
+<?php var_dump(base_url('controller')); ?>
+
+current_url
+<?php var_dump(current_url()); ?>
+
+uri_string
+<?php var_dump(uri_string()); ?>
+
+$this->uri->segments
+<?php var_dump($this->uri->segments) ?>
+
+myrequesturi
+<?php var_dump(myrequesturi()); ?>
+
+public_url
+<?php var_dump(public_url()); ?>
+
+upload_url
+<?php var_dump(upload_url()); ?>
+
+
+Языковые файлы ошибок *_lang.php:
+
+calendar - дни недели и месяцы
+date - секунды минуты дни недели месяцы годы таймзоны
+db - ошибки базы данных
+email - ошибки отправки почты
+form_validation - ошибки валидации форм
+ftp - ошибки работы с FTP
+imglib - ошибки работы с библиотекой GD
+migration - ошибки работы с миграциями
+number - терабайты мебагайты килобайты
+pagination - надписи для кнопок пагинации
+profiler - сообщения профилировщика
+unit_test - юнит-тестирование
+upload - ошибки загрузки изображений
+
+Можно отредактировать этот файл, или переопределить любое сообщение так
+$this->form_validation->set_message('RuleName', 'ErrorMessageText');
+
+Отобразить одно сообщение
+form_error('FieldName');
+
+Загрузка языкового файла
+$this->lang->load('filename', 'language', false);
+filename - имя языкового файла без _lang.php
+language - язык (название папки). если этого параметра нет, то язык берется из конфига application/config/config.php: $config['language'];
+-если 3й параметр true, то вернет массив всех строк
+
+Сообщение из файла ошибок. язык взялся по-умолчанию из конфига
+$this->lang->load('form_validation');
+$this->lang->line('form_validation_required');
+
+Сбросим язык
+$this->lang->is_loaded = [];
+$this->lang->language = [];
+
+Сообщение из файла ошибок. язык установим сами
+$this->lang->load('form_validation', 'english');
+$this->lang->line('form_validation_required');
+
+Изменим язык по-умолчанию, в конфиге на лету
+$this->config->set_item('language', 'english');
