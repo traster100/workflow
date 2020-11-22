@@ -454,17 +454,17 @@ systemctl restart php-fpm
 df -h
 
 удалить папку
-cd path/parentfoldername
+cd /path/parentfoldername
 rm -rf foldername
 
 удалить файл
 rm filename.txt
 
 размер папки
-du -sh path/foldername
+du -sh /path/foldername
 
 колво файлов в папке
-find path/foldername -type f | wc -l
+find /path/foldername -type f | wc -l
 -------------------------------------------------
 
 UnZip

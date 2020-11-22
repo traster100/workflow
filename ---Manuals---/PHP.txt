@@ -219,6 +219,10 @@ public function index() {
     //в итоге берем
     var_dump(hash('sha256', $filename . time()));
 }
+
+Хеш файла
+$hash_file = hash_file('sha256', $FullPathFileName);
+
 ---------------------------------------------------------------------------------------------------
 
 DateTime
