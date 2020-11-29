@@ -232,10 +232,10 @@ $date = new DateTime();
 $date = new DateTime('2000-01-01');
 
 Установка даты, с часовым поясом
-$date = new DateTime('2000-01-01', new DateTimeZone('Europa/Moscow'));
+$date = new DateTime('2000-01-01', new DateTimeZone('Europe/Moscow'));
 
 Установка часового пояса
-$date->setTimezone(new DateTimeZone('Europa/Moscow'));
+$date->setTimezone(new DateTimeZone('Europe/Moscow'));
 
 Установка даты на 4 дня вперед
 $date = new DateTime('+4 days');
