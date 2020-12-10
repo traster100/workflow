@@ -1,7 +1,4 @@
-# Концепт
-## Концепт
 ### Концепт
-#### Концепт
 
 СервисКонтейнер (СК)
 это app, хранилище СервисПровайдеров
@@ -59,12 +56,12 @@ class NameService extends Facade {
 Миграции нужны для переносимости между разными типами баз данных.
 -------------------------------------------------
 
-###Ман
+### Ман
 
 https://laravel.com/docs/7.x
 -------------------------------------------------
 
-###Prologue -> Upgrade Guide
+### Prologue -> Upgrade Guide
 
 Требования: Symfony 5, PHP 7.2.5, до PSR-7, PHPDoc
 
@@ -73,7 +70,7 @@ Autoloading standard PSR-4
 Code styling         StyleCI
 -------------------------------------------------
 
-###Prologue -> Contribution Guide
+### Prologue -> Contribution Guide
 
 Гит     https://github.com/laravel
 Форум   https://laracasts.com/discuss
@@ -93,12 +90,12 @@ Laravel IDE Helper Generator
 https://github.com/barryvdh/laravel-ide-helper
 -------------------------------------------------
 
-###Prologue -> API Documentation
+### Prologue -> API Documentation
 
 https://laravel.com/api/7.x
 -------------------------------------------------
 
-###Getting Started -> Installation
+### Getting Started -> Installation
 
 Для локальной разработки использовать вирт.машину Homestead.
 
@@ -131,7 +128,7 @@ Webroot должен смотреть на папку public
 Настройка Apache и Nginx как в мане
 -------------------------------------------------
 
-###Getting Started -> Configuration
+### Getting Started -> Configuration
 
 Все конфиги лежат в /config
 
@@ -196,7 +193,7 @@ resources/views/errors/503.blade.php
 Envoyer - продвинутая выключалка приложения
 -------------------------------------------------
 
-###Getting Started -> Directory Structure
+### Getting Started -> Directory Structure
 
 Папка Root
 
