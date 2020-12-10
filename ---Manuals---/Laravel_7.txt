@@ -81,7 +81,7 @@ Job     https://larachat.co
 
 Lumen - микрофреймворк Laravel
 Nova - платный дашбоард
-Spark - готовый платный каркас приложения
+Spark - платный каркас приложения
 
 Laravel IDE Plugin
 https://plugins.jetbrains.com/plugin/7532-laravel
@@ -190,7 +190,7 @@ php artisan up
 resources/views/errors/503.blade.php
 
 Очереди задач (Queues) будут выключены
-Envoyer - продвинутая выключалка
+Envoyer - продвинутая выключалка приложения
 -------------------------------------------------
 
 Getting Started -> Directory Structure
