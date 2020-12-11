@@ -62,10 +62,13 @@ Automatically collect crash-reports
 \help
 \product-info.json
 \build.txt
+
 \bin\fsnotifier.exe
 \bin\IdeaWin32.dll
 \bin\jumplistbridge.dll
 \bin\runnerw.exe
+\bin\phpstorm.exe
+\bin\phpstorm.exe.vmoptions
 -------------------------------------------------
 
 Настройки

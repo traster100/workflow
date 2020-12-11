@@ -320,6 +320,7 @@ $a->n2(); // T22
 Пространства имен
 
 index1.php
+
 namespace A1;
 class N {
  public function n() {
@@ -329,6 +330,7 @@ class N {
 echo __FILE__ . ' : ' . __NAMESPACE__;
 
 index2.php
+
 namespace A2;
 class N {
  public function n() {
