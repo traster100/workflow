@@ -7814,8 +7814,9 @@ public function run() {
 
 Запуск сеялок
 сеялки написать
-вызвать regenerate Composer autoloader
-командой composer dump-autoload
+
+сделать перезагрузку Composer autoloader
+composer dump-autoload
 
 запустить класс DatabaseSeeder и всё что внутри
 php artisan db:seed
