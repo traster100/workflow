@@ -79,16 +79,13 @@ Prologue -> Contribution Guide
 SO      https://stackoverflow.com/questions/tagged/laravel
 Discord https://discord.com/invite/KxwQuKb
 Job     https://larachat.co
+-------------------------------------------------
 
-Lumen - микрофреймворк Laravel
-Nova - платный дашбоард
-Spark - платный каркас приложения
+PhpStorm plugins
 
-Laravel IDE Plugin
 https://plugins.jetbrains.com/plugin/7532-laravel
-
-Laravel IDE Helper Generator
 https://github.com/barryvdh/laravel-ide-helper
+https://github.com/barryvdh/laravel-debugbar
 -------------------------------------------------
 
 Prologue -> API Documentation
@@ -358,9 +355,6 @@ php artisan route:cache
 
 5. Оптимизация шаблонов. Это скомпилирует blade-шаблоны.
 php artisan view:cache
-
-Laravel Forge - сервис развертывания серверов на DigitalOcean, Linode, Vultr, Amazon.
-Laravel Vapor - бессерверная платформа от Amazon.
 -------------------------------------------------
 
 Architecture Concepts -> Request Lifecycle
@@ -10463,8 +10457,93 @@ config/telescope.php
 наблюдатели за переменными, событиями, исключениями, слушателями, задачами, журналами, почтой, моделями, уведомлениями, запросами в бд, кеширования redis, http запросами
 -------------------------------------------------
 
-Обновление Laravel 7 -> 8
+Official Packages -> JetStream
 
+готовый каркас аутентификации
+интегрирован с Sanctum
+
+composer require laravel/jetstream
+
+2 стека фронтенда
+Livewire - на основе Blade
+Inertia.js - на основе VueJS
+CSS в обоих случаях Tailwind
+
+php artisan jetstream:install livewire --teams
+php artisan jetstream:install inertia --teams
+npm install && npm run dev
+php artisan migrate
+-------------------------------------------------
+
+Official Packages -> Fortify
+
+серверная часть для пакета JetStream
+-------------------------------------------------
+
+Official Packages -> LiveWire
+
+микрофреймворк для динамических компонентов
+поле поиска с отображением результатов на лету
+есть пагинация
+
+composer require livewire/livewire
+
+php artisan make:livewire search
+-------------------------------------------------
+
+Official Packages -> Sail
+
+интерфейс командной строки для работы с Docker-контейнером для разработки
+-------------------------------------------------
+
+Official Packages -> Lumen
+
+микрофреймворк Laravel
+-------------------------------------------------
+
+Official Packages -> Nova
+
+платный дашбоард
+-------------------------------------------------
+
+Official Packages -> Spark
+
+платный каркас приложения
+-------------------------------------------------
+
+Official Packages -> Forge
+
+сервис развертывания серверов на DigitalOcean, Linode, Vultr, Amazon
+сервис конфигурации супервизора для Horizon (панель управления очередями Redis)
+-------------------------------------------------
+
+Official Packages -> Vapor
+
+бессерверная платформа от Amazon
+-------------------------------------------------
+
+CMS based Laravel
+
+Asgard
+Atlantis
+Borgert
+Coaster
+Coaster
+Decoy
+Fully
+Lavalite
+MaguttiCMS
+Microweber
+October
+Photon
+PongoCMS
+PyroCMS
+Quarx
+Twill
+TypiCMS
+-------------------------------------------------
+
+Обновление Laravel 7 -> 8
 
 мин версия PHP 7.3
 
