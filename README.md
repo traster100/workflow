@@ -1,7 +1,7 @@
 # Портфолио
 
-- 39 years old
-- 12 years of programming experience
+- **Age** 39 years old
+- **Experience** 12 years of programming experience
 <br><br>
 - **Backend** PHP, CodeIgniter, Laravel, Yii, MySQL
 - **Frontend** HTML, CSS, jQuery, Bootstrap
