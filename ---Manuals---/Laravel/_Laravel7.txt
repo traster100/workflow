@@ -10317,7 +10317,7 @@ Official Packages -> Cashier Mollie
 composer require laravel/cashier-mollie
 -------------------------------------------------
 
-Official Packages -> Laravel Dusk
+Official Packages -> Dusk
 
 Testing -> Browser Tests
 выше по ману
@@ -10477,7 +10477,7 @@ php artisan migrate
 
 Official Packages -> Fortify
 
-серверная часть для пакета JetStream
+серверная часть для JetStream
 -------------------------------------------------
 
 Official Packages -> LiveWire
