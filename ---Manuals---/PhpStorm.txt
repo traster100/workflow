@@ -76,7 +76,25 @@ Automatically collect crash-reports
 Путь до php.exe
 File | Settings | Languages & Frameworks | PHP
 PHP-7.2
-G:\soft\OSPanel\modules\php\PHP-7.2-x64\php.exe
+modules\php\PHP-7.2-x64\php.exe
+
+Путь до php.exe в Windows Path
+Environment Variables - User Variables - Path
+modules\php\PHP_7.4
+
+Заменить терминал с cmd.exe на git
+Phpstorm | Terminal
+git/bin/bash.exe
+
+
+Поставить терминал Node.JS
+Phpstorm | Node.js and NPM
+C:\Program Files\nodejs\node.exe
+
+Чтобы в редакторе снизу появится вкладка с командами npm
+Context menu of a package.json - Show npm Scripts
+View | Tool Windows | npm
+
 
 Шаблон JS-файлов
 File | Settings | Editor | File and Code Templates

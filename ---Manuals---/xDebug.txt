@@ -3,7 +3,7 @@ File | Settings | Languages & Frameworks | PHP
 PHP language level
 CLI Interpreter
 PHP-7.2
-G:\soft\OSPanel\modules\php\PHP-7.2-x64\php.exe
+modules\php\PHP-7.2-x64\php.exe
 
 Рядом должна появится надпись Debugger: Xdebug 2.6.0
 -------------------------------------------------
