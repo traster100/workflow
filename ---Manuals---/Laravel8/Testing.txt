@@ -1,0 +1,981 @@
+Состав файла
+
+Getting Started, Browser Tests, Console Tests, HTTP Tests, Mocking, Database
+-------------------------------------------------
+
+GETTING STARTED
+
+стоит PHPUnit
+
+Конфиг
+phpunit.xml
+
+Папки тестов
+tests/Feature
+tests/Unit
+
+Unit тесты тестируют 1 метод или функцию
+Feature тесты тестируют большие куски функционала
+
+переменная окружения ставится в testing
+сессия и кеш ставится в array
+
+Переменные окружения
+в phpunit.xml
+
+Удалить файл кеша всех конфигов
+config:clear
+
+создать .env.testing в корне
+он заменит .env при запуске тестов PHPUnit или выполнение Artisan команд с параметром --env=testing
+
+Cоздать класс теста в папке Feature
+php artisan make:test UserTest
+
+Cоздать класс теста в папке Unit
+php artisan make:test UserTest --unit
+
+Запуск тестов
+vendor/bin/phpunit
+
+Подробный вывод
+php artisan test
+
+принимает все аргументы phpunit
+php artisan test --group=feature
+-------------------------------------------------
+
+BROWSER TESTS
+
+Dusk это обёртка над ChromeDriver
+тестирование в браузере
+не требует JDK и Selenium
+запуск 1 или несколько браузеров сразу
+автоматически подгрузит jQuery если её нет
+
+папка тестов
+tests/Browser
+
+установить
+composer require --dev laravel/dusk
+php artisan dusk:install
+
+установить нужную версию ChromeDriver
+php artisan dusk:chrome-driver - последнюю
+php artisan dusk:chrome-driver 74 - номер версии
+php artisan dusk:chrome-driver --all - все версии
+
+файлы chromedriver должны быть исполняемые
+chmod -R 0755 vendor/laravel/dusk/bin/
+
+можно не использовать ChromeDriver и Google Chrome
+а использовать сервер Selenium и любой браузер
+
+protected function driver() {
+
+  return RemoteWebDriver::create(
+    'http://localhost:4444/wd/hub', DesiredCapabilities::phantomjs()
+  );
+
+  return RemoteWebDriver::create(
+    'http://localhost:9515', DesiredCapabilities::chrome()
+  );
+}
+
+
+запуск теста
+принимает все аргументы phpunit
+
+php artisan dusk
+
+запуск только неудачных тестов
+php artisan dusk:fails
+
+создать тест
+php artisan dusk:make LoginTest
+
+настроить урл приложения
+APP_URL в .env
+
+Окружение
+создать .env.dusk.local чтобы использовался он, а не общий .env
+иначе будет бекап .env, запуск теста, потом переименование обратно в .env
+шаблон .env.dusk.{environment}
+
+размер окна браузера
+$browser->resize(1920, 1080);
+$browser->maximize();
+$browser->fitContent();
+
+переместить браузер
+$browser->move(100, 100);
+
+если тест не прошел, то ресайз браузера по размеру содержимого и скриншот
+отключить ресайз
+$browser->disableFitOnFailure();
+
+Создать свой макрос действия браузера
+
+Browser::macro('scrollToElement', function ($element = null) {
+
+  $this->script("$('html, body').animate({ scrollTop: $('$element').offset().top }, 0);");
+
+  return $this;
+});
+
+$this->browse(function ($browser) use ($user) {
+  $browser->visit('/pay')
+  ->scrollToElement('#credit-card-details')
+  ->assertSee('Enter Credit Card Details');
+});
+
+Логин
+
+$this->browse(function ($first, $second) {
+  $first->loginAs(User::find(1))
+  ->visit('/home');
+});
+
+
+Если нужны миграции бд
+
+class ExampleTest extends DuskTestCase {
+  use DatabaseMigrations;
+}
+
+Работа с куками
+
+$browser->cookie('name');
+$browser->cookie('name', 'Taylor');
+
+нешифрованные
+$browser->plainCookie('name');
+$browser->plainCookie('name', 'Taylor');
+
+удалить
+$browser->deleteCookie('name');
+
+Скрин
+в tests/Browser/screenshots
+
+$browser->screenshot('filename');
+
+Вывод консоли в файл
+в tests/Browser/console
+
+$browser->storeConsoleLog('filename');
+
+HTML в файл
+в tests/Browser/source
+
+$browser->storeSource('filename');
+--------------------
+
+Селекторы
+
+обычные
+<button>Login</button>
+$browser->click('.login-page .container div > button');
+
+удобные
+<button dusk="login-button">Login</button>
+$browser->click('@login-button');
+
+
+Клик
+$browser->clickLink($linkText);
+
+клик если ссылка видна
+if ($browser->seeLink($linkText)) {}
+
+
+получить value
+$browser->value('selector');
+$browser->value('selector', 'value');
+$browser->inputValue('field'); для input
+
+текст
+$browser->text('selector');
+
+атрибут
+$browser->attribute('selector', 'value');
+
+ввод текста
+email это name
+
+$browser->type('email', 'taylor@laravel.com');
+
+добавить текст не очищая
+$browser->type('tags', 'foo')
+  ->append('tags', ', bar, baz');
+
+очистить
+$browser->clear('email');
+
+печатать медленно
+$browser->typeSlowly('mobile', '+1 (202) 555-5555');
+$browser->typeSlowly('mobile', '+1 (202) 555-5555', 300);
+
+добавить медленно
+$browser->type('tags', 'foo')
+  ->appendSlowly('tags', ', bar, baz');
+
+выбрать селект
+size это name
+
+$browser->select('size', 'Large');
+
+случайный выбор
+$browser->select('size');
+
+чекбоксы
+$browser->check('terms');
+$browser->uncheck('terms');
+
+радиокнопки
+$browser->radio('version', 'php7');
+
+залить файл
+$browser->attach('photo', __DIR__.'/photos/img.png');
+
+работа с клавой
+$browser->keys('selector', ['{shift}', 'taylor'], 'otwell');
+
+горячая клавиша на всё окно
+command это все команды Facebook\WebDriver\WebDriverKeys
+
+$browser->keys('.app', ['{command}', 'j']);
+
+
+Клик
+$browser->click('.selector');
+$browser->clickAtXPath('//div[@class = "selector"]');
+$browser->clickAtPoint(0, 0);
+
+двойной
+$browser->doubleClick();
+
+правый
+$browser->rightClick();
+$browser->rightClick('.selector');
+
+нажатие и удержание
+$browser->clickAndHold()
+  ->pause(1000)
+  ->releaseMouse();
+
+наведение
+$browser->mouseover('.selector');
+
+перетаскивание
+$browser->drag('.from-selector', '.to-selector');
+$browser->dragLeft('.selector', 10);
+$browser->dragRight('.selector', 10);
+$browser->dragUp('.selector', 10);
+$browser->dragDown('.selector', 10);
+$browser->dragOffset('.selector', 10, 10);
+
+
+Работа с окнами js
+
+$browser->waitForDialog($seconds = null);
+$browser->assertDialogOpened('value');
+$browser->typeInDialog('Hello World');
+$browser->acceptDialog(); закрыть
+$browser->dismissDialog(); отмена
+
+
+Области видимости
+поиск внутри таблицы, сразу текста и кнопки
+
+$browser->with('.table', function ($table) {
+  $table->assertSee('Hello World')
+    ->clickLink('Delete');
+});
+
+выйдем из области
+$browser->with('.table', function ($table) {
+
+  тут в body .table
+  $browser->elsewhere('.page-title', function ($title) {
+
+    тут в body .page-title
+    $title->assertSee('Hello World');
+
+  });
+});
+
+
+Ожидание
+мс
+$browser->pause(1000);
+
+ждать селектора
+$browser->waitFor('.selector'); по умолчанию 5 сек
+$browser->waitFor('.selector', 1); ждать 1 сек
+
+ждать когда исчезнет
+$browser->waitUntilMissing('.selector');
+$browser->waitUntilMissing('.selector', 1);
+
+ждать модальное окно и нажать внутри кнопку
+тут тоже область видимости
+
+$browser->whenAvailable('.modal', function ($modal) {
+  $modal->assertSee('Hello World')
+    ->press('OK');
+});
+
+ждать текст
+$browser->waitForText('Hello World');
+$browser->waitForText('Hello World', 1);
+
+ждать удаления текста
+$browser->waitUntilMissingText('Hello World');
+$browser->waitUntilMissingText('Hello World', 1);
+
+ждать ссылку с текстом
+$browser->waitForLink('Create');
+$browser->waitForLink('Create', 1);
+
+ждать смены урла
+$browser->waitForLocation('/secret');
+$browser->waitForRoute($routeName, $parameters); ждать роута
+
+ждать перезагрузки
+$browser->click('.some-action')
+  ->waitForReload()
+  ->assertSee('something');
+
+ждать true выражений js
+$browser->waitUntil('App.dataLoaded');
+$browser->waitUntil('App.data.servers.length > 0');
+$browser->waitUntil('App.data.servers.length > 0', 1);
+
+ждать выражений vue
+$browser->waitUntilVue('user.name', 'Taylor', '@user');
+$browser->waitUntilVueIsNot('user.name', null, '@user');
+
+ждать с колбеком
+$browser->waitUsing(10, 1, function () use ($something) {
+  return $something->isReady();
+}, "Something wasn't ready in time.");
+
+
+скролл к элементу
+$browser->scrollIntoView('selector')
+  ->click('selector');
+
+ждать компонент vue
+$this->browse(function (Browser $browser) {
+  $browser->visit('/')
+    ->assertVue('user.name', 'Taylor', '@profile-component');
+});
+--------------------
+
+Утверждения
+
+assertTitle - заголовок страницы равен
+assertTitleContains - заголовок страницы содержит
+
+assertUrlIs - урл равен
+
+assertSchemeIs - полный урл равен
+assertSchemeIsNot - полный урл не равен
+
+assertHostIs - хост равен
+assertHostIsNot -  хост не равен
+
+assertPortIs - порт равен
+assertPortIsNot - порт не равен
+
+assertPathBeginsWith - урл начинается с пути
+assertPathIs - урл равен
+assertPathIsNot - урл не равен
+
+assertRouteIs - урл равен роуту
+
+assertQueryStringHas - есть параметр запроса
+assertQueryStringMissing - нет параметра запроса
+
+assertFragmentIs - фрагмент равен фрагменту
+assertFragmentBeginsWith - фрагмент начинается с фрагмента
+assertFragmentIsNot - фрагмент не равен фрагменту
+
+assertHasCookie - кука есть
+assertHasPlainCookie - кука есть
+assertCookieMissing - куки нет
+assertPlainCookieMissing - куки нет
+assertCookieValue - кука равна
+assertPlainCookieValue - кука равна
+
+assertSee - текст есть
+assertDontSee - текста нет
+assertSeeIn - текст присутствует
+assertDontSeeIn - текст не присутствует
+
+assertSourceHas - исходный код есть
+assertSourceMissing - нет
+
+assertSeeLink - ссылка есть
+assertDontSeeLink - нет
+
+assertInputValue - поле ввода имеет значение
+assertInputValueIsNot - не имеет
+
+assertChecked - чекбокс стоит
+assertNotChecked - не стоит
+
+assertRadioSelected - радиокнопка выбрана
+assertRadioNotSelected - нет
+
+assertSelected - селект выбран
+assertNotSelected - нет
+assertSelectHasOptions - селект наполнен
+assertSelectMissingOption - селект пустой
+assertSelectMissingOptions - селект недоступен
+assertSelectHasOption - селект доступен
+
+assertValue - у элемента значение
+
+assertAttribute - есть аттрибут
+assertAriaAttribute - есть аттрибут aria
+assertDataAttribute - есть аттрибут data
+
+assertVisible - элемент виден
+assertPresent - есть
+assertMissing - не виден
+
+assertDialogOpened - js окно открыто
+
+assertEnabled - поле включено
+assertDisabled - поле выключено
+
+assertButtonEnabled - кнопка включена
+assertButtonDisabled - выключена
+
+assertFocused - стоит фокус
+assertNotFocused - нет
+
+assertAuthenticated - залогинен
+assertGuest - нет
+assertAuthenticatedAs - залогинен как
+
+assertVue - свойство компонента Vue равно
+assertVueIsNot - не равно
+assertVueContains - содержит
+assertVueDoesNotContain - не содержит
+--------------------
+
+Создать страницу
+в tests/Browser/Pages
+
+php artisan dusk:page Login
+
+Страница - это метод группировок селекторов под удобные аттрибуты
+методы url, assert, elements
+
+public function elements() {
+  return [
+    '@email' => 'input[name=email]',
+  ];
+}
+
+$browser->type('@email', 'taylor@laravel.com');
+
+можно глобально в классе tests/Browser/Pages/Page
+
+public static function siteElements() {
+  return [
+    '@element' => '#selector',
+  ];
+}
+--------------------
+
+Создать компонент
+в tests/Browser/Components
+
+php artisan dusk:component DatePicker
+
+Компонент - это кусок который присутствует на разных страницах
+например датапикер или поле поиска
+--------------------
+
+Непрерывная интеграция
+
+в .env.testing требует APP_URL=http://127.0.0.1:8000
+
+CircleCI
+пример конфига в мане
+
+Codeship
+пример конфига в мане
+
+Heroku CI
+пример конфига в мане
+
+Travis CI
+пример конфига в мане
+
+GitHub Actions
+пример конфига в мане
+-------------------------------------------------
+
+CONSOLE TESTS
+
+консольные приложения которые ожидают ввода от юзера
+
+
+Команда
+
+Artisan::command('question', function () {
+
+  $name = $this->ask('What is your name?');
+
+  $language = $this->choice('Which language do you program in?', [
+        'PHP',
+        'Ruby',
+        'Python',
+  ]);
+
+  $this->line('Your name is '.$name.' and you program in '.$language.'.');
+
+});
+
+
+Тест команды
+
+public function testConsoleCommand() {
+
+  $this->artisan('question')
+    ->expectsQuestion('What is your name?', 'Taylor Otwell')
+    ->expectsQuestion('Which language do you program in?', 'PHP')
+    ->expectsOutput('Your name is Taylor Otwell and you program in PHP.')
+    ->assertExitCode(0);
+}
+
+
+При ожидании подтверждения да/нет
+
+$this->artisan('module:import')
+  ->expectsConfirmation('Do you really wish to run this command?', 'no')
+  ->assertExitCode(1);
+
+expectsQuestion - имитируем ввод юзером
+assertExitCode - код ответа
+expectsOutput - вывод ответа
+expectsConfirmation - когда команда ждет выбора ответа
+-------------------------------------------------
+
+HTTP TESTS
+
+МВ CSRF отключено
+
+сделать get запрос
+$response = $this->get('/');
+
+поймать статус 200
+$response->assertStatus(200);
+
+добавить заголовки
+$response = $this->withHeaders([
+  'X-Header' => 'Value',
+])->json('POST', '/user', ['name' => 'Sally']);
+
+добавить куки
+$response = $this->withCookie('color', 'blue')->get('/');
+$response = $this->withCookies([
+  'color' => 'blue',
+  'name' => 'Taylor',
+])->get('/');
+
+отладка ответа
+$response->dumpHeaders();
+$response->dumpSession();
+$response->dump();
+
+добавить данные в сессию
+$response = $this->withSession(['foo' => 'bar'])
+  ->get('/');
+
+поддержка залогиненности
+$user = factory(User::class)->create();
+$response = $this->actingAs($user)
+  ->withSession(['foo' => 'bar'])
+  ->get('/');
+
+укажем гуарда
+$this->actingAs($user, 'api')
+--------------------
+
+тестирование json
+
+методы
+json, getJson, postJson, putJson, patchJson, deleteJson, optionsJson
+assertJson, assertExactJson, assertJsonPath
+
+в response данные доступны как элементы массива
+$this->assertTrue($response['created']);
+--------------------
+
+тестирование загрузки файла
+
+Storage::fake('avatars');
+
+создать картинку с размерами
+$file = UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100);
+
+документ
+$file = UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);
+
+документ с mime типом
+$file = UploadedFile::fake()->create('document.pdf', $sizeInKilobytes, 'application/pdf');
+
+отправить
+$response = $this->json('POST', '/avatar', [
+  'avatar' => $file,
+]);
+
+проверка что файл сохранился
+Storage::disk('avatars')->assertExists($file->hashName());
+
+проверка что файл НЕсохранился
+Storage::disk('avatars')->assertMissing('missing.jpg');
+--------------------
+
+Утверждения
+
+assertCookie - содержит куку
+assertCookieExpired - содержит куку и она истекла
+assertCookieNotExpired - содержит куку и она не истекла
+assertCookieMissing - не содержит куку
+
+assertCreated - код ответа 201
+assertDontSee - строки нет в ответе
+assertDontSeeText - строки нет в тексте ответа
+assertExactJson - точное совпадение json
+assertForbidden - код ответа 403
+assertHeader - заголовок есть в ответе
+assertHeaderMissing - заголовка нет в ответе
+
+assertJson - ответ содержит json
+assertJsonCount - в ответе массив размера N
+assertJsonFragment - ответ содержит фрагмент json
+assertJsonMissing - ответ не содержит фрагмент json
+assertJsonMissingExact - ответ не содержит точного фрагмента json
+assertJsonMissingValidationErrors - ответ не содержит ошибок json
+assertJsonPath - ответ содержит данные по указанному пути
+assertJsonStructure - ответ имеет заданную структуру
+assertJsonValidationErrors - ответ содержит заданные ошибки json
+
+assertLocation - ответ содержит uri и заголовке
+assertNoContent - ответ содержит код ответа и нет тела
+assertNotFound - код ответа 404
+assertOk - код ответа 200
+assertPlainCookie - содержит куку
+assertRedirect - это редирект на заданный uri
+
+assertSee - строка есть в ответе
+assertSeeInOrder - строки есть в ответе
+assertSeeText - строка содержится в ответе
+assertSeeTextInOrder - строки содержаться в ответе
+
+assertSessionHas - в сессии есть фрагмент данных
+assertSessionHasInput - во Flash значении есть фрагмент данных
+assertSessionHasAll - в сессии массив значений
+assertSessionHasErrors - в сессии есть такой ключ ошибки
+assertSessionHasErrorsIn - в сессии есть такие ключи ошибки
+assertSessionHasNoErrors - в сессии нет ошибок
+assertSessionDoesntHaveErrors - нет ошибок для данных ключей
+assertSessionMissing - нет ключа
+
+assertStatus - код ответа N
+assertSuccessful - код ответа > = 200 и <300
+assertUnauthorized - код ответа 401
+
+assertViewHas - наличие фрагмента данных
+assertViewHasAll - есть список данных
+assertViewIs - шаблон возвращен роутом
+assertViewMissing - нет данных
+
+
+Утверждения аутентификации
+
+assertAuthenticated - залогинен
+assertGuest - не залогинен
+assertAuthenticatedAs - залогинен как
+assertCredentials - данные валидны
+assertInvalidCredentials - данные невалидны
+-------------------------------------------------
+
+MOCKING
+
+имитация без выполнения
+используется при тестировании
+
+привязка имитационного объекта в СК
+$this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
+  $mock->shouldReceive('process')->once();
+}));
+
+СК будет юзать инстанс имитации вместо реального
+
+или так
+$this->mock(Service::class, function ($mock) {
+  $mock->shouldReceive('process')->once();
+});
+
+
+имитировать указанные методы
+$this->partialMock(Service::class, function ($mock) {
+  $mock->shouldReceive('process')->once();
+});
+
+сделить за объектом
+$this->spy(Service::class, function ($mock) {
+    $mock->shouldHaveReceived('process');
+});
+
+
+Фасады
+
+не выполнять задач
+Bus::fake();
+Bus::assertDispatched(function (ShipOrder $job) use ($order) {
+  return $job->order->id === $order->id;
+});
+
+Bus::assertNotDispatched(AnotherJob::class);
+
+не прослушивать события
+Event::fake();
+Event::assertDispatched(function (OrderShipped $event) use ($order) {
+  return $event->order->id === $order->id;
+});
+Event::assertDispatched(OrderShipped::class, 2);
+Event::assertNotDispatched(OrderFailedToShip::class);
+
+не прослушивать только набор
+Event::fake([
+  OrderCreated::class,
+]);
+
+только для части теста
+$order = Event::fakeFor(function () {
+  $order = factory(Order::class)->create();
+  Event::assertDispatched(OrderCreated::class);
+});
+
+
+подделка HTTP
+в мане
+
+не отправлять почту
+в том числе в очереди
+Mail::fake();
+
+не отправлять уведомления
+Notification::fake();
+
+не ставить задачи в очередь
+Queue::fake();
+
+не загружать файлы
+Storage::fake('photos');
+Storage::persistentFake('photos');
+
+имитировать фасады
+кроме фасадов Request, Config
+
+$value = Cache::get('key'); настояший вызов
+Cache::shouldReceive('get')->once()->with('key')->andReturn('value'); имитация
+-------------------------------------------------
+
+DATABASE
+
+Тестирование бд
+фабрики заполняют бд данными
+можно отдельные фабрики для каждой модели
+либа Faker
+
+Папка фабрик
+database/factories
+
+Создать фабрику
+php artisan make:factory Name
+
+Создать фабрику для модели NameModel
+php artisan make:factory Name -m NameModel
+
+Сброс бд после каждого теста
+class ExampleTest extends TestCase {
+  use RefreshDatabase;
+}
+
+Добавить данные
+
+public function definition() {
+  return [
+    'name'     => $this->faker->name,
+    'email'    => $this->faker->unique()->safeEmail,
+    'created'  => now(),
+    'password' => '$2y$10$9',
+    'token'    => Str::random(10),
+    'message'  => $this->faker->text(),
+	'ban'      => $this->faker->numberBetween(0, 1),
+	'desc'     => $this->faker->paragraph(3),
+	'company'  => $this->faker->company,
+	'url'      => $this->faker->url,
+	'rating'   => $this->faker->numberBetween(-1, +1),
+	'sites_id' => $this->faker->unique(true)->numberBetween(1, Site::count()),
+    ];
+});
+
+в Faker добавить локаль
+config/app.php 'faker_locale'
+
+работает для extend моделей тоже
+
+$factory->define(App\Admin::class, function (Faker\Generator $faker) {
+  return factory(App\User::class)->raw([]);
+});
+
+
+Колбеки до и после создания модели
+
+$factory->afterMaking(App\User::class, function ($user, $faker) {
+  
+});
+
+$factory->afterCreating(App\User::class, function ($user, $faker) {
+  $user->accounts()->save(factory(App\Account::class)->make());
+});
+
+
+Колбеки для состояний
+
+$factory->afterMakingState(App\User::class, 'delinquent', function ($user, $faker) {
+  
+});
+
+$factory->afterCreatingState(App\User::class, 'delinquent', function ($user, $faker) {
+  
+});
+
+
+Создать модель
+$user = factory(App\User::class)->make();
+
+Создать 3 модели
+$users = factory(App\User::class, 3)->make();
+
+Применить состояния
+$users = factory(App\User::class, 5)->states('delinquent')->make();
+$users = factory(App\User::class, 5)->states('premium', 'delinquent')->make();
+
+Изменить аттрибуты
+$user = factory(App\User::class)->make([
+  'name' => 'Abigail',
+]);
+
+Сохранить модели
+$user = factory(App\User::class)->create();
+$users = factory(App\User::class, 3)->create();
+
+Сохранить с аттрибутами
+$user = factory(App\User::class)->create([
+  'name' => 'Abigail',
+]);
+
+
+Создать отношения
+
+$users = factory(App\User::class, 3)
+  ->create()
+  ->each(function ($user) {
+     $user->posts()->save(factory(App\Post::class)->make());
+});
+
+Прикрепить несколько отношений
+
+$user->posts()->createMany(
+  factory(App\Post::class, 3)->make()->toArray()
+);
+
+К посту создать юзера
+
+$factory->define(App\Post::class, function ($faker) {
+  return [
+    'title' => $faker->title,
+    'content' => $faker->paragraph,
+    'user_id' => factory(App\User::class),
+  ];
+});
+
+
+для HAS MANY
+
+Создать юзера и посты
+
+$user = User::factory()
+  ->hasPosts(3, function (array $attributes, User $user) {
+    return ['type' => $user->type];
+  })
+->create();
+
+$user = User::factory()
+  ->has(Post::factory()
+    ->count(3)
+    ->state(function (array $attributes, User $user) {
+      return ['type' => $user->type];
+  })
+)
+->create();
+
+для BELONGS TO
+
+Создать посты и юзера
+
+$posts = Post::factory()
+  ->count(3)
+  ->for(User::factory()
+    ->state(['name' => 'Archer'])
+)->create();
+
+$posts = Post::factory()
+  ->count(3)
+  ->forUser(['name' => 'Jessica'])
+->create();
+
+
+Прикрепить вычисляемый аттрибут
+
+$factory->define(App\Post::class, function ($faker) {
+    return [
+        'title' => $faker->title,
+        'content' => $faker->paragraph,
+
+        'user_id' => factory(App\User::class),
+
+        'user_type' => function (array $post) {
+            return App\User::find($post['user_id'])->type;
+        },
+
+    ];
+});
+
+
+Посев в базу
+
+$this->seed();
+$this->seed(OrderStatusSeeder::class);
+
+
+Утверждения
+
+assertDatabaseCount - колво записей равно
+assertDatabaseHas - есть данные
+assertDatabaseMissing - нет данных
+assertDeleted - запись удалена
+assertSoftDeleted - удалена мягко
+-------------------------------------------------

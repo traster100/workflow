@@ -676,13 +676,22 @@ session.cookie_samesite='Strict'
 
 php 7 новый синтаксис
 
-тип возвращаемого значения у функции или метода
+Тип возвращаемого значения у функции или метода
 public function a1() :bool {}
 
-тип переменной у функции или метода
+Тип переменной у функции или метода
 public function a1(array $b) {}
 
-вернет $a или второе значение
+Проверка строго на null. вернет $a или второе значение
 $a ?? false;
 $a ?? null;
 $a ?? '';
+
+Слово ::class
+вернет класс с его пространством имён. т.е. полное имя класса
+
+namespace NamespaceName1;
+class className1{}
+
+вернет \NamespaceName1\className1
+className1::class;
