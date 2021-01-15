@@ -1,101 +1,106 @@
-Cashier Stripe
+Состав файла
+
+Cashier Stripe, Cashier Paddle, Cashier Mollie, Dusk, Envoy, Horizon, Sail, Forge, Vapor, Passport, Sanctum, Socialite, JetStream, Breeze, Fortify, Spark, Nova, LiveWire, Lumen, Echo, Mix, Homestead, Orion, Intervention, Faker, Scout, Tinker, Envoyer, Valet, Flare, Ignition, Telescope
+-------------------------------------------------
+
+CASHIER STRIPE
 биллинг. ключи api, вебхуки, выбор валюты, логи, клиенты, способы оплаты, подписки, тарифные планы, налоги, триал, разовый платёж, счета фактуры, тестирование
 
-Cashier Paddle
+CASHIER PADDLE
 биллинг. ключи api, вебхуки, выбор валюты, платные ссылки, подписки, тарифные планы, триал, способы оплаты, разовый платёж, квитанции, тестирования нет
 
-Cashier Mollie
+CASHIER MOLLIE
 биллинг
 -------------------------------------------------
 
-Dusk
+DUSK
 тестирование в браузере. testing -> browser tests
 
-Envoy
+ENVOY
 удаленно выполнять задачи на серверах. blade синтаксис. переменные. группировка задач в пакеты. последовательное и паралельное исполнение на серверах. запрос подтверждения выполнения. уведомления в slack, discord, telegram
 
-Horizon
+HORIZON
 панель управления очередями redis. баланс simple, auto, false. воркеры. супервизор рестартит процессы. линукс либа. группировка в теги задач, почт, вещания, уведомлений, прослушивателей событий, очередей. метрики
 
-Sail
+SAIL
 интерфейс командной строки для работы с docker-контейнером для разработки
 
-Forge
+FORGE
 сервис развертывания серверов на digitalocean, linode, vultr, amazon. сервис конфигурации супервизора для horizon (панель управления очередями redis)
 
-Vapor
+VAPOR
 бессерверная платформа от amazon
 -------------------------------------------------
 
-Passport
+PASSPORT
 логин для api. токены. нет состояния сеанса между запросами. на основе oauth2. гуард tokenguard. компоненты vue. json api. круд клиентов и токенов, коды авторизации. гуарды и провайдеры, использование api через js. использование токена, куки, csrf. события
 
-Sanctum
+SANCTUM
 система логина для spa (одностраничники), приложений, api. на основе токенов. у токенов области видимости. без oauth. токены как у github. роуты. гуарды. cors, csrf, вещание, тестирование
 
-Socialite
+SOCIALITE
 логин через соцсети. поставщики oauth. facebook, twitter, linkedin, google, github, gitlab, bitbucket. все провайдеры https://socialiteproviders.com, фасад socialite
 
-JetStream
+JETSTREAM
 готовый каркас аутентификации. интегрирован с sanctum. https://jetstream.laravel.com. 2 стека фронтенда: livewire на основе blade + tailwind. inertia.js на основе vuejs + tailwind
 
-Breeze
+BREEZE
 готовый каркас аутентификации. на blade + tailwind
 
-Fortify
+FORTIFY
 серверная часть для jetstream. может использоваться отдельно, с sanctum, с spa
 
-Spark
+SPARK
 платный каркас приложения
 
-Nova
+NOVA
 платный дашбоард
 -------------------------------------------------
 
-LiveWire
+LIVEWIRE
 микрофреймворк для динамических компонентов. поле поиска с отображением результатов на лету. пагинация
 
-Lumen
+LUMEN
 микрофреймворк
 
-Echo
+ECHO
 JS либа
 
-Mix
+MIX
 компиляция и минификация
 
-Homestead
+HOMESTEAD
 среда разработки
 
-Orion
+ORION
 rest api на базе eloquent моделей
 
-Intervention
+INTERVENTION
 работа с картинками
 
-Faker
+FAKER
 генератор данных для сидеров
 
-Scout
+SCOUT
 поисковая машина. на основе индексов. драйвер algolia. мягкое удаление поддерживается. свои драйверы
 
-Tinker
+TINKER
 repl пакет для artisan console
 
-Envoyer
+ENVOYER
 продвинутая выключалка приложения
 
-Valet
+VALET
 среда разработки для Mac
 -------------------------------------------------
 
-Flare
+FLARE
 отслеживание ошибок на продакшене. платный сервис на основе ignition
 
-Ignition
+IGNITION
 панель отладки ошибок. локально и на продакшене
 
-Telescope
+TELESCOPE
 отладка. фильтрация что писать. теги. наблюдатели за переменными, событиями, исключениями, слушателями, задачами, журналами, почтой, моделями, уведомлениями, запросами в бд, кеширования redis, http запросами
 -------------------------------------------------
 

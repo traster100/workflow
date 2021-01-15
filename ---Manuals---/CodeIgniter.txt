@@ -99,7 +99,7 @@ if ($update_batch) {
 -------------------------------------------------
 
 INSERT
-$this->db->insert('addresses', $post);
+$this->db->insert('addresses', $data);
 
 INSERT IGNORE
 $str = $this->db->insert_string('addresses', $data);
@@ -107,12 +107,18 @@ $str = preg_replace("~(INSERT INTO)~isu", 'INSERT IGNORE INTO', $str);
 $this->db->query($str);
 return $this->db->insert_id();
 
+Массовый INSERT
+$data = [
+  ['title' => 'Mytitle1', 'name' => 'Myname1'],
+  ['title' => 'Mytitle2', 'name' => 'Myname2'],
+];
+$this->db->insert_batch('tablename', $data);
+
 DELETE
 $this->db->delete('addresses', [
 'id' => $id,
 'users_id' => $this->user->item('id'),
 ]);
-
 
 ОТЛАДКА
 $this->db->last_query();
