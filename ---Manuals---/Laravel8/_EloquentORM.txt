@@ -1,0 +1,1366 @@
+Состав файла
+
+Getting Started, Relationships, Collections, Mutators, Api resources, Serialization
+-------------------------------------------------
+
+GETTING STARTED
+
+Eloquent ORM это реализация паттерна ActiveRecord
+модели Eloquent это тоже Query Builder, доступны все его методы
+
+Таблица это Модель
+Паттерн Repositories это хранилище для абстракций
+
+Аттрибуты модели это столбики
+Методы all и get возвращают Коллекции
+
+Конфиг
+config/database.php
+
+Папка моделей
+app/Models
+-------------------------
+
+Создать модель
+php artisan make:model Name
+
+Создать модель и миграцию
+php artisan make:model Name -m
+
+class Name extends Model {
+
+  имя таблицы. или names
+  protected $table = 'names';
+
+  имя первичного ключа. или id
+  protected $primaryKey = 'id';
+
+  если первичный ключ не int autoincrement
+  public $incrementing = false;
+
+  если первичный ключ не int
+  protected $keyType = 'string';
+
+  если не хотим столбики created_at, updated_at
+  public $timestamps = false;
+
+  свой формат timestamp
+  protected $dateFormat = 'U';
+
+  свои имена created_at и updated_at
+  const CREATED_AT = 'creation_date';
+  const UPDATED_AT = 'last_update';
+
+  выбрать соединение
+  protected $connection = 'connectionName';
+
+  значения по умолчанию для столбиков
+  protected $attributes = [
+    'delayed' => false,
+  ];
+
+}
+-------------------------
+
+Подзапросы в Select
+
+User::addSelect(['last_post' => Post::select('name')
+  ->whereColumn('user_id', 'users.id')
+  ->orderBy('arrived_at', 'desc')
+  ->limit(1)
+])->get();
+
+Подзапросы в OrderBy
+
+User::orderByDesc(Post::select('arrived_at')
+    ->whereColumn('user_id', 'users.id')
+    ->orderBy('arrived_at', 'desc')
+    ->limit(1)
+)->get();
+-------------------------
+
+Получить все строки
+Post::all();
+Post::where('active', 1)->orderBy('name', 'desc')->take(10)->get();
+
+Получить строки чанками по N
+Post::chunk(200, function ($posts) {});
+
+Курсоры
+курсор возвращает ленивые коллекции LazyCollection. доступны все методы ленивых коллекций
+
+Получить строки по 1 через курсоры
+foreach (Post::where('foo', 'bar')->cursor() as $post) {}
+
+User::cursor()->filter(function ($user) {
+  return $user->id > 500;
+});
+--------------------
+
+Получить модели
+
+по id
+Post::find(1);
+Post::find([1, 2, 3]);
+
+1ю модель из выборки
+Post::where('active', 1)->first();
+Post::firstWhere('active', 1);
+
+1ю модель из выборки, если нет то выполнить замыкание
+Post::where('legs', '>', 100)->firstOr(function () {});
+
+1ю модель из выборки, а если нет то выполнить замыкание
+выберем только нужные столбики
+Post::where('legs', '>', 100)->firstOr(['id', 'legs'], function () {});
+
+Если модели не найдены, то будет исключение ModelNotFoundException
+если исключение не перехвачено то будет отправлен ответ HTTP 404
+
+Post::findOrFail(1);
+Post::where('legs', '>', 100)->firstOrFail();
+--------------------
+
+Агрегатные функции
+все агрегатные функции из Query Builder
+
+Post::where('active', 1)->count();
+Post::where('active', 1)->sum('price');
+Post::where('active', 1)->max('price');
+-------------------------
+
+Переизвлечь модель в новую переменную
+
+$user = User::find(1);
+$newUser= $user->fresh();
+
+Переизвлечь модель в эту же переменную
+
+$user = User::find(1); //name = a1
+$user->name= 'a2';
+$user->refresh();
+$user->name; //a1
+-------------------------
+
+Вставить модель
+столбики created_at и updated_at обновятся сами
+
+$user = new User;
+$user->name = $request->name;
+$user->save();
+
+Обновить модель
+
+$user = User::find(1);
+$user->name = 'name';
+$user->save();
+
+Массовое обновление
+для методов saving, saved, updating, updated не срабатывают события модели
+
+User::where('active', 1)
+  ->where('destination', 'San Diego')
+  ->update(['delayed' => 1]);
+-------------------------
+
+Контроль изменения аттрибутов модели с момента извлечения
+
+$user->isDirty();
+$user->isDirty('title');
+
+$user->isClean();
+$user->isClean('title');
+
+$user->wasChanged();
+$user->wasChanged('title');
+
+$user->getOriginal();
+$user->getOriginal('title');
+-------------------------
+
+Вставить модель
+
+class User extends Model {
+
+  аттрибуты массово назначаемые
+  protected $fillable = ['name'];
+
+  сделать все аттрибуты назначаемыми
+  protected $guarded = [];
+}
+
+$user= User::create(['name' => 'name']);
+
+если модель уже есть, то вставить так
+$user->fill(['name' => 'name']);
+--------------------
+
+Вставить модель
+
+найти модель, если такой нет, то вставить новую модель с этими аттрибутами
+
+User::firstOrCreate(['name' => 'name']);
+User::firstOrCreate(['name' => 'name'], ['delayed' => 1]);
+--------------------
+
+Вставить модель
+
+найти модель, если такой нет, то создать новую модель с этими аттрибутами, потом сохранить через save()
+
+User::firstOrNew(['name' => 'name']);
+User::firstOrNew(['name' => 'name'], ['delayed' => 1]);
+--------------------
+
+Обновить модель
+
+обновить модель, если такой нет, то вставить новую модель с этими аттрибутами
+
+User::updateOrCreate(['departure' => 'Oakland']);
+-------------------------
+
+Удалить модель
+
+с извлечением из БД
+
+$user= User::find(1);
+$user->delete();
+
+без извлечения из БД
+
+User::destroy(1);
+User::destroy(1, 2, 3);
+User::destroy([1, 2, 3]);
+User::destroy(collect([1, 2, 3]));
+
+destroy() - события deleting и deleted работают
+--------------------
+
+Удалить несколько моделей
+
+User::where('active', 0)->delete();
+
+delete() - события deleting и deleted не работают
+--------------------
+
+Мягкое удаление строк
+
+без фактического удаления
+на базе столбика deleted_at в котором время удаления
+
+class User extends Model {
+
+  подключаем трейт
+  use SoftDeletes;
+}
+
+
+в Schema builder есть метод для создания этого столбика
+
+public function up() {
+  Schema::table('users', function (Blueprint $table) {
+    $table->softDeletes();
+  });
+}
+public function down() {
+  Schema::table('users', function (Blueprint $table) {
+    $table->dropSoftDeletes();
+  });
+}
+
+На модели вызываем метод delete
+он будет в столбик deleted_at вставлять дату удаления
+
+В методах select эта строка исключается
+
+Проверка что строка мягко удалена
+if ($flight->trashed()) {}
+
+Получить все строки и мягко удаленные
+User::withTrashed()->where('account_id', 1)->get();
+$user->history()->withTrashed()->get();
+
+Получить только мягко удаленные строки
+User::onlyTrashed()->where('airline_id', 1)->get();
+
+Сделать мягко удаленную строку снова неудаленной
+$user->restore();
+$user->history()->restore();
+
+Сделать много мягко удаленных строк снова неудаленными
+User::withTrashed()->where('airline_id', 1)->restore();
+
+Реально удалить мягко удаленные строки
+$user->forceDelete();
+$user->history()->forceDelete();
+--------------------
+
+Создать клон экземпляра модели
+
+$shipping = Address::create([
+  'type' => 'shipping',
+  'line_1' => '123 Example Street',
+]);
+$billing = $shipping->replicate()->fill(['type' => 'billing']);
+$billing->save();
+--------------------
+
+Глобальные области для Запросов
+
+позволяют добавить ограничения для всех запросов к модели
+мягкое удаление сделано на таком принципе
+
+Создать область
+class AgeScope implements Scope {
+  public function apply(Builder $builder, Model $model) {
+    $builder->addSelect('name')->where('age', '>', 200);
+  }
+}
+
+Добавить область к модели
+class User extends Model {
+  protected static function booted() {
+    static::addGlobalScope(new AgeScope);
+  }
+}
+
+Область на основе Замыканий
+class User extends Model {
+  protected static function booted() {
+    static::addGlobalScope('age', function (Builder $builder) {
+      $builder->where('age', '>', 200);
+    });
+  }
+}
+
+Для конкретного запроса удалить Область
+User::withoutGlobalScope(AgeScope::class)->get();
+User::withoutGlobalScope('age')->get(); если область задана через замыкание
+
+Удалить все области
+User::withoutGlobalScopes()->get();
+
+Удалить конкретные области
+User::withoutGlobalScopes([FirstScope::class, SecondScope::class])->get();
+--------------------
+
+Локальные области для Запросов
+
+позволяют добавить ограничения для запросов к модели
+это методы в модели Eloquent с префиксом scope
+методы возвращают Query Builder
+
+class User extends Model {
+
+  public function scopePopular($query) {
+    return $query->where('votes', '>', 100);
+  }
+
+  с параметром  
+  public function scopeActive($query, $count) {
+    return $query->where('votes', '>', $count);
+  }
+
+}
+
+Вызываются такие методы без префикса
+User::popular()->get();
+User::popular()->active()->get();
+User::active(100)->get();
+
+User::popular()->orWhere(function (Builder $query) {
+  $query->active();
+})->get();
+--------------------
+
+Сравнить модели
+
+проверяет на совпадение Соединение-Таблица-первичный ключ
+if ($post->is($anotherPost)) {}
+--------------------
+
+События
+
+retrieved извлечение
+creating, created новая модель сохраняется
+updating, updated существующая модель сохраняется
+saving, saved модель создана или обновлена
+deleting, deleted,
+restoring, restored
+
+массовое обновление или удаление не вызывает событий
+saved, updated, deleting, deleted
+
+class User extends Authenticatable {
+
+  свяжем события и классы событий
+  protected $dispatchesEvents = [
+    'saved' => UserSaved::class,
+    'deleted' => UserDeleted::class,
+  ];
+}
+
+свяжем события и события через замыкания
+
+class User extends Model {
+  protected static function booted() {
+    static::created(function ($user) {});
+  }
+}
+--------------------
+
+Наблюдатели
+
+когда у модели много событий, то наблюдатель группирует всех слушателей в один класс
+в классе наблюдателя методы названы как события модели
+
+Создать наблюдателя
+php artisan make:observer UserObserver --model=User
+
+Папка наблюдателей
+App/Observers
+
+class UserObserver {
+  public function created(User $user) {}
+  public function updated(User $user) {}
+  public function deleted(User $user) {}
+  public function forceDeleted(User $user) {}
+}
+
+наблюдатель регистрируется в модели в методе observe
+
+или в AppServiceProvider
+public function boot() {
+  User::observe(UserObserver::class);
+}
+--------------------
+
+Заглушить события
+
+заглушить все события на модели
+
+методы внутри замыкания не вызовут события модели
+User::withoutEvents(function () use () {
+  User::findOrFail(1)->delete();
+  User::find(2);
+});
+-------------------------------------------------
+
+RELATIONSHIPS
+
+Отношения это методы в классе модели Eloquent
+имена отношений не должны конфликтовать с аттрибутами модели
+всем отношениям доступен Query Builder
+--------------------
+
+Мои примеры
+
+Brand
+$brands = Brand::all();
+$brand = Brand::find(1);
+$brand->name;
+$brand->sites;
+Brand::find(1)->sites;
+Brand::find(1)->sites()->where('name', 'sitename')->get();
+$brand->sites()->orderBy('id')->get();
+
+$site->category->name;
+
+доступ к pivot таблице
+foreach ($brand->sites as $site) {
+  $site->brand_site->site_id;
+}
+--------------------
+
+Отношения
+
+One To One
+One To Many
+Many To Many
+
+Has One Through
+Has Many Through
+
+Polymorphic One To One
+Polymorphic One To Many
+Polymorphic Many To Many
+--------------------
+
+"One To One" (один к одному)
+
+class User extends Model {
+  public function phone() {
+
+    автоматически ищет foreign key user_id в Phone
+    автоматически ищет primary key id в User или в свойстве модели $primaryKey
+    return $this->hasOne('Phone');
+
+	укажем вручную
+	return $this->hasOne('Phone', 'foreign_key', 'primary_key');
+  }
+}
+
+class Phone extends Model {
+  public function user() {
+    return $this->belongsTo('User');
+	return $this->belongsTo('User', 'foreign_key', 'primary_key');
+  }
+}
+
+$phone = User::find(1)->phone;
+--------------------
+
+"One To Many" (один ко многим)
+
+class Post extends Model {
+  public function comments() {
+    return $this->hasMany('Comment');
+    return $this->hasMany('Comment', 'foreign_key', 'primary_key');
+  }
+}
+
+$comments = Post::find(1)->comments;
+$comment = Post::find(1)->comments()->where('title', 'foo')->first();
+
+
+"One To Many" (многие к одному)
+
+class Comment extends Model {
+  public function post() {
+    return $this->belongsTo('Post');
+	return $this->belongsTo('Post', 'foreign_key', 'primary_key');
+  }
+}
+
+$comment = Comment::find(1);
+$comment->post->title;
+--------------------
+
+"Many To Many" (многие ко многим)
+
+class User extends Model {
+  public function roles() {
+    return $this->belongsToMany('Role');
+	return $this->belongsToMany('Role', 'role_user', 'user_id', 'role_id');
+  }
+}
+
+class Role extends Model {
+  public function users() {
+    return $this->belongsToMany('User');
+  }
+}
+
+$user = User::find(1);
+$roles = $user->roles;
+$roles = User::find(1)->roles()->orderBy('name')->get();
+
+
+Промежуточная таблица (pivot)
+pivot могут не использовать трейт SoftDeletes
+
+В pivot только ключи pivot таблицы
+можно добавить остальные аттрибуты
+
+$this->belongsToMany('Role')
+  ->withPivot('column1', 'column2');
+
+$user = User::find(1);
+foreach ($user->roles as $role) {
+  $role->pivot->column1;
+  $role->pivot->column2;
+}
+
+Чтобы pivot таблица обрабатывала свои аттрибуты created_at и updated_at
+$this->belongsToMany('Role')
+  ->withTimestamps();
+
+Переименовать таблицу pivot
+$this->belongsToMany('Podcast')
+  ->as('pivot123');
+
+foreach ($user->roles as $role) {
+  echo $role->pivot123->created_at;
+}
+--------------------
+
+Фильтрация результатов метода belongsToMany
+wherePivot, wherePivotIn, wherePivotNotIn
+
+$this->belongsToMany('Role')->wherePivot('approved', 1);
+--------------------
+
+Отдельная модель для pivot таблицы
+
+pivot расширяется от Database\Eloquent\Relations\Pivot
+pivot полиморфная расширяется от Database\Eloquent\Relations\MorphPivot
+
+class Role extends Model {
+  public function users() {
+    return $this->belongsToMany('User')
+	  ->using('RoleUsertable');
+  }
+}
+
+class RoleUsertable extends Pivot {
+  если в pivot таблице есть primary key
+  public $incrementing = true;
+}
+--------------------
+
+"Has One Through" (имеет один сквозной)
+
+механик -> машина -> овнер
+1 механик имеет 1 машину, 1 машина имеет 1 овнера
+механик и овнер связаны через машину
+машина это pivot модель
+
+class Mechanic extends Model {
+  public function carOwner() {
+
+    return $this->hasOneThrough('Owner', 'Car');
+
+	return $this->hasOneThrough(
+      'Owner',
+      'Car',
+      'mechanic_id', foreign key таблицы Cars
+      'car_id',      foreign key таблицы Owners
+      'id',          primary key таблицы Mechanics
+      'id',          primary key таблицы Cars
+    );
+
+  }
+}
+--------------------
+
+"Has Many Through" (имеет много сквозных)
+
+3 таблицы
+projects:     id
+environments: id, project_id
+deployments:  id, environment_id
+
+class Project extends Model {
+  public function deployments() {
+    return $this->hasManyThrough(Deployment::class, Environment::class);
+  }
+}
+--------------------
+
+"One To One" (полиморфные)
+
+posts:  id, name
+users:  id, name
+images: id, url, imageable_id (id юзера или поста), imageable_type (класс User или Post)
+
+class User extends Model {
+  public function image() {
+    return $this->morphOne('Image', 'imageable');
+  }
+}
+
+class Post extends Model {
+  public function image() {
+    return $this->morphOne('Image', 'imageable');
+  }
+}
+
+class Image extends Model {
+  public function imageable() {
+    return $this->morphTo();
+  }
+}
+
+$post = Post::find(1);
+$image = $post->image;
+
+$image = Image::find(1);
+$imageable = $image->imageable;
+--------------------
+
+"One To Many" (полиморфные)
+
+posts:    id, title
+videos:   id, title
+comments: id, body, commentable_id (id юзера или поста), commentable_type (класс User или Post)
+
+$post = Post::find(1);
+$comments = $post->comments;
+
+$comment = Comment::find(1);
+$commentable = $comment->commentable;
+--------------------
+
+"Many To Many" (полиморфные)
+пропустил
+--------------------
+
+Карты морфинга
+
+Relation::morphMap([
+  'posts' => 'Post',
+  'videos' => 'Video'
+]);
+--------------------
+
+Проверка на наличие
+
+$posts = Post::has('comments')->get();
+$posts = Post::has('comments', '>', 3)->get();
+$posts = Post::has('comments.votes')->get();
+$posts = Post::whereHas('comments', function (Builder $query) {
+  $query->where('content', 'foo');
+})->get();
+
+Проверка на отсутствие
+
+$posts = Post::doesntHave('comments')->get();
+$posts = Post::whereDoesntHave('comments', function (Builder $query) {
+  $query->where('content', 'foo');
+})->get();
+--------------------
+
+Проверка наличия связи MorphTo
+
+$comments = Comment::whereHasMorph(
+  'commentable',
+  ['Post', 'Video'],
+  function (Builder $query) {
+    $query->where('title', 'foo');
+  }
+)->get();
+--------------------
+
+Подсчет связанных моделей
+
+$posts = Post::withCount('comments')->get();
+
+$posts = Post::withCount(['votes', 'comments' => function (Builder $query) {
+  $query->where('content', 'foo');
+}])->get();
+
+$posts = Post::withCount(['comments', 'comments as comments1' => function (Builder $query) {
+    $query->where('approved', false);
+}])->get();
+--------------------
+
+Подсчет связанных моделей morphTo
+
+$activities = ActivityFeed::query()
+  ->with(['parentable' => function (MorphTo $morphTo) {
+    $morphTo->morphWithCount([
+      Photo::class => ['tags'],
+      Post::class => ['comments'],
+  ]);
+}])->get();
+
+$activities = ActivityFeed::with('parentable')
+  ->get()
+  ->loadMorphCount('parentable', [
+    Photo::class => ['tags'],
+    Post::class => ['comments'],
+]);
+--------------------
+
+Все отношения и динамические свойства загружаются ленивой загрузкой
+
+class Author extends Model {}
+
+class Book extends Model {
+  public function author() {
+    return $this->belongsTo('Author');
+  }
+}
+
+Ленивая загрузка. N+1 запрос
+$books = Book::all();
+foreach ($books as $book) {
+  $book->author->name;
+}
+
+Активная загрузка. 2 запроса (юзается IN)
+$books = Book::with('author')->get();
+foreach ($books as $book) {
+  $book->author->name;
+}
+
+Активная загрузка
+$books = Book::with(['author', 'publisher'])->get();
+
+Вложенная активная загрузка
+$books = Book::with('author.contacts')->get();
+
+Активная загрузка только нужных аттрибутов
+$books = Book::with('author:id,name')->get();
+
+Включить активную загрузку всегда
+class Book extends Model {
+  protected $with = ['author'];
+  public function author() {
+    return $this->belongsTo('Author');
+  }
+}
+
+Удалить активную загрузку для 1 запроса
+$books = Book::without('author')->get();
+
+Загрузить отношения когда модель уже получена
+$books = Book::all();
+$books->load('author', 'publisher');
+$author->load(['books' => function ($query) {
+  $query->orderBy('published_date', 'asc');
+}]);
+
+Загрузить отношения если они не загружены
+$book->loadMissing('author');
+--------------------
+
+Вставка и обновление связанных моделей
+
+1. Метод save() принимает экземпляр модели Eloquent
+
+$comment = new Comment(['message' => 'comment']);
+
+$post = Post::find(1);
+$post->comments()->save($comment);
+
+$post->comments()->saveMany([
+  new Comment(['message' => 'new comment']),
+  new Comment(['message' => 'new comment'])
+]);
+
+2. Метод create() принимает PHP array
+
+$post = Post::find(1);
+$comment = $post->comments()->create([
+  'message' => 'new comment',
+]);
+
+$post->comments()->createMany([
+  ['message' => 'new comment'],
+  ['message' => 'new comment']
+]);
+--------------------
+
+Перезагрузка модели и её связей
+$post->refresh();
+$post = Post::find(1);
+$post->comments[0]->message = 'Message';
+$post->comments[0]->author->name = 'Author Name';
+$post->push();
+--------------------
+
+Установка foreign key на потомка
+$account = Account::find(10);
+$user->account()->associate($account);
+$user->save();
+
+Установка foreign key на null
+$user->account()->dissociate();
+$user->save();
+--------------------
+
+Если модели нет то вернуть болванку
+return $this->belongsTo('User')->withDefault();
+
+Если модели нет то вернуть болванку с набором аттрибутов
+return $this->belongsTo('User')->withDefault([
+  'name' => 'Guest Author'
+]);
+--------------------
+
+Вставка и удаление в "Many To Many"
+
+users -> user_role <- roles
+
+Добавить роль
+$user = User::find(1);
+$user->roles()->attach($roleId);
+
+Добавить роль с дополнительными аттрибутами
+$user->roles()->attach($roleId, ['expires' => $expires]);
+
+Удалить роль
+$user->roles()->detach($roleId);
+
+Удалить роли
+$user->roles()->detach([$roleId1, $roleId2, $roleId3]);
+
+Удалить все роли
+$user->roles()->detach();
+
+Добавить роли. предыдущие будут удалены
+$user->roles()->sync([$roleId1, $roleId2, $roleId3]);
+$user->roles()->sync([$roleId1 => ['expires' => true], $roleId2, $roleId3]);
+
+Добавить роли. не удаляя предыдущие
+$user->roles()->syncWithoutDetaching([$roleId1, $roleId2, $roleId3]);
+
+Если роль есть, то будет удалена. Если роли нет, то будет добавлена
+$user->roles()->toggle([$roleId1, $roleId2, $roleId3]);
+
+Сохранение дополнительных аттрибутов в pivot таблице
+User::find(1)->roles()->save($role, ['expires' => $expires]);
+
+Обновление записи в pivot таблице
+$user->roles()->updateExistingPivot($roleId, $attributes);
+
+Обновление родительских меток времени
+при обновлении Comment, обновит updated_at у Post
+
+class Comment extends Model {
+  protected $touches = ['post'];
+}
+-------------------------------------------------
+
+COLLECTIONS
+
+Eloquent возвращает коллекции
+почти все методы коллекций возвращают новый инстанс Eloquent
+методы pluck, keys, zip, collapse, flatten, flip возвращают базовый инстанс Collections
+
+Дополнительные методы
+
+contains - определить наличие модели в массиве
+diff - вернет все модели кроме указанных
+except - вернет все модели кроме указанных id
+
+find - найти модель по id, модели, массиву
+fresh - заново загружает модель из базы
+
+intersect - загружает модели по массиву id
+
+load - загружает отношения модели
+loadMissing - загружает отношения модели если не были загружены
+
+modelKeys - вернет массив id моделей в массиве
+makeVisible - делает аттрибут видимым
+makeHidden - делает аттрибут невидимым
+
+only - вернет массив моделей по id
+toQuery - возвращает Query Builder
+unique - вернет все уникальные модели по id
+--------------------
+
+Свой класс Collection со своими методами
+
+class User extends Model {
+  public function newCollection(array $models = []) {
+    return new CustomCollection($models);
+  }
+}
+
+теперь Eloquent возвращает для этой модели newCollection а не Collection
+можно прописать это для всех моделей
+-------------------------------------------------
+
+MUTATORS
+
+Акцессоры читают аттрибуты
+Мутаторы пишут аттрибуты
+
+Создать Акцессор
+
+class User extends Model {
+
+  для аттрибута name
+  public function getNameAttribute($value) {
+	return $this->first_name . $this->last_name;
+  }
+}
+
+Создать Мутатор
+
+class User extends Model {
+
+  для аттрибута name
+  public function setNameAttribute($value) {
+    $this->attributes['name'] = strtolower($value);
+  }
+}
+--------------------
+
+Мутаторы для даты
+
+по умолчанию Eloquent конвертит created_at и updated_at в Carbon
+можно добавить свои аттрибуты
+
+добавим аттрибут expired для даты
+class User extends Model {
+  protected $dates = ['expired'];
+}
+
+Выключить created_at и updated_at
+public $timestamps = false;
+
+Формат даты timestamp
+по умолчанию 'Y-m-d H:i:s'
+
+Измениь формат даты
+protected $dateFormat = 'U';
+--------------------
+
+Приведение типов для аттрибутов
+
+в базе поле ban = 0 или 1
+приведем к логическому true или false
+
+protected $casts = [
+  'ban' => 'boolean',
+];
+
+Все типы
+integer, real, float, double, decimal:<digits>
+string, boolean, object, array, collection
+date, datetime, timestamp
+--------------------
+
+Свой класс приведения аттрибутов
+
+class Json implements CastsAttributes {
+
+  public function get($model, $key, $value, $attributes) {
+    return json_decode($value, true);
+  }
+
+  public function set($model, $key, $value, $attributes) {
+    return json_encode($value);
+  }
+}
+
+Класс цепляем к модели
+class User extends Model {
+  protected $casts = [
+    'options' => Json::class
+  ];
+}
+
+Сложные типы аттрибутов
+
+class Address implements CastsAttributes {
+
+  public function get($model, $key, $value, $attributes) {
+    return new Address(
+      $attributes['address_line_one'],
+      $attributes['address_line_two']
+    );
+  }
+
+  public function set($model, $key, $value, $attributes) {
+    return [
+      'address_line_one' => $value->lineOne,
+      'address_line_two' => $value->lineTwo,
+    ];
+  }
+}
+--------------------
+
+Только входящее приведение типов. когда пишем в модель
+
+class Hash implements CastsInboundAttributes {
+  public function set($model, $key, $value, $attributes) {
+    return bcrypt($value);
+  }
+}
+
+Все приведения типов сложить в класс и его присоединить к модели
+--------------------
+
+Приведение массивов и json
+
+когда в базе есть поле где лежит json
+чтобы работать с ним как с массивом
+будет автоматическая сериализация-десериализация
+
+class User extends Model {
+  protected $casts = [
+    'options' => 'array'
+  ];
+}
+--------------------
+
+Приведение дат
+
+protected $casts = [
+  'created_at' => 'datetime:Y-m-d',
+];
+--------------------
+
+Приведение аттрибутов на лету
+
+expired без приведения
+
+User::select([
+  'users.*',
+  'expired' => Post::selectRaw('MAX(created_at)')
+    ->whereColumn('user_id', 'users.id')
+])->get();
+
+expired с приведением
+
+User::select([
+  'users.*',
+  'expired' => Post::selectRaw('MAX(created_at)')
+    ->whereColumn('user_id', 'users.id')
+])->withCasts([
+    'expired' => 'datetime'
+])->get();
+-------------------------------------------------
+
+API RESOURCES
+
+для создания Api
+модели Eloquent конвертируются в Json
+
+Класс ресурса это 1 модель в массив
+Класс коллекция ресурсов это массив моделей
+
+тестирование https://postman.com
+в браузере ссылки с префиксом /api/
+
+Папка ресурсов
+app/Http/Resources
+--------------------
+
+Создать ресурс для модели
+php artisan make:resource User
+
+Создать ресурс для коллекции моделей
+php artisan make:resource Users --collection
+php artisan make:resource UserCollection
+
+class User extends JsonResource {
+
+  массив аттрибутов для конвертации в json
+  public function toArray($request) {
+    return [
+      'id' => $this->id,
+      'name' => $this->name,
+      'created_at' => $this->created_at,
+      'updated_at' => $this->updated_at,
+    ];
+  }
+}
+
+Использование
+new UserResource(User::find(1));
+
+Создать коллекцию ресурсов и пагинатор
+class UserCollection extends ResourceCollection {
+  public function toArray($request) {
+    return [
+      'data' => $this->collection,
+      'links' => [
+        'self' => 'link-value',
+      ],
+    ];
+  }
+}
+
+Использование
+UserResource::collection(User::all());
+UserCollection(User::all());
+--------------------
+
+Не сбрасывать ключи коллекции
+public $preserveKeys = true;
+
+Настройка базового класса
+$this->collection в UserCollection обращается к User
+
+Можно это изменить
+public $collects = 'App\Http\Resources\Member';
+--------------------
+
+Загрузка отношений
+public function toArray($request) {
+  return [
+    'id' => $this->id,
+    'name' => $this->name,
+    'posts' => PostResource::collection($this->posts),
+  ];
+}
+--------------------
+
+Данные в массиве в ключе 'data'
+можно свой ключ
+public static $wrap = 'user';
+
+Отключить ключ
+в AppServiceProvider в методе boot
+JsonResource::withoutWrapping();
+
+В пагинаторе ключ всегда будет 'data'
+
+Пагинатор можно закинуть в метод collection ресурса
+return new UserCollection(User::paginate());
+--------------------
+
+Условное добавление аттрибутов
+
+public function toArray($request) {
+
+  return [
+
+    'id' => $this->id,
+    'name' => $this->name,
+
+	аттрибут добавиться если true
+    'secret' => $this->when(Auth::user()->isAdmin(), 'secret-value'),
+
+	через замыкание
+	'secret' => $this->when(Auth::user()->isAdmin(), function () {return 'secret-value';}),
+	
+	аттрибуты добавятся если true
+    $this->mergeWhen(Auth::user()->isAdmin(), [
+      'first-secret' => 'value',
+      'second-secret' => 'value',
+    ])
+
+  ];
+}
+
+Не использовать mergeWhen с массивами
+когда микс ключей цифры+строки или неупорядоченные цифры
+--------------------
+
+Условное добавление отношений
+
+public function toArray($request) {
+  return [
+
+    'id' => $this->id,
+    'name' => $this->name,
+
+	если отношение не было загружено, то аттрибута не будет
+    'posts' => PostResource::collection($this->whenLoaded('posts')),
+  ];
+}
+--------------------
+
+Добавление аттрибутов из pivot таблицы
+
+public function toArray($request) {
+  return [
+
+    'id' => $this->id,
+
+	'expires_at' => $this->whenPivotLoaded('role_user', function () {return $this->pivot->expires_at;}),
+
+	'expires_at' => $this->whenPivotLoadedAs('subscription', 'role_user', function () {return $this->subscription->expires_at;}),
+
+    ];
+}
+--------------------
+
+Добавление метаданных data, meta, links
+
+public function toArray($request) {
+  return [
+    'data' => $this->collection,
+    'links' => [
+      'self' => 'link-value',
+    ],
+  ];
+}
+
+Добавление метаданных на верхний уровень
+
+public function toArray($request) {
+  return parent::toArray($request);
+}
+
+public function with($request) {
+  return [
+    'meta' => [
+      'key' => 'value',
+    ],
+  ];
+}
+
+Добавление метаданных через роутер или контроллер
+return (new UserCollection(User::all()->load('roles')))
+  ->additional(['meta' => [
+    'key' => 'value',
+]]);
+--------------------
+
+Ответ ресурса
+
+return new UserResource(User::find(1));
+
+return (new UserResource(User::find(1)))
+    ->response()
+    ->header('X-Value', 'True');
+
+class User extends JsonResource {
+  public function withResponse($request, $response) {
+    $response->header('X-Value', 'True');
+  }
+}
+-------------------------------------------------
+
+SERIALIZATION
+
+Сериализация в Json для создания Api
+сериализует модели в массивы или json
+
+Модель и отношения в массив
+user = App\User::with('roles')->first();
+$user->toArray();
+
+Модель в массив
+$user->attributesToArray();
+
+Коллекции моделей в массив
+$users = App\User::all();
+$users->toArray();
+
+Модель и отношения в json
+$user->toJson();
+$user->toJson(JSON_PRETTY_PRINT);
+--------------------
+
+Скрыть аттрибуты из результата
+class User extends Model {
+  protected $hidden = ['password'];
+}
+
+Вывести только нужные аттрибуты
+class User extends Model {
+  protected $visible  = ['name'];
+}
+
+Временно скрыть или показать аттрибуты
+$user->makeVisible('password')->toArray();
+$user->makeHidden('name')->toArray();
+
+Добавить аттрибуты
+class User extends Model {
+
+  protected $appends = ['ban'];
+
+  как акцессор
+  public function getBanAttribute() {
+    return $this->attributes['ban'] === '1';
+  }
+
+}
+
+Добавить аттрибуты на лету
+$user->append('ban')->toArray();
+$user->setAppends(['ban', 'onoff'])->toArray();
+--------------------
+
+Сериализация даты
+
+Формат даты для всех аттрибутов
+protected function serializeDate(DateTimeInterface $date) {
+  return $date->format('Y-m-d');
+}
+
+Выставить формат на каждый аттрибут
+protected $casts = [
+  'birthday' => 'date:Y-m-d',
+  'joined_at' => 'datetime:Y-m-d H:00',
+];
+-------------------------------------------------
