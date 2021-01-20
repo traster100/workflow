@@ -1362,8 +1362,7 @@ public function update(Request $request, $id) {}
 Путь
 $request->path();
 
-Проверка на путь
-паттерн * на совпадение
+Проверка на путь (паттерн * на совпадение)
 if ($request->is('admin/*')) {}
 
 Урл
@@ -1879,15 +1878,55 @@ php artisan view:clear
 
 THE BASICS -> URL GENERATION
 
-Генерация урлов для ссылок в шаблонах, ответах API, редиректов
+Генерация урлов
 Хелпер Url
 Фасад URL
+--------------------
+
+Мои примеры
+
+http://400.loc/catalog?category_id=10&brand_id=12&feature_id=
+
+Эти методы:
+в контроллере вызывать как $request->
+во вьюхах вызывать как Request::
+
+Request::segments(); массив сегментов
+Request::segment(1); сегмент по индексу
+
+Request::route(); объект роута
+Request::route()->named('frontend.catalog.index'); проверка что имя роута такое
+Request::routeIs('frontend.catalog.index'); проверка что имя роута такое
+
+Request::getUri(); полный урл
+Request::getBaseUrl(); пусто
+Request::getRequestUri(); /catalog
+
+Request::path(); catalog
+Request::is('catalog'); проверка что в урле есть это
+Request::url(); http://400.loc/catalog
+Request::fullUrl(); http://400.loc/catalog
+Request::method(); GET
+
+Route::current()->named('frontend.catalog.index'); true
+Route::currentRouteName(); frontend.catalog.index
+Route::getCurrentRoute(); объект роута
+
+Когда нужно чтобы пункт меню подсвечивался:
+- на списке
+- на формах создания и редактирования
+
+@if(Request::routeIs($route) || Request::segment(2) == explode('.', $route)[1]) active @endif
+--------------------
 
 Создать урл
 $post = App\Post::find(1);
-url('/posts/{$post->id}'); выдаст http://domain.com/posts/1
+url('posts/{$post->id}');
+выдаст http://domain.com/posts/1
+--------------------
 
 Текущий урл
+
 url()->current(); без query string
 url()->full(); с query string
 url()->previous(); предыдущий урл
@@ -1895,50 +1934,44 @@ url()->previous(); предыдущий урл
 URL::current();
 URL::full();
 URL::previous();
+--------------------
 
 Урлы на именованные роуты
-
-Роут
 Route::get('/post/{post}', function () {})->name('post.show');
-
-Урл
 route('post.show', ['post' => 1]); http://example.com/post/1
 
-Урл на основе модели Eloquent по ID
+Урлы на именованные роуты, на основе модели Eloquent
 route('post.show', ['post' => $post]);
 
-Роут на основе модели Eloquent по ID с дополнительными параметрами
-
+Урлы на именованные роуты, на основе модели Eloquent, с дополнительными параметрами
 Route::get('/post/{p}/comment/{c}', function () {})->name('comment.show');
+route('comment.show', ['p' => 1, 'c' => 3]);
+http://example.com/post/1/comment/3
+--------------------
 
-route('comment.show', ['p' => 1, 'c' => 3]); http://example.com/post/1/comment/3
-
-Подписанные урлы (с хешем) на именованные роуты
+Подписанные урлы с хешем на именованные роуты
 URL::signedRoute('unsubscribe', ['user' => 1]);
 
-Подписанные временые урлы (с хешем) на именованные роуты
+Подписанные временые урлы с хешем на именованные роуты
 URL::temporarySignedRoute(
   'unsubscribe', now()->addMinutes(30), ['user' => 1]
 );
 
 Проверка подписанных урлов
+if ($request->hasValidSignature()) {}
 
-Route::get('/unsubscribe/{user}', function (Request $request) {
-  if (! $request->hasValidSignature()) {
-    abort(401);
-  }
-})->name('unsubscribe');
-
-Проверку подписанных урлов через МВ
+Проверка подписанных урлов через МВ
 
 Регистрируем МВ
 $routeMiddleware = ['signed' => \Illuminate\Routing\Middleware\ValidateSignature::class];
 
-Аттачим к роуту
-Route::post('/unsubscribe/{user}', function (Request $request) {})->name('unsubscribe')->middleware('signed');
-если проверка не прошла то вернет 403
+Присоединяем к роуту
+Route::post('/unsubscribe/{user}', function (Request $request) {})
+  ->name('unsubscribe')
+  ->middleware('signed');
+--------------------
 
-Урлы на методы Контроллера
+Урлы на методы контроллера
 action('HomeController@index');
 action([HomeController::class, 'index']);
 action('UserController@profile', ['id' => 1]);
@@ -1946,17 +1979,18 @@ action('UserController@profile', ['id' => 1]);
 для лары 8
 action([UserController::class, 'index']);
 Redirect::action([UserController::class, 'index']);
+--------------------
 
 Глобальные параметры для роутов
-Например параметр locale
 
-Route::get('/{locale}/posts', function () {})->name('post.index');
-
-Чтобы не передавать locale в хелпер Route, а указать его в МВ
-
+Параметр locale укажем в МВ
 public function handle($request, Closure $next) {
   URL::defaults(['locale' => $request->user()->locale]);
 }
+
+Роут
+Route::get('/{locale}/posts', function () {})
+  ->name('post.index');
 -------------------------------------------------
 
 THE BASICS -> HTTP SESSION
@@ -3450,6 +3484,7 @@ js для отдельных вьюх
 FRONTEND -> LOCALIZATION
 
 Фасад App
+Хелпер __()
 
 Папка языковых файлов
 resources/lang
@@ -3457,50 +3492,60 @@ resources/lang
 resources/lang/en/messages.php
 resources/lang/ru/messages.php
 resources/lang/es/messages.php
-итд
-
-Разделение на регионы
-называть по стандарту ISO 15897
-
-resources/lang/en_GB/messages.php
 
 Языковые файлы возвращают массив
 return [
-  'welcome' => 'Welcome to our application',
+  'welcome' => 'Welcome',
 ];
 
-Локаль
-Дефолтовый язык в config/app.php
-App::setLocale($locale); изменить на лету
+Все языковые файлы
+https://github.com/Laravel-Lang/lang
+https://github.com/caouecs/lang
+--------------------
 
-Запасной язык
-Когда активный язык не содержит строку перевода
+Разделение на регионы
 
-config/app.php
-'fallback_locale' => 'en'
+называть по стандарту ISO 15897
+resources/lang/en_GB/messages.php
+--------------------
+
+Настройка локали
+в config/app.php указать 'locale'
+
+Локаль по умолчанию, когда для текущей нет строки перевода
+в config/app.php указать 'fallback_locale'
+--------------------
+
+Установка локали
+App::setLocale('ru');
 
 Определить текущую локаль
-$locale = App::getLocale();
+$locale = App::currentLocale()
+$locale = App::getLocale()
 if (App::isLocale('en')) {}
+--------------------
 
 Создать перевод
-resources/lang/es.json
-
-{
-    "I love programming.": "Me encanta programar."
-}
+в resources/lang/es.json
+{"Привет": "Hello"}
+--------------------
 
 Получить перевод
-Хелпер __()
 
-__('messages.welcome'); файл и ключ
-__('I love programming.'); ключ
-
+Формат "файл.ключ"
+__('messages.welcome');
 {{__('messages.welcome')}}
-@lang('messages.welcome') @lang не экранирует
+
+Формат "файл.мессага"
+__('messages.Привет');
+{{__('messages.Привет')}}
+
+@lang('messages.welcome')
+@lang('messages.Привет')
+--------------------
 
 Заполнители внутри строк перевода
-регистр будет соблюдаться
+регистр важен
 
 'welcome' => 'Welcome, :name'
 'welcome' => 'Welcome, :Name'
@@ -3508,30 +3553,24 @@ __('I love programming.'); ключ
 
 вывод строки
 __('messages.welcome', ['name' => 'dayle']);
+--------------------
 
-Плюрализация
-Множественное число
-В строках можно писать в формате "ед.число|множ.число"
+Плюрализация (множественное число)
 
+Форматы строк
 'apples' => 'There is one apple|There are many apples',
-
-или
-
 'apples' => '{0} There are none|[1,19] There are some|[20,*] There are many',
 
-И получим такую строку, передавая число
+Вывод
 trans_choice('messages.apples', 10);
 
-Вариант с заполнителями
+С заполнителями
 'minutes_ago' => '{1} :value minute ago|[2,*] :value minutes ago',
-
 trans_choice('time.minutes_ago', 5, ['value' => 5]);
 
-Пакеты с языковыми файлами
-Могут поставляться уже со своими файлами, из репоза.
-
-Эти файлы и строки можно менять, перенеся файлы сюда
-resources/lang/vendor/{packagename}/{locale en,ru,etc}/messages.php
+Сторонние пакеты с языковыми файлами
+эти файлы можно менять, перенеся сюда
+resources/lang/vendor/{packagename}/{en|ru|uk}/messages.php
 -------------------------------------------------
 
 FRONTEND -> SCAFFOLDING
@@ -3569,71 +3608,64 @@ npm run watch
 FRONTEND -> COMPILING ASSETS
 
 Laravel Mix использует Webpack для компиляции css и js
-это обёртка над Webpack
 
-Конфиг Webpack
+Конфиг
 webpack.mix.js
+--------------------
 
 Установка NodeJS
 https://nodejs.org/en/download
 node -v
 npm -v
 
-В корне проекта будет файл package.json
-это аналог composer.json
+В корне проекта package.json (аналог composer.json)
 
 Установка зависимостей из package.json
 npm install
 
-Запуск всех mix команд
+Запуск mix команд
 npm run dev
 
-Запуск всех mix команд и минификация
+Запуск mix команд и минификация
 npm run production
 
-Наблюдение за изменяемыми файлами и перекомпиляция
+Наблюдение
 npm run watch
 
-Будут созданы папки
-/public/css, /public/js
-
-Команды mix
-css -> min css
-js -> min js
-cssc -> css
-less -> css
-react -> js
+Папки
+public/css
+public/js
 --------------------
 
-Less в CSS
+Less в css
 
 mix.less('resources/less/app.less', 'public/css')
    .less('resources/less/admin.less', 'public/css/admin');
 
-своё имя выходного файла
+своё имя файла
 mix.less('resources/less/app.less', 'public/css/styles.css');
 
-свои настройки при компиляции
+свои настройки
 mix.less('resources/less/app.less', 'public/css', {
   strictMath: true
 });
 --------------------
 
-Sass в CSS
+Sass в css
 
 mix.sass('resources/sass/app.scss', 'public/css')
-   .sass('resources/sass/admin.sass', 'public/css/admin');
+   .sass('resources/sass/admin.scss', 'public/css/admin');
 
-своё имя выходного файла
-mix.sass('resources/sass/app.sass', 'public/css/styles.css');
+своё имя
+mix.sass('resources/sass/app.scss', 'public/css/styles.css');
 
-свои настройки при компиляции
-mix.sass('resources/sass/app.sass', 'public/css', {
+свои настройки
+mix.sass('resources/sass/app.scss', 'public/css', {
   precision: 5
 });
 --------------------
 
-Stylus в CSS
+Stylus в css
 
 mix.stylus('resources/stylus/app.styl', 'public/css');
 
@@ -3647,47 +3679,38 @@ mix.stylus('resources/stylus/app.styl', 'public/css', {
 });
 --------------------
 
-PostCSS
+PostCSS преобразователь css
 
-Это преобразователь CSS
-
-Плагин Autoprefixer добавляет нужные префиксы CSS3 для браузеров
-
+плагин Autoprefixer добавляет префиксы css3
 mix.sass('resources/sass/app.scss', 'public/css')
   .options({
     postCss: [
       require('postcss-css-variables')()
     ]
 });
+--------------------
 
-
-Чистый CSS
-
-объединение css файлов в 1
+Объединение css в 1 файл
 
 mix.styles([
   'public/css/vendor/normalize.css',
   'public/css/vendor/videojs.css'
-  ], 'public/css/all.css');
+  ], 
+  'public/css/all.css'
+);
+--------------------
 
+Работа с относительными url
 
-URL в CSS
-Webpack оптимизирует вызовы url() внутри CSS
+было
+{background: url('images/example.png');}
 
-Абсолютные пути будут исключены из оптимизации
+example.png перемещается в public/images
 
-url('/images/thing.png')
-url('http://example.com/images/thing.png')
+стало
+{background: url(images/example.png?d41d8);}
 
-Mix и Webpack найдут файл example.png, положат его в папку public/images и затем перепишут url() в CSS
-
-Было
-.example {background: url('../images/example.png');}
-
-Станет
-.example {background: url(/images/example.png?d41d8cd98f00e);}
-
-отключить перезапись url()
+Отключить перезапись url
 
 mix.sass('resources/sass/app.scss', 'public/css')
   .options({
@@ -3696,32 +3719,27 @@ mix.sass('resources/sass/app.scss', 'public/css')
 --------------------
 
 Source Maps
-карты дают дополнительную отладочную информацию в браузере при использовании скомпилированных ресурсов
 
 включить
 mix.js('resources/js/app.js', 'public/js')
   .sourceMaps();
 --------------------
 
-Работа с JS
+Синтаксис ES2015, модули, компиляция vue, минификацию
+
 mix.js('resources/js/app.js', 'public/js');
+--------------------
 
-это сразу даст
-синтаксис ES2015, модули, компиляция vue, минификацию
-
-Библиотеки вендоров
-Их можно убрать из объединения в 1 файл
+Убрать js вендоров из объединения в 1 файл
 
 mix.js('resources/js/app.js', 'public/js')
   .extract(['vue']);
 
-Все либы будут в отдельном большом файле vendor.js
-
 public/js/manifest.js
-public/js/vendor.js все либы
-public/js/app.js ваш код
+public/js/vendor.js либы
+public/js/app.js код
 
-подключить так
+подключить
 <script src="/js/manifest.js"></script>
 <script src="/js/vendor.js"></script>
 <script src="/js/app.js"></script>
@@ -3732,20 +3750,25 @@ React
 --------------------
 
 Vanilla JS
-минификация и объединение в 1 файл
 
+минификация и объединение в 1 файл
 mix.scripts([
   'public/js/admin.js',
   'public/js/dashboard.js'
-  ], 'public/js/all.js');
+  ], 'public/js/all.js'
+);
 
-метод mix.babel() как mix.scripts(), но просто переводит старый код в новый ES2015
+минификация и объединение в 1 файл, старый код в новый ES2015
+mix.babel([
+  'public/js/admin.js',
+  'public/js/dashboard.js'
+  ], 'public/js/all.js'
+);
 --------------------
 
-Конфигурация Webpack
+Настройка Webpack
 
-1. Слить несколько конфигов
-
+Слить несколько конфигов
 mix.webpackConfig({
   resolve: {
     modules: [
@@ -3754,52 +3777,50 @@ mix.webpackConfig({
   }
 });
 
-2. Скопировать в корень node_modules/laravel-mix/setup/webpack.config.js
-и в package.json проставить все настройки с флагом --config чтобы ссылались на этот файл в корне
+Скопировать в корень node_modules/laravel-mix/setup/webpack.config.js
+в package.json проставить все настройки с флагом --config чтобы ссылались на этот файл в корне
+--------------------
 
 Копирование папок и файлов в другое место
 
 mix.copy('node_modules/foo/bar.css', 'public/css/bar.css');
-
 mix.copyDirectory('resources/img', 'public/img');
 --------------------
 
-Управление версиями и кеширование
+Кеширование
 
-к скомпилированным ресурсам добавляется хеш, это метка времени или токен, чтобы скинуть кеш браузеров
-
+Добавить хеш чтобы скинуть кеш браузеров
 mix.js('resources/js/app.js', 'public/js')
-  .version(); добавит хеш
+  .version();
 
-во вьюхе подключать так
+Вьюха
 <script src="{{mix('/js/app.js')}}"></script>
 <link href='{{mix("/css/app.css")}}' rel='stylesheet'>
 
-проверяем в файле в public/mix-manifest.json
+Проверка
+public/mix-manifest.json
 { "/js/app.js": "/js/app.js?id=539...", "/css/app.css": "/css/app.css?id=5eb..."}
 
-Файлы с контролем версий не нужны при разработке
-поэтому указать только для продакшена
-
+Кеширование только для продакшена
 mix.js('resources/js/app.js', 'public/js');
 if (mix.inProduction()) {
   mix.version();
 }
 --------------------
 
-Если скомпилированные ресурсы лежат в CDN
+Скомпилированные ресурсы в CDN
 
-нужно изменить базовый URL, который сгенерит хелпер mix()
-
-в config/app.php добавить
+в config/app.php урл до CDN
 'mix_url' => env('MIX_ASSET_URL', null)
 
-Тогда урлы будут создаваться такие
+урлы будут такие
 https://cdn.example.com/js/app.js?id=196
 --------------------
 
-BrowserSync плагин для браузера
-автоматически мониторит изменения и перезагружает страницу браузера
+BrowserSync
+
+плагин для браузера
+автоматический f5
 
 установить
 npm install -g browser-sync
@@ -3812,20 +3833,22 @@ npm run watch
 --------------------
 
 Переменные среды
-вставка переменных сред .env в Mix
-Такие переменные с префиксом MIX_
 
-получить доступ так
+вставка переменных в Mix
+такие переменные с префиксом MIX_
+
+получить доступ
 process.env.MIX_SENTRY_DSN_PUBLIC
 
-если переменная меняется, то перезапустить задачу
+если переменная меняется, то перезапустить
 npm run watch
 --------------------
 
 Уведомления ОС
-Mix отправляет системные уведомления в операционнную систему, когда выполняет задачи компиляции
 
-Это можно отключить
+Системные уведомления в ОС когда выполняются задачи
+
+Отключить
 mix.disableNotifications();
 -------------------------------------------------
 
@@ -4329,20 +4352,20 @@ $this->authorize('update', [$post, $request->input('category')]);
 
 SECURITY -> EMAIL VERIFICATION
 
-Готовые методы отправки и верификации пользователей при реге.
-Модель App\User должна расширять контракт Contracts\Auth\MustVerifyEmail.
+Готовые методы отправки и верификации пользователей при реге
+Модель App\User должна расширять контракт Contracts\Auth\MustVerifyEmail
 
-Новые юзеры получают почту со ссылкой.
+Новые юзеры получают на почту письмо со ссылкой
 К событию Auth\Events\Registered присоединен слушатель SendEmailVerificationNotification в EventServiceProvider
 
-Таблица users должна содержать столбик email_verified_at с датой верификации юзера.
-Этот столбик уже есть в поставке, запустить php artisan migrate
+Столбик users.email_verified_at с датой верификации юзера
 
 Добавить роут Auth::routes(['verify' => true]);
 Класс Auth\VerificationController содержит всю логику верификации по почте
 
 МВ verified разрешает доступ к роуту только проверенным юзерам
-Route::get('profile', function () {})->middleware('verified');
+Route::get('profile', function () {})
+  ->middleware('verified');
 
 Вьюхи готовы
 composer require laravel/ui
@@ -6182,282 +6205,323 @@ Http::assertNothingSent();
 
 DIGGING DEEPER -> MAIL
 
-На основе либы SwiftMailer
-Драйвера SMTP, Mailgun, Postmark, Amazon SES, sendmail
-Конфиг в config/mail.php
+На базе либы SwiftMailer
+драйверы SMTP, Mailgun, Postmark, Amazon SES, Sendmail
+в шаблонах Blade
 Фасад Mail
 
-Требуется Guzzle
+Конфиг
+config/mail.php
+
+Папка почты
+app/Mail
+
+Папка шаблонов
+resources/views/emails
+
+Для драйверов на основе Api (Mailgun, Postmark) требуется
 composer require guzzlehttp/guzzle
+--------------------
 
-драйвер Mailgun
-пропуск
+Mailgun
+пропустил
 
-драйвер Postmark
-composer require wildbit/swiftmailer-postmark
+Postmark
+пропустил
 
-драйвер Amazon SES
-composer aws/aws-sdk-php
-
-Каждый тип почты представлен как класс в app/Mail
+Amazon SES
+пропустил
+--------------------
 
 Создать класс почты
-php artisan make:mail OrderShipped
+php artisan make:mail mailName
 
-Отправить почту
-методы from, subject, view, attach
+Главный метод
+build
 
-public function build() {
-  return $this->from('example@example.com')
-    ->view('emails.orders.shipped');
-}
+Настройка заголовков From и Reply_to
+в config/mail.php
+--------------------
 
-Прописать From и Reply в конфиге
-from => 'address, name'
-reply_to => 'address, name'
-
-во вьюхах шаблоны Blade
-складывать сюда resources/views/emails
-
-
-Plain text
+Письмо plain text
 
 public function build() {
-  return $this->view('emails.orders.shipped')
-    ->text('emails.orders.shipped_plain');
+  return $this->view('emails.name')
+    ->text('emails.namePlain');
+}
+--------------------
+
+Данные в шаблон
+
+
+1. Через публичные свойства
+public function __construct(User $user) {
+    $this->user = $user;
 }
 
-Передать данные в шаблон
+В шаблоне
+{{$user->email}}
 
-1. через публичные свойства почтового класса
 
-public function __construct(Order $order) {
-  $this->order = $order;
+2. Через метод with
+public function __construct(User $user) {
+    $this->user = $user;
 }
-
-{{$order->price}}
-
-2. через метод with
-
-public function __construct(Order $order) {
-  $this->order = $order;
-}
-
 public function build() {
-  return $this->view('emails.orders.shipped')
+  return $this->from('support@400.loc')
+    ->view('emails.signupuser')
     ->with([
-      'orderName' => $this->order->name,
-      'orderPrice' => $this->order->price,
+      'userId' => $this->user->id,
+      'userEmail' => $this->user->email,
   ]);
 }
 
-{{$orderPrice}}
+В шаблоне
+{{$userId}}
+{{$userEmail}}
+--------------------
 
 Вложить файл
 
-public function build() {
+return $this->view('emails.viewname')
+  ->attach('/path/to/file');
 
-  return $this->view('emails.orders.shipped')
-    ->attach('/path/to/file');
-
-  return $this->view('emails.orders.shipped')
-    ->attach('/path/to/file', [
-      'as' => 'name.pdf', отображаемое имя
-      'mime' => 'application/pdf', миме тип
-  ]);
-
-}
-
-Если файл с диска ФС
-
-public function build() {
-
-  return $this->view('emails.orders.shipped')
-    ->attachFromStorage('/path/to/file');
-
-  return $this->view('emails.orders.shipped')
-    ->attachFromStorage('/path/to/file', 'name.pdf', [
-      'mime' => 'application/pdf'
-  ]);
-
-  return $this->view('emails.orders.shipped')
-    ->attachFromStorageDisk('s3', '/path/to/file');
-}
-
-Вложение данные сгенеренных на лету без сохранения на диск
-
-public function build() {
-
-  return $this->view('emails.orders.shipped')
-    ->attachData($this->pdf, 'name.pdf', [
+отображаемое имя и mime тип
+return $this->view('emails.viewname')
+  ->attach('/path/to/file', [
+    'as' => 'name.pdf',
     'mime' => 'application/pdf',
-  ]);
+]);
+--------------------
 
-}
+Вложить файл с диска
 
-Встраивание картинки (Embedding inline images)
-$message автоматически доступна
-кроме plain text писем
+return $this->view('emails.viewname')
+  ->attachFromStorage('/path/to/file');
+
+отображаемое имя и mime тип
+return $this->view('emails.viewname')
+  ->attachFromStorage('/path/to/file', 'name.pdf', [
+    'mime' => 'application/pdf'
+]);
+
+с указанием диска
+return $this->view('emails.viewname')
+  ->attachFromStorageDisk('s3', '/path/to/file');
+--------------------
+
+Вложить данные сгенеренные на лету
+
+return $this->view('emails.viewname')
+  ->attachData($this->pdf, 'name.pdf', [
+    'mime' => 'application/pdf',
+]);
+--------------------
+
+Встроить inline картинку
 
 <img src="{{$message->embed($pathToImage)}}">
+--------------------
 
-Встраивание raw data
+Встроить raw data картинку
 
-<img src="{{$message->embedData($data, $name)}}">
+<img src="{{$message->embedData($data, 'imagename.jpg')}}">
+--------------------
 
-
-Настройка SwiftMailer
+Глубокая настройка SwiftMailer
 
 public function build() {
+  $this->view('emails.viewname');
 
-  $this->view('emails.orders.shipped');
-
-  в колбеке пишем свой функционал до отправки
+  пишем свой функционал до отправки
   $this->withSwiftMessage(function ($message) {
     $message->getHeaders()
       ->addTextHeader('Custom-Header', 'HeaderValue');
   });
 }
+--------------------
 
+Письмо markdown
 
-письма Markdown
+Создать класс почты markdown
+php artisan make:mail mailName --markdown=emails.viewname
 
-php artisan make:mail OrderShipped --markdown=emails.orders.shipped
+Это создаст еще вьюху, внутри компоненты Blade и Markdown
+resources/views/emails/viewname.blade.php
 
+Пример
 public function build() {
-
   return $this->from('example@example.com')
-    ->markdown('emails.orders.shipped');
-
+    ->markdown('emails.viewname', [
+	  'data'=>$data
+	]);
 }
+--------------------
 
-Внутри таких вьюх компоненты на основе Blade и Markdown
+Компоненты
 
 Кнопка
-@component('mail::button', ['url' => $url, 'color' => 'success'])
-View Order
+
+@component('mail::button', [
+  'url' => $url, 
+  'color' => 'success'
+])
+ButtonName
 @endcomponent
+
 
 Панель
+
 @component('mail::panel')
-This is the panel content.
+PanelText
 @endcomponent
 
+
 Таблица
+
 @component('mail::table')
 | Laravel       | Table         | Example  |
 | ------------- |:-------------:| --------:|
 | Col 2 is      | Centered      | $10      |
 | Col 3 is      | Right-Aligned | $20      |
 @endcomponent
+--------------------
 
-Экспорт всех компонентов (вьюх) для кастомизации
-вьюхи почты для правки
+Экспорт компонентов
 
-в папку resources/views/vendor/mail
 php artisan vendor:publish --tag=laravel-mail
 
-CSS в файле resources/views/vendor/mail/html/themes/default.css
-в конфиге mail в ключе theme можно свой файл добавить
+Появится папка
+resources/views/vendor/mail
+--------------------
 
-В почтовом классе можно выбрать тему в переменной $theme
+CSS компонентов
 
+resources/views/vendor/mail/html/themes/default.css
+--------------------
+
+Свой CSS для компонентов
+
+resources/views/vendor/mail/html/themes/myCSS.css
+
+в config/mail.php
+
+'markdown' => [
+  'theme' => 'myCSS'
+];
+
+Или в классе $theme = 'myCSS';
+--------------------
 
 Отправка почты
 
-массив почт, инстанс юзера, коллекцию юзеров
-должны быть свойства email, name
+На почту
+Mail::to('email@email.com')->send(new mailName($user));
 
-Mail::to($request->user())
-  ->send(new OrderShipped($order));
+На массив почт
+Mail::to(['email@email.com'])->send(new mailName($user));
 
-Mail::to($request->user())
-  ->cc($moreUsers)
-  ->bcc($evenMoreUsers)
-  ->send(new OrderShipped($order));
+На объект
+Mail::to($user)->send(new mailName($user));
 
-Рассылка в цикле
+На коллекцию объектов
+Mail::to($users)->send(new mailName($user));
 
-foreach (['taylor@example.com', 'dries@example.com'] as $recipient) {
-  Mail::to($recipient)->send(new OrderShipped($order));
+В объекте должны быть аттрибуты email и name
+--------------------
+
+Отправка копий
+
+Mail::to($user)
+  ->cc($users)
+  ->bcc($users)
+  ->send(new mailName($user));
+--------------------
+
+Отправка в цикле
+
+foreach (['email@email1.com', 'email@email2.com'] as $recipient) {
+  Mail::to($recipient)->send(new mailName($user));
 }
 
-Отправить с определенного драйвера почты
-в конфиге mail есть default драйвер. можно с другого
+Метод to, принимая массив почт, забирает их все и рассылает. Поэтому в цикле нужно пересоздавать объект почтового класса. Иначе будут рассылаться предыдущим в цикле.
+--------------------
 
-Mail::mailer('postmark')
-  ->to($request->user())
-  ->send(new OrderShipped($order));
+Отправка с драйвера
 
-Отправка письма в очередь задач
+драйвер по умолчанию в config/mail.php
+'default' => env('MAIL_MAILER', 'smtp')
 
-Mail::to($request->user())
-  ->cc($moreUsers)
-  ->bcc($evenMoreUsers)
-  ->queue(new OrderShipped($order));
+Mail::mailer('sendmail')
+  ->to($user)
+  ->send(new mailName($user));
+--------------------
 
-Отложить отправку на время
-$when = now()->addMinutes(10);
+Отложить отправку
 
-Mail::to($request->user())
-  ->cc($moreUsers)
-  ->bcc($evenMoreUsers)
-  ->later($when, new OrderShipped($order));
+Mail::to($user)
+  ->later(now()->addMinutes(10), new mailName($user));
+--------------------
 
-Отправка в нужную очередь
+Отправка в очередь
 
-$message = (new OrderShipped($order))
-  ->onConnection('sqs')
-  ->onQueue('emails');
+Mail::to($user)
+  ->queue(new mailName($user));
+--------------------
 
-Mail::to($request->user())
-  ->cc($moreUsers)
-  ->bcc($evenMoreUsers)
+Отправка в очередь по имени
+
+$message = (new mailName($user))
+  ->onConnection('connectionName')
+  ->onQueue('queuename');
+
+Mail::to($user)
   ->queue($message);
+--------------------
 
-Классы рассылки которые всегда ставить в очередь
-реализовать контракт ShouldQueue
+Отправка в очередь всегда для почтовых классов
+интерфейс ShouldQueue
 
-class OrderShipped extends Mailable implements ShouldQueue {}
+class mailName1 extends Mailable implements ShouldQueue {}
+class mailName2 extends Mailable implements ShouldQueue {}
+--------------------
 
+Отладка письма
 
-Получить письмо в HTML
+вывести как строку
+echo (new mailName($user))->render();
 
-$invoice = App\Invoice::find(1);
-(new App\Mail\InvoicePaid($invoice))->render();
+вернуть вместо вьюхи	
+return new mailName($user);
+--------------------
 
-Получить письмо в HTML в браузере
-в замыкании роута или из контроллера
+Локализация
 
-Route::get('mailable', function () {
+Mail::to($user)
+  ->locale('ru')
+  ->send(new mailName($user));
+--------------------
 
-  $invoice = App\Invoice::find(1);
-  return new App\Mail\InvoicePaid($invoice);
+Локаль юзера
 
-});
-
-Локализация на языки
-
-Mail::to($request->user())->locale('es')->send(
-  new OrderShipped($order)
-);
-
-Сохранить локаль юзера и подставить автоматически
-
+Сохранять локаль юзера и подставить автоматически
 class User extends Model implements HasLocalePreference {
   public function preferredLocale() {
     return $this->locale;
   }
 }
-Mail::to($request->user())->send(new OrderShipped($order));
+Mail::to($user)
+  ->send(new mailName($user));
+--------------------
 
+Отладка отправки
 
-При локальной разработке
-  почтовый драйвер log
-  одна почта куда слать. настроить в config/mail.php в поле to => 'address, name'
-  сервис Mailtrap и драйвер smtp
+драйвер log
+--------------------
 
 События
+
+в EventServiceProvider.php зарегать прослушивателей событий
 protected $listen = [
 
   до отправки
@@ -6470,51 +6534,67 @@ protected $listen = [
 
 DIGGING DEEPER -> NOTIFICATIONS
 
-Отправка уведомлений (У) по разным каналам почта, sms, slack
-У - это короткие мессаги юзеру
-Каждое У это отдельный класс в app/Notifications
+Отправка уведомлений по каналам
+Фасад Notification
 
-создать У
-php artisan make:notification InvoicePaid
+Каналы
+mail, sms, database, broadcast, nexmo, slack
 
-в методе via вся логика
-методы каналов toDatabase, toMail
+Все каналы
+https://laravel-notification-channels.com
 
-отправить У
+Папка уведомлений
+app/Notifications
+--------------------
 
-1. через трейт Notifiable
-class User extends Authenticatable {
-  use Notifiable;
-  $user->notify(new InvoicePaid($invoice));
-}
+Создать уведомление
+php artisan make:notification NotificationName
+--------------------
 
-2. через фасад Notification
-Notification::send($users, new InvoicePaid($invoice));
+Трейт Notifiable включен в модель App\Models\User;
+--------------------
 
-Каналы доставки
-email, sms, database, broadcast, nexmo, slack
-остальные https://laravel-notification-channels.com
+Отправить уведомление
+
+1. Через трейт Notifiable и метод notify
+2. Через фасад Notification
+--------------------
+
+Указать канал
 
 public function via($notifiable) {
-  return $notifiable->prefers_sms ? ['nexmo'] : ['mail', 'database'];
+  return ['mail', 'database'];
 }
+--------------------
 
-Очереди
-настроить очереди
-добавить в класс интерфейс ShouldQueue и трейт Queueable
-они есть, если сгенерировали командой
+Уведомление в очередь
 
-class InvoicePaid extends Notification implements ShouldQueue {
+1. Настроить очередь
+2. Добавить в класс интерфейс ShouldQueue и трейт Queueable
+
+class NotificationName extends Notification implements ShouldQueue {
   use Queueable;
-  $user->notify(new InvoicePaid($invoice));
 }
+--------------------
 
-Задержка отправки
+Отложить отправку
 
-$when = now()->addMinutes(10);
-$user->notify((new InvoicePaid($invoice))->delay($when));
+$user->notify((new NotificationName($invoice))
+  ->delay(now()->addMinutes(10)));
+  
+$user->notify((new NotificationName($invoice))
+  ->delay([
+    'mail' => now()->addMinutes(5),
+    'sms' => now()->addMinutes(10),
+]));
+--------------------
 
-Указать канал и очередь
+Отправка в очередь в соединение
+
+public $connection = 'redis';
+--------------------
+
+Отправка в канал и очередь
 
 public function viaQueues() {
   return [
@@ -6522,73 +6602,80 @@ public function viaQueues() {
     'slack' => 'slack-queue',
   ];
 }
+--------------------
 
-Отправить У анониму кто не зареган как User
+Отправка анониму
 
-Notification::route('mail', 'taylor@example.com')
+Notification::route('mail', 'email@email.com')
   ->route('nexmo', '555')
   ->route('slack', 'https://hooks.slack.com/services')
-  ->notify(new InvoicePaid($invoice));
+  ->notify(new NotificationName($invoice));
+--------------------
 
-УВЕДОМЛЕНИЯ ТИПА ПОЧТА
+Отправка по каналу Почта
 
-Форматирование
-Создать метод toMail
-В конструктор можно передать любые данные для шаблона письма
-
-указать строки текста. шаблон будет сгенерен автоматически
 public function toMail($notifiable) {
-
-  $url = url('/invoice/'.$this->invoice->id);
-
+  
   return (new MailMessage)
-    ->greeting('Hello!')
-    ->line('One of your invoices has been paid!')
-    ->action('View Invoice', $url)
-    ->line('Thank you for using our application!');
+    ->greeting('Hello')
+    ->line('One of your invoices has been paid')
+    ->action('View Invoice', url('/invoice/'.$this->invoice->id))
+    ->line('Thank you for using our application');
 }
 
-указать вьюху
+В конструктор можно передать любые данные для сообщения
+--------------------
+
+Отправка по каналу Почта. вьюха
+
 public function toMail($notifiable) {
   return (new MailMessage)->view(
-    'emails.name', ['invoice' => $this->invoice]
+    'emails.viewname', ['invoice' => $this->invoice]
   );
 }
 
-указать версию plain text
+Отправка по каналу Почта. вьюха plain text
+
 public function toMail($notifiable) {
   return (new MailMessage)->view(
-    ['emails.name.html', 'emails.name.plain'],
+    ['emails.viewname', 'emails.viewnamePlain'],
     ['invoice' => $this->invoice]
   );
 }
+--------------------
 
-формат письма как сообщение об ошибке. кнопка будет красной
+Уведомление с красной кнопкой
+
 public function toMail($notifiable) {
   return (new MailMessage)
     ->error()
-    ->subject('Notification Subject')
-    ->line('...');
+    ->subject('subject')
+    ->line('text');
 }
+--------------------
 
-Настройка отправителя (поля from)
-настройка config/mail.php
+Настройка отправителя
 
-можно на лету
+в config/mail.php поле from
+
+задать своё
 public function toMail($notifiable) {
   return (new MailMessage)
-    ->from('test@example.com', 'Example')
-    ->line('...');
+    ->from('email@email.com', 'Example')
+    ->line('text');
 }
+--------------------
 
-Настройка получателя (поля to)
-автоматически ищет свойство email в объекте
+Настройка получателя
 
-можно указать своё
+автоматически ищет в объекте поле email
+
+задать своё в модели
 public function routeNotificationForMail($notification) {
-  return $this->email_address; почта
-  return [$this->email_address => $this->name]; почта и имя
+  return $this->emailAddress;
+  return [$this->emailAddress => $this->name];
 }
+--------------------
 
 Настройка заголовка письма
 заголовок письма это имя класса InvoicePaid разделенное пробелами "Invoice Paid"
@@ -7827,23 +7914,88 @@ php artisan serve
 
 COMPOSER.JSON
 
-блок require-dev
-на локальном сервере
+Внутри папка vendor, пакеты как бренд
+Внутри папки пакета, еще пакеты
 
-блок require
-на боевом сервере
+Папка пакетов
+vendor
 
+Создать composer.json
+composer init
+--------------------
 
-установить пакеты
+Установить пакет
+composer install packetname
+
+Скачать пакеты
 composer install
 
-обновить пакеты
+Обновить пакеты
 composer update
+--------------------
 
-это установит зависимости из composer.json в /vendor
+Ключи
 
-внутри папка vendor пакеты как бренд
-внутри каждой папки пакета есть еще конкретные пакеты
+зависимости на продакшене
+require
+
+зависимости на разработке
+require-dev
+-------------------------------------------------
+
+PACKAGE.JSON
+
+Пакеты https://npmjs.com
+У каждого пакета внутри есть package.json с зависимостями
+В папке bin исполняемые файлы пакетов
+
+Папка пакетов
+node_modules
+
+Создать package.json
+npm init
+--------------------
+
+Установить пакет
+npm install packetname
+
+Скачать пакеты
+npm install
+
+Скачать пакеты для продакшена
+npm install --production
+
+Список пакетов
+npm list
+npm list --depth 0
+npm list --depth 1
+
+Проверить обновления
+npm outdated
+
+Обновить пакеты
+npm up
+
+Удалить пакет
+npm uninstall packetname
+
+Найти пакет
+npm search packetname
+
+Подключить пакет в js файле
+require('packetname');
+--------------------
+
+Ключи
+
+точка входа в проект
+main
+
+зависимости на продакшене
+dependencies
+
+зависимости на разработке
+devDependencies
 -------------------------------------------------
 
 ЭКСПОРТ ИЗ MYSQL WORKBENCH В LARAVEL MIGRATION
@@ -8030,7 +8182,7 @@ make:mail         Создать класс почты
 make:middleware   Создать класс мв
 make:migration    Создать класс миграции
 make:model        Создать класс модели eloquent
-make:notification Create a new notification class
+make:notification Создать класс уведомлений
 make:observer     Create a new observer class
 make:policy       Create a new policy class
 make:provider     Создать класс сервис провайдера
