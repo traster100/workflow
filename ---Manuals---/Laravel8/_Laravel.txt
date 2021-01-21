@@ -56,6 +56,7 @@ DIGGING DEEPER -> TASK SCHEDULING
 DATABASE -> REDIS
 ОБНОВЛЕНИЕ LARAVEL 7 -> 8
 COMPOSER.JSON
+PACKAGE.JSON
 ЭКСПОРТ ИЗ MYSQL WORKBENCH В LARAVEL MIGRATION
 НЕЙМИНГ
 ЛУЧШИЕ ПРАКТИКИ
@@ -160,58 +161,62 @@ Application Key
 
 GETTING STARTED -> CONFIGURATION
 
-Все конфиги
-/config
+После работы с конфигами сбрасывать кеш
+php artisan config:clear
+--------------------
 
-Для управления переменными среды используется либа DotEnv
-В корне файл .env.example переименовать в .env
+Переменные среды
 
-Создать .env.testing для запуска PHPUnit или Artisan команд с параметром --env=testing
+хелпер env()
+строка с пробелами 'в кавычках'
+все переменные загружаются в $_ENV
 
-Типы переменных среды
-Все переменные string. Строка с пробелами 'в кавычках'
-Все переменные среды загружаются в глобальный $_ENV
+Конфиг
+.env
 
-Еще
-true,(true) - как (bool) true
-false,(false) - как (bool) false
-empty,(empty) - как (string) ''
-null,(null) - как (null) null
+Конфиг для тестов
+/.env.testing
 
-Получить переменые среды
-env('APP_DEBUG', false);
-env - хелпер
-false - значение по-умолчанию если нет ключа
+Типы
+string, true, false, empty, null
 
-Определение текущей среды
-$environment = App::environment();
+Получить
+env('VARNAME', 'default');
+
+Определить
+if (App::environment() == 'local') {}
 if (App::environment('local')) {}
 if (App::environment(['local', 'staging'])) {}
 
-Скрытие переменных среды
-Когда исключение не перехвачено, и APP_DEBUG = true, можно скрыть важные переменные в config/app.php
+Скрыть из дебага
+в config/app.php
 'debug_hide' => [
-  '_ENV' => ['APP_KEY', 'DB_PASSWORD'],
-  '_SERVER' => ['APP_KEY', 'DB_PASSWORD'],
-  '_POST' => ['password'],
+  '_ENV' => ['VARNAME1', 'VARNAME2'],
+  '_SERVER' => ['VARNAME1', 'VARNAME2'],
+  '_POST' => ['VARNAME1', 'VARNAME2'],
 ];
+--------------------
 
-Получить значение из конфига
-config('app.timezone');
-config('app.timezone', 'default');
+Конфиги
 
-config - хелпер
-app - файл
-timezone - ключ
-default - значение по-умолчанию если нет ключа
+хелпер config()
 
-Установить значение в конфиг
-config(['app.timezone' => 'America']);
+Папка конфигов
+/config
 
-Создать файл кеша всех конфигов в bootstrap/cache/config.php
+Получить
+config('file.key', 'default');
+
+Установить
+config(['file.key' => 'newvalue']);
+
+Создать файл кеша
+в bootstrap/cache/config.php
 php artisan config:cache
+--------------------
 
 Выключить приложение
+
 php artisan down
 php artisan down --message='Upgrading...' --retry=60
 php artisan down --allow=127.0.0.1 --allow=192.168.0.0/16
@@ -6534,11 +6539,12 @@ protected $listen = [
 
 DIGGING DEEPER -> NOTIFICATIONS
 
-Отправка уведомлений по каналам
+Отправка уведомлений по разным каналам
+трейт Notifiable включен в модель App\Models\User
 Фасад Notification
 
 Каналы
-mail, sms, database, broadcast, nexmo, slack
+mail, database, sms, , broadcast, nexmo, slack
 
 Все каналы
 https://laravel-notification-channels.com
@@ -6549,9 +6555,6 @@ app/Notifications
 
 Создать уведомление
 php artisan make:notification NotificationName
---------------------
-
-Трейт Notifiable включен в модель App\Models\User;
 --------------------
 
 Отправить уведомление
@@ -6567,7 +6570,7 @@ public function via($notifiable) {
 }
 --------------------
 
-Уведомление в очередь
+Отправить в очередь
 
 1. Настроить очередь
 2. Добавить в класс интерфейс ShouldQueue и трейт Queueable
@@ -6589,12 +6592,12 @@ $user->notify((new NotificationName($invoice))
 ]));
 --------------------
 
-Отправка в очередь в соединение
+Отправить в соединение
 
 public $connection = 'redis';
 --------------------
 
-Отправка в канал и очередь
+Отправить в канал и очередь
 
 public function viaQueues() {
   return [
@@ -6604,7 +6607,7 @@ public function viaQueues() {
 }
 --------------------
 
-Отправка анониму
+Отправить анониму
 
 Notification::route('mail', 'email@email.com')
   ->route('nexmo', '555')
@@ -6612,388 +6615,406 @@ Notification::route('mail', 'email@email.com')
   ->notify(new NotificationName($invoice));
 --------------------
 
-Отправка по каналу Почта
+Канал mail
 
+Вызов
+$user = User::find(5);
+$user->notify(new NotificationName($user, 'message'));
+
+Конструктор
+public function __construct(User $user, $message) {
+  $this->message = $message;
+}
+
+Без вьюхи это всегда markdown
+
+Метод
 public function toMail($notifiable) {
-  
   return (new MailMessage)
-    ->greeting('Hello')
-    ->line('One of your invoices has been paid')
-    ->action('View Invoice', url('/invoice/'.$this->invoice->id))
-    ->line('Thank you for using our application');
+    ->line('Это уведомление')
+    ->action('Это ссылка', url('/'))
+    ->line('Это линия')
+    ->line('Это переменная ' . $this->message);
 }
 
-В конструктор можно передать любые данные для сообщения
---------------------
-
-Отправка по каналу Почта. вьюха
-
+Вьюха
 public function toMail($notifiable) {
-  return (new MailMessage)->view(
-    'emails.viewname', ['invoice' => $this->invoice]
+  return (new MailMessage)->view('viewname', ['data' => $data]);
+}
+
+Вьюха plain text
+public function toMail($notifiable) {
+  return (new MailMessage)->view(['viewname', 'viewnamePlain'],
+    ['data' => $data]
   );
 }
-
-Отправка по каналу Почта. вьюха plain text
-
-public function toMail($notifiable) {
-  return (new MailMessage)->view(
-    ['emails.viewname', 'emails.viewnamePlain'],
-    ['invoice' => $this->invoice]
-  );
-}
---------------------
 
 Уведомление с красной кнопкой
-
 public function toMail($notifiable) {
   return (new MailMessage)
     ->error()
     ->subject('subject')
     ->line('text');
 }
---------------------
 
 Настройка отправителя
-
 в config/mail.php поле from
-
 задать своё
 public function toMail($notifiable) {
   return (new MailMessage)
     ->from('email@email.com', 'Example')
     ->line('text');
 }
---------------------
 
 Настройка получателя
-
 автоматически ищет в объекте поле email
-
 задать своё в модели
 public function routeNotificationForMail($notification) {
   return $this->emailAddress;
   return [$this->emailAddress => $this->name];
 }
---------------------
 
-Настройка заголовка письма
-заголовок письма это имя класса InvoicePaid разделенное пробелами "Invoice Paid"
-
-можно свой
+Настройка заголовка
 public function toMail($notifiable) {
   return (new MailMessage)
-    ->subject('Notification Subject')
-    ->line('...');
+    ->subject('Subject')
+    ->line();
 }
 
 Настройка драйвера почты
-берется из настроек config/mail.php
-
-можно свой
+по умолчанию в config/mail.php
+'default' => env('MAIL_MAILER', 'smtp')
+задать свой
 public function toMail($notifiable) {
   return (new MailMessage)
     ->mailer('postmark')
-    ->line('...');
+    ->line();
 }
 
-Настройка шаблонов HTML
-
-запустить команду
+Экспорт шаблонов уведомлений
 php artisan vendor:publish --tag=laravel-notifications
-
-шаблоны появятся в
+Появится папка
 resources/views/vendor/notifications
 
-Отладка HTML письма в браузере
-Route::get('mail', function () {
-  $invoice = App\Invoice::find(1);
-  return (new App\Notifications\InvoicePaid($invoice))
-    ->toMail($invoice->user);
-});
-
-Разметка Markdown
-Красивые шаблоны У будут сгенерены по результатам разметки
-Созданные компоненты Blade и Markdown
-
-создать У с Markdown
-php artisan make:notification InvoicePaid --markdown=mail.invoice.paid
-
+Вложить файл
 public function toMail($notifiable) {
-  $url = url('/invoice/'.$this->invoice->id);
   return (new MailMessage)
-    ->subject('Invoice Paid')
-    ->markdown('mail.invoice.paid', ['url' => $url]); вьюха
+    ->greeting('Hello')
+    ->attach('/path/to/file', [
+      'as' => 'name.pdf',
+      'mime' => 'application/pdf',
+  ]);
+}
+
+Вложить данные сгенеренные на лету
+public function toMail($notifiable) {
+  return (new MailMessage)
+    ->greeting('Hello!')
+    ->attachData($this->pdf, 'name.pdf', [
+      'mime' => 'application/pdf',
+  ]);
+}
+
+Отладка
+return (new NotificationName($user))->toMail($user);
+
+Уведомления markdown
+
+Создать
+php artisan make:notification NotificationName --markdown=notifications.viewname
+
+Это создаст еще вьюху, внутри компоненты Blade и Markdown
+resources/views/notifications/viewname.blade.php
+
+Пример
+public function toMail($notifiable) {
+  return (new MailMessage)
+    ->subject('subject')
+    ->markdown('notifications.viewname', ['data' => $data]);
 }
 
 Компоненты
 
-кнопка
-@component('mail::button', ['url' => $url, 'color' => 'green'])
-View Invoice
-@endcomponent
+Компоненты как у DIGGING DEEPER -> MAIL
 
-панель
-@component('mail::panel')
-This is the panel content
-@endcomponent
+Экспорт компонентов
 
-таблица
-@component('mail::table')
-| Laravel       | Table         | Example  |
-| ------------- |:-------------:| --------:|
-| Col 2 is      | Centered      | $10      |
-| Col 3 is      | Right-Aligned | $20      |
-@endcomponent
-
-Настройка компонентов
-экспортировать компоненты себе сюда resources/views/vendor/mail
 php artisan vendor:publish --tag=laravel-mail
 
-Настройка css
-resources/views/vendor/mail/html/themes/default.css
-можно создать свой файл и прописать его в конфиге mail в поле theme
+Появится папка
+resources/views/vendor/mail
 
-выбрать тему на лету
+CSS компонентов
+
+resources/views/vendor/mail/html/themes/default.css
+
+Свой CSS для компонентов
+
+resources/views/vendor/mail/html/themes/myCSS.css
+
+В config/mail.php
+
+'markdown' => [
+  'theme' => 'myCSS'
+];
+
+Или в классе $theme = 'myCSS';
+
+Или в методе
 public function toMail($notifiable) {
   return (new MailMessage)
     ->theme('invoice')
-    ->subject('Invoice Paid')
-    ->markdown('mail.invoice.paid', ['url' => $url]);
+    ->subject('subject')
+    ->markdown('notifications.viewname', ['data' => $data]);
 }
+--------------------
 
-УВЕДОМЛЕНИЯ ТИПА DATABASE
-канал database. хранит У в таблице
+Канал database
 
-создать таблицу
+хранит уведомления в таблице notifications
+трейт Notifiable включен в модель App\Models\User
+
+Создать миграцию для таблицы notifications
 php artisan notifications:table
+
+Накатить миграцию
 php artisan migrate
 
-в классе У методы toDatabase и toArray
-данные У сохраняются в поле data таблицы notifications
-метод toArray используется для вещания в канал broadcast в JS либу
+Методы класса
+toDatabase или toArray
 
-public function toArray($notifiable) {
+toArray используется каналом broadcast
+лучше использовать toDatabase
+
+эти данные пишутся в таблицу notifications
+public function toDatabase($notifiable) {
   return [
-    'invoice_id' => $this->invoice->id,
-    'amount' => $this->invoice->amount,
+    'data' => $data
   ];
 }
 
-Получить У
-трейт Notifiable включен в модель App\User и в notifications Eloquent
-у У есть поле created_at для сортировки по времени
-
-$user = App\User::find(1);
+Получить уведомления
+$user = User::find(1);
 foreach ($user->notifications as $notification) {
-  echo $notification->type;
+  echo $notification->data;
 }
 
-или
-
+Получить непрочитанные уведомления
+поле read_at пустое
+$user = User::find(1);
 foreach ($user->unreadNotifications as $notification) {
-  echo $notification->type; только непрочитанные
+  echo $notification->data;
 }
 
-Отметить У как прочитанные
-это обновит поле read_at в таблице
+Отметить уведомления как прочитанные
 
-$user = App\User::find(1);
+Перебором в цикле
+$user = User::find(1);
 foreach ($user->unreadNotifications as $notification) {
   $notification->markAsRead();
 }
 
-можно вызвать на коллекции
+Сразу все
 $user->unreadNotifications->markAsRead();
 
-или так массово без извлечения из БД
-$user = App\User::find(1);
+Без извлечения из бд
+$user = User::find(1);
 $user->unreadNotifications()->update(['read_at' => now()]);
 
-Удалить У
+Удалить уведомления
 $user->notifications()->delete();
 
+Отладка
+return (new NotificationName($user))->toDatabase($user);
+--------------------
 
-УВЕДОМЛЕНИЯ ТИПА ВЕЩАНИЯ
-на основе event broadcasting
-канал broadcast
-метод toBroadcast в классе У
-вернет JSON данные
+Канал broadcast
+
+настроить Broadcasting
+работает на основе event broadcasting
+реагирует из js либы на серверные события
+все уведомления стоят в очереди
+метод toBroadcast
+или будет использоваться резервный метод toArray
+возвращает JSON
 
 public function toBroadcast($notifiable) {
   return new BroadcastMessage([
-    'invoice_id' => $this->invoice->id,
-    'amount' => $this->invoice->amount,
+    'data' => $data
   ]);
 }
+--------------------
 
-Настройка очереди
-все уведомления broadcast стоят в очереди broadcasting
+Настроить соединение и очередь
 
-можно указать свою
 return (new BroadcastMessage($data))
   ->onConnection('sqs')
   ->onQueue('broadcasts');
+--------------------
 
-Настройка типа уведомлений
-все уведомления типа broadcast имеют поле $type в котором имя класса У
+Настроить тип уведомлений
 
-изменить можно в методе
 public function broadcastType() {
   return 'broadcast.message';
 }
+--------------------
 
-Прослушивание У
-уведомления пускаются на приватном канале
-через Laravel Echo, метод хелпер notification
+Прослушать уведомления
 
-Echo.private('App.User.' + userId)
+формат канала {notifiable}.{id}
+для юзера App\Models\User с ID 1 это будет канал App.Models.User.1
+
+Echo.private('App.Models.User.' + userId)
   .notification((notification) => {
     console.log(notification.type);
 });
+--------------------
 
-Настройка канала
-Если вы хотите настроить, по каким каналам уведомляемый объект получает уведомления
+Настроить формат канала в модели
 
-public function receivesBroadcastNotificationsOn() {
-  return 'users.'.$this->id;
+class User extends Authenticatable {
+  public function receivesBroadcastNotificationsOn() {
+    return 'users.'.$this->id;
+  }
 }
+--------------------
 
-УВЕДОМЛЕНИЯ ТИПА SMS
+Канал sms
 
-пакет Nexmo
+Пакет Vonage и Nexmo
 composer require laravel/nexmo-notification-channel
+composer require nexmo/laravel
 
-в .env прописать NEXMO_KEY, NEXMO_SECRET
+Конфиг в .env
+NEXMO_KEY, NEXMO_SECRET
 
-Форматирование У
-public function toNexmo($notifiable) {
-  return (new NexmoMessage)
-    ->content('Your SMS message content');
-}
-
-Отправка уведомлений с короткими кодами, которые представляют собой предварительно определенные шаблоны сообщений в вашей учетной записи Nexmo.
-
-Поддержка отправки юникода
-
-public function toNexmo($notifiable) {
-  return (new NexmoMessage)
-    ->content('Your unicode message')
-    ->unicode();
-}
-
-Настройка номера FROM
-настроить в конфиге config/services.php или на лету
-
-public function toNexmo($notifiable) {
-  return (new NexmoMessage)
-    ->content('Your SMS message content')
-    ->from('15554443333');
-}
-
-Отправить КОМУ
-
-public function routeNotificationForNexmo($notification) {
-  return $this->phone_number;
-}
-
-УВЕДОМЛЕНИЯ ТИПА SLACK
-
-поставить пакет
-composer require laravel/slack-notification-channel
-
-настроить Incoming WebHooks
+Конфиг в config/services.php
+'nexmo' => [
+  'sms_from' => '155',
+];
+--------------------
 
 Форматирование уведомлений
 
+public function toNexmo($notifiable) {
+  return (new NexmoMessage)
+    ->content('SMS message');
+	->unicode(); если будут символы юникода
+}
+--------------------
+
+Настройка отправителя
+
+в config/services.php поле sms_from
+
+задать своё
+public function toNexmo($notifiable) {
+  return (new NexmoMessage)
+    ->content('SMS message')
+    ->from('177');
+}
+--------------------
+
+Настройка получателя в модели
+
+class User extends Authenticatable {
+  public function routeNotificationForNexmo($notification) {
+    return $this->phone_number;
+  }
+}
+--------------------
+
+Канал slack
+
+Настроить Incoming Webhook
+
+Пакет
+composer require laravel/slack-notification-channel
+--------------------
+
+Отправить уведомление
+
 public function toSlack($notifiable) {
   return (new SlackMessage)
-    ->from('Ghost', ':ghost:') юзернейм
-    ->to('#other') канал или юзернейм
-    ->image('https://laravel.com/img/favicon/favicon.ico')
-    ->content('One of your invoices has been paid!');
+    ->content('text');
 }
+--------------------
 
-Вложения
+Настроить отправителя и получателя
 
 public function toSlack($notifiable) {
+  return (new SlackMessage)
+    ->from('Ghost', ':ghost:') имя и эмодзи
+    ->to('#bots') канал или имя
+    ->image('http://domain.com/image.png') лого
+    ->content('text');
+}
+--------------------
 
-  $url = url('/exceptions/'.$this->exception->id); ссылка
+Вложить файл
 
+public function toSlack($notifiable) {
   return (new SlackMessage)
     ->error()
-    ->content('Whoops! Something went wrong.')
+    ->content('text')
     ->attachment(function ($attachment) use ($url) {
-      $attachment->title('Exception: File Not Found', $url) анкор ссылки
-        ->content('File [background.jpg] was not found.');
+      $attachment->title('title', $url)
+        ->content('text [background.jpg]');
   });
 }
+--------------------
 
-передать таблицу
+Вложить таблицу
+пропустил
+--------------------
 
-public function toSlack($notifiable) {
-  $url = url('/invoices/'.$this->invoice->id);
+Вложить markdown
+пропустил
+--------------------
 
-  return (new SlackMessage)
-    ->success()
-    ->content('One of your invoices has been paid!')
-    ->attachment(function ($attachment) use ($url) {
-      $attachment->title('Invoice 1322', $url)
-        ->fields([
-          'Title' => 'Server Expenses',
-          'Amount' => '$1,234',
-          'Via' => 'American Express',
-          'Was Overdue' => ':-1:',
-        ]);
-  });
+Роуты для уведомлений slack
+
+class User extends Authenticatable {
+  public function routeNotificationForSlack($notification) {
+    return 'https://hooks.slack.com/services/webhookURL';
+  }
+}
+--------------------
+
+Локализация
+
+$user->notify((new InvoicePaid($invoice))->locale('ru'));
+
+Notification::locale('ru')->send(
+    $users, new InvoicePaid($invoice)
+);
+--------------------
+
+Локализация когда язык в таблице юзера
+
+class User extends Model implements HasLocalePreference {
+  public function preferredLocale() {
+    return $this->locale;
+  }
 }
 
-Markdown
-
-public function toSlack($notifiable) {
-  $url = url('/exceptions/'.$this->exception->id);
-
-  return (new SlackMessage)
-    ->error()
-    ->content('Whoops! Something went wrong.')
-    ->attachment(function ($attachment) use ($url) {
-      $attachment->title('Exception: File Not Found', $url)
-        ->content('File [background.jpg] was *not found*.')
-        ->markdown(['text']);
-  });
-}
-
-Роутинг
-
-это указание webhook URL
-public function routeNotificationForSlack($notification) {
-  return 'https://hooks.slack.com/services/...';
-}
-
-Локализация уведомлений
-отправить У на языке отличном от текущего и запомнить язык
-
-$user->notify((new InvoicePaid($invoice))->locale('es'));
-Notification::locale('es')->send($users, new InvoicePaid($invoice)); фасад Notification
-
-если язык запоминается в базе данных
-
-public function preferredLocale() {
-  return $this->locale;
-}
-
-тогда метод locale можно не вызывать
 $user->notify(new InvoicePaid($invoice));
+--------------------
 
-События системы У
-когда У отправлено, запускается событие
+События уведомлений
 
-в EventServiceProvider
-protected $listen = [
-  'Illuminate\Notifications\Events\NotificationSent' => ['App\Listeners\LogNotification'],
+Слушателей событий в EventServiceProvider.php
+$listen = [
+  'Illuminate\Notifications\Events\NotificationSent' => [
+    'App\Listeners\LogNotification',
+  ],
 ];
 
-регнули слушателя. команда event:generate создаст класс Слушателя
+Создать класс слушателя
+php artisan event:generate
+--------------------
+
+Свойства события
 
 public function handle(NotificationSent $event) {
   $event->channel
@@ -7001,8 +7022,14 @@ public function handle(NotificationSent $event) {
   $event->notification
   $event->response
 }
+--------------------
 
-Можно создавать свои каналы и драйверы
+Создать свой канал
+пропустил
+--------------------
+
+Создать свой драйвер
+пропустил
 -------------------------------------------------
 
 DIGGING DEEPER -> PACKAGE DEVELOPMENT
@@ -7930,6 +7957,9 @@ composer install packetname
 Скачать пакеты
 composer install
 
+Список пакетов
+composer show
+
 Обновить пакеты
 composer update
 --------------------
@@ -8183,7 +8213,7 @@ make:middleware   Создать класс мв
 make:migration    Создать класс миграции
 make:model        Создать класс модели eloquent
 make:notification Создать класс уведомлений
-make:observer     Create a new observer class
+make:observer     Создать класс наблюдателя
 make:policy       Create a new policy class
 make:provider     Создать класс сервис провайдера
 make:request      Создать класс формы запроса
