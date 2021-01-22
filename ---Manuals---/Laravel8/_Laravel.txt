@@ -4765,15 +4765,14 @@ php artisan stub:publish
 
 DIGGING DEEPER -> BROADCASTING
 
-Вещание - это websockets.
-Изменения на сервере приходят в клиентскую js либу в виде новых данных и обновляются реалтайм.
-JS либа это Laravel Echo.
-Вещание событий через вебсокеты.
+Вещание событий через вебсокеты
+Изменения на сервере приходят в клиентскую js либу Laravel Echo
 
-Конфиг config/broadcasting.php
+Конфиг
+config/broadcasting.php
 
 Драйверы
-Pusher, Redis, log(для отладки), NULL(выключено)
+Pusher, Redis, log(для отладки), Null(выключено)
 
 СП
 config/app.php в $providers
@@ -4781,292 +4780,36 @@ config/app.php в $providers
 
 требуется CSRF токен
 <meta name="csrf-token" content="{{csrf_token()}}">
-
-
-Либа Laravel Echo
+--------------------
 
 Вещатель Pusher
-сервис уведомлений. внешний платный
-https://pusher.com
 
-composer require pusher/pusher-php-server
-
-указать драйвер в .env
-BROADCAST_DRIVER=pusher
-
-resources/js/bootstrap.js
-
-import Echo from "laravel-echo";
-window.Pusher = require('pusher-js');
-window.Echo = new Echo({
-  broadcaster: 'pusher', вещатель
-  key: 'your-pusher-channels-key'
-});
-
-Пакет laravel-websockets на чистом php, совместим с Pusher, работает без Nodejs
+платный сервис
+--------------------
 
 Вещатель Redis
-composer require predis/predis
 
-указать драйвер в .env
-BROADCAST_DRIVER=redis
+пропустил
+--------------------
 
-Redis работает по принципу публикации-подписки.
-Сервер вебсокетов получает сообщения от Redis, передает на Каналы вебсокетов.
+Пакет laravel-websockets
 
-Связь Redis с сервером Socket.IO
-
-npm install --save socket.io-client
-https://github.com/tlaverdure/laravel-echo-server
-
-import Echo from "laravel-echo"
-window.io = require('socket.io-client');
-window.Echo = new Echo({
-  broadcaster: 'socket.io',
-  host: window.location.hostname + ':6001'
-});
-
-Запустить прослушиватель очереди.
-Все трансляции событий выполняются с помощью задач в очереди.
-
-События транслируются через каналы.
-Каналы бывают публичные и приватные.
-Приватные требует АУ и авторизации.
-
-альтернатива Pusher
 https://github.com/beyondcode/laravel-websockets
-
-
-Пример обновление статуса заказа
-
-запуск события ShippingStatusUpdated
-event(new ShippingStatusUpdated($update));
-
-стартуем приватный канал
-class ShippingStatusUpdated implements ShouldBroadcast{
-  public function broadcastOn() {
-    return new PrivateChannel('order.'.$this->update->order_id);
-  }
-}
-
-правила авторизации в канале, пишем в routes/channels.php
-
-Broadcast::channel('order.{orderId}', function ($user, $orderId) {
-  return $user->id === Order::findOrNew($orderId)->user_id;
-});
-
-Прослушиваем событие в JS либе
-
-Echo.private(`order.${orderId}`)
-  .listen('ShippingStatusUpdated', (e) => {
-    console.log(e.update);
-});
-
-Название трансляции
-public function broadcastAs() {
-  return 'broadName';
-}
-.listen('.broadName', function (e) {});
-
-Передача данных в событие
-public function broadcastWith() {
-  return ['id' => $this->user->id];
-}
-
-Очередь трансляции
-очередь по умолчанию в queue.php
-можно задать свою очередь
-
-$broadcastQueue = 'your-queue-name';
-
-можно использовать очередь sync вместо драйвера очереди по умолчанию.
-
-Условия трансляции
-транслировать событие, только если выполнено какое-то условие
-
-public function broadcastWhen() {
-  return $this->value > 100;
-}
-
-Авторизация приватных каналов
-делается отдельный HTTP запрос на роут для авторизации
-
-Broadcast::routes(); роут для авторизации. автоматически поместит роут в МВ 'web'
-Broadcast::routes($attributes);
-
-роут точки авторизации для доступа к каналу /broadcasting/auth
-
-window.Echo = new Echo({
-  broadcaster: 'pusher',
-  key: 'your-pusher-channels-key',
-  authEndpoint: '/custom/endpoint/auth' указать свою точку авторизации
-});
-
-делаем авторизацию в routes/channels.php
-передаем имя канала и юзера
-
-Broadcast::channel('order.{orderId}', function ($user, $orderId) {
-  return $user->id === Order::findOrNew($orderId)->user_id;
-});
-
-как роуты HTTP, роуты каналов могут привязывать модель
-Broadcast::channel('order.{order}', function ($user, Order $order) {
-  return $user->id === $order->user_id;
-});
-
-каналы аутентифицируют юзера через гуарды
-Broadcast::channel('channel', function () {}, ['guards' => ['web', 'admin']]);
-
-Классы каналов
-php artisan make:channel OrderChannel
-
-Папка каналов
-App/Broadcasting
-
-регаем каналы в routes/channels.php
-
-Broadcast::channel('order.{order}', OrderChannel::class);
-
-логику АУ кладём сюда
-
-public function join(User $user, Order $order) {
-  return $user->id === $order->user_id;
-}
-
-классы каналов разрешаются через СК. возможны любые зависимости добавить
-
-запуск события
-event(new ShippingStatusUpdated($update));
-broadcast(new ShippingStatusUpdated($update))->toOthers(); исключить текущего пользователя из получателей
-
-например создаём задачу в TODO. и вставляем
-axios.post('/task', task)
-  .then((response) => {
-    this.tasks.push(response.data);
-});
-но задача вставится 2 раза. сначала напрямую. потом из события. поэтому нужен метод toOthers()
-
-Laravel Echo, Vue, Axios - заголовок X-Socket-ID будет назначен автоматически.
-
-для других либ делать так
-var socketId = Echo.socketId();
-
-Приём трансляции
-
-установка Laravel Echo
-Laravel Echo это JS либа которая делает подписку на каналы для прослушивания событий
-npm install --save laravel-echo pusher-js
-
-resources/js/bootstrap.js
-import Echo from "laravel-echo"
-window.Echo = new Echo({
-  broadcaster: 'pusher',
-  key: 'your-pusher-channels-key',
-  cluster: 'eu', кластер
-  forceTLS: true работать через TLS
-});
-
-Прослушивание событий
-Echo.channel('orders')
-  .listen('OrderShipped', (e) => {
-    console.log(e.order.name);
-});
-
-прослушивание приватных каналов, и несколько каналов одновременно
-Echo.private('orders')
-  .listen(...)
-  .listen(...)
-  .listen(...);
-
-Отключение от канала
-Echo.leaveChannel('orders');
-Echo.leave('orders'); покинуть канал, и все связанные с ним каналы
-
-Неймспейс событий
-
-App\Events
-но можно задать своё
-
-window.Echo = new Echo({
-  broadcaster: 'pusher',
-  key: 'your-pusher-channels-key',
-  namespace: 'App.Other.Namespace'
-});
-
-или
-
-Echo.channel('orders')
-  .listen('.Namespace\\Event\\Class', (e) => {});
-
-Каналы присутствия
-это частные каналы, но с инфой кто подписан на канал
-
-авторизация юзеров на частные каналы присутствия
-
-Broadcast::channel('chat.{roomId}', function ($user, $roomId) {
-  if ($user->canJoinRoom($roomId)) {
-    return ['id' => $user->id, 'name' => $user->name];
-  }
-});
-
-присоединиться к каналу присутствия
-
-Echo.join(`chat.${roomId}`)
-  .here((users) => {сразу после присоединения сработает})
-  .joining((user) => {когда юзер присоединился})
-  .leaving((user) => {когда юзер покинул канал}
-);
-
-каналы присутствия получают события также, как приватные и публичные каналы
-public function broadcastOn() {
-  return new PresenceChannel('room.'.$this->message->room_id);
-}
-
-каналы присутствия. отсылка события
-
-broadcast(new NewMessage($message));
-broadcast(new NewMessage($message))->toOthers();
-
-прослушивать так
-Echo.join(`chat.${roomId}`)
-  .here(...)
-  .joining(...)
-  .leaving(...)
-  .listen('NewMessage', (e) => {}
-);
-
-События клиента
-он печатает и это видно для другого клиента
-
-Echo.private('chat')
-  .whisper('typing', {
-    name: this.user.name
-});
-
-Echo.private('chat')
-  .listenForWhisper('typing', (e) => {
-    console.log(e.name);
-});
-
-Уведомления
-
-Echo.private(`App.User.${userId}`)
-  .notification((notification) => {
-    console.log(notification.type);
-});
 -------------------------------------------------
 
 DIGGING DEEPER -> CACHE
 
 Фасад Cache
-хелпер Cache
+Хелпер Cache
 
-Конфиг config/cache.php
+Конфиг
+config/cache.php
 
 драйверы
 Memcached, Redis, File, Database
+--------------------
 
-драйвер Database
+Драйвер Database
 
 Schema::create('cache', function ($table) {
   $table->string('key')->unique();
@@ -7208,412 +6951,514 @@ php artisan vendor:publish --tag=config
 
 DIGGING DEEPER -> QUEUES
 
-Laravel Horizon - это панель управления очередями на основе Redis.
-Драйверы Beanstalk, Amazon SQS, Redis, Database, Synchronous (для локальной разработки), Null.
+В очередь ставятся тяжелые фоновые задачи
+Laravel Horizon это панель управления очередями на Redis
+Фасад Queue
 
-В очередь ставят тяжелые задачи
-Конфиг config/queue.php
+Драйверы
+Beanstalk, Amazon SQS, Redis, Database, Synchronous (выполняет немедленно. для локальной разработки), Null (выключено)
+
+Конфиг
+config/queue.php
+
+Папка задач
+app/Jobs
+--------------------
 
 Соединение и Очередь
 
-Соединение - это коннект к драйверам.
-Соединение имеет очередь по умолчанию в ключе queue в конфиге.
-В соединении может быть много очередей.
-У каждой очереди может быть свой приоритет.
+Соединение это запрос к службе очередей, через указанный драйвер
 
-отправим задачу в очередь по умолчанию
-Job::dispatch();
+Задача отправляется в соединение, в очередь по умолчанию, или в указанную в 'queue'
 
-отправим задачу в очередь nameQueue
-Job::dispatch()->onQueue('nameQueue');
+В соединении может быть много очередей
+
+Каждой очереди можно назначить приоритет
+
+У разных очередей разное колво воркеров
+
+Задачи запускают асинхронно
+Логика задачи в методе handle()
+СК автоматически разрешает зависимости в конструкторе класса задач
+--------------------
 
 Драйвер Database
-таблица для задач
 
+все задачи будут в таблице
+
+Создать миграцию для таблицы jobs
 php artisan queue:table
+
+Накатить миграцию
 php artisan migrate
+--------------------
 
-Драйвер Redis, Redis Cluster
-composer predis/predis
+Драйвер Redis
 
-конфиг config/database.php
-настроить key hash tag
-настроить block_for сколько ждать доступности задачи
+все задачи будут в таблице
+пропустил
+--------------------
 
 Драйвер Amazon SQS
-composer aws/aws-sdk-php
+
+пропустил
+--------------------
 
 Драйвер Beanstalkd
-composer pda/pheanstalk
+
+пропустил
+--------------------
 
 Создать задачу
-все задачи в app/Jobs
-задачи запускают асинхронно
 
-php artisan make:job ProcessPodcast
+php artisan make:job JobName
 
-Логика в методе handle
-он вызывается когда задача выполняется
-СК автоматически разрешает зависимости в конструкторе класса задач
+class JobName implements ShouldQueue {
 
-class ProcessPodcast implements ShouldQueue {
-  public function __construct(Podcast $podcast) {
-    $this->podcast = $podcast;
+  public function __construct(User $user) {
+    $this->user = $user;
+	$this->user = $user->withoutRelations();
   }
-  public function handle() {}
+
+  главный метод
+  public function handle() {
+  }
 }
-
-передать Eloquent модель в конструктор
-бинарные данные типа картинок, должны быть переданы через метод base64_encode()
-
-Полный контроль над тем, как СК внедряет зависимости, можно получить через метод
-
-$this->app->bindMethod(ProcessPodcast::class.'@handle', function ($job, $app) {
-  return $job->handle($app->make(AudioProcessor::class));
-});
-
-Отношения других моделей Eloquent тоже загружаются.
-Это можно предотвратить и загрузить модель без отношений
-
-public function __construct(Podcast $podcast) {
-  $this->podcast = $podcast->withoutRelations();
-}
+--------------------
 
 МВ для задач
-МВ для задач оборачивает задачу логикой. Например логика ограничение скорости
 
-public function handle() {
+МВ оборачивает задачу логикой
+чтобы разгрузить метод handle от логики
+МВ для задач работает как МВ для роутов
+например логика ограничение скорости
 
-  Redis::throttle('key')->block(0)->allow(1)->every(5)->then(function () {
+class JobName implements ShouldQueue {
 
-	info('Lock obtained...');
-    Handle job
+  public function middleware() {
+    return [new RateLimited];
+  }
 
-    }, function () {
-
-      Could not obtain lock
-      return $this->release(5);
-
-    });
+  public function handle() {
+    Redis::throttle('key')->block(0)->allow(1)->every(5)->then(function () {
+      info('lock obtained');
+      Handle job
+      }, 
+	  function () {
+        could not obtain lock
+        return $this->release(5);
+      });
 }
 
-Чтобы разгрузить метод handle от логики, положим логику в МВ app/Jobs/Middleware
+Папка МВ для задач
+app/Jobs/Middleware
 
+Пример МВ
 class RateLimited {
-
   public function handle($job, $next) {
     Redis::throttle('key')
       ->block(0)->allow(1)->every(5)
       ->then(function () use ($job, $next) {
-        // Lock obtained...
+        lock obtained...
         $next($job);
       }, function () use ($job) {
-        // Could not obtain lock...
+        could not obtain lock
         $job->release(5);
       });
     }
 }
+--------------------
 
-МВ job работает как МВ route
-в класс задачи кладем МВ
+Отправить задачу
 
-public function middleware() {
-  return [new RateLimited];
-}
+в очередь по умолчанию
+JobName::dispatch($user);
 
-Отправка задачи в контроллере
-ProcessPodcast::dispatch($podcast);
+в очередь nameQueue
+JobName::dispatch($user)->onQueue('nameQueue');
 
-отправка по условию
-ProcessPodcast::dispatchIf($accountActive === true, $podcast);
-ProcessPodcast::dispatchUnless($accountSuspended === false, $podcast);
+это отправит задачу в таблицу jobs
+--------------------
 
-Отправить но отложить исполнение на время N
-ProcessPodcast::dispatch($podcast)->delay(now()->addMinutes(10));
+Отправить по условию
 
-Отправить после того как Ответ придёт юзеру в браузер
-SendNotification::dispatchAfterResponse();
+JobName::dispatchIf($userban == 1, $user);
+JobName::dispatchUnless($userban === 0, $user);
+--------------------
+
+Отложить отправку
+
+JobName::dispatch($user)->delay(now()->addMinutes(10));
+--------------------
+
+Отправить после прихода ответа в браузер
+
+JobName::dispatchAfterResponse($user);
 
 или
 
 dispatch(function () {
-  Mail::to('taylor@laravel.com')->send(new WelcomeMessage);
+  Mail::to('email@email.com')->send(new WelcomeMessage);
 })->afterResponse();
 
-Синхронная отправка
-отправка задачи сразу на выполнение без очереди
-ProcessPodcast::dispatchNow($podcast);
+для коротких задач
+--------------------
+
+Отправить синхронно
+выполнит сразу без очереди
+
+JobName::dispatchNow($user);
+--------------------
 
 Цепочки задач
+
 список задач в нужной последовательности
-если одна задача падает, то остальные не исполняются
+если одна задача падает, то остальные не выполняются
 
-ProcessPodcast::withChain([
-
-  классы
-  new OptimizePodcast,
-  new ReleasePodcast,
-
-  замыкание
-  function () {
-    Podcast::update(...);
-  },
-
+Bus::chain([
+  new JobName1,
+  new JobName2,
+  new JobName3,
 ])->dispatch();
 
+Bus::chain([
+    new JobName1,
+    new JobName2,
+    function () {
+      User::update();
+    },
+])->dispatch();
+--------------------
+
 Удаление задачи
-не остановит цепочку задач
 
 $this->delete()
 
-указать Соединение и Очередь
+не остановит цепочку задач
+--------------------
 
-ProcessPodcast::withChain([
-  new OptimizePodcast,
-  new ReleasePodcast
-])->dispatch()->allOnConnection('redis')->allOnQueue('podcasts');
+Указать Соединение и Очередь
 
-Отправить задачу в нужную очередь
-ProcessPodcast::dispatch($podcast)->onQueue('processing');
+Bus::chain([
+  new JobName1,
+  new JobName2,
+  new JobName3,
+])
+  ->onConnection('connectionName')
+  ->onQueue('queueName')
+  ->dispatch();
+--------------------
 
-У разных очередей разное колво воркеров
+Отправка цепочки не удалась
 
-Отправить задачу в нужное Соединение
-ProcessPodcast::dispatch($podcast)->onConnection('sqs');
+Bus::chain([
+  new JobName1,
+  new JobName2,
+  new JobName2,
+])->catch(function (Throwable $e) {
+  chain has failed
+})->dispatch();
+--------------------
 
-Отправить задачу в нужную Соединение и Очередь
-ProcessPodcast::dispatch($podcast)
-  ->onConnection('sqs')
-  ->onQueue('processing');
+Отправить задачу в очередь nameQueue
+JobName::dispatch($user)->onQueue('nameQueue');
 
+Или указать в конструкторе
+public function __construct() {
+  $this->onQueue('nameQueue');
+}
+--------------------
 
-Максимальное колво попыток выполнения задачи
+Отправить задачу в соединение nameConnection
+JobName::dispatch($podcast)->onConnection('nameConnection');
 
-через командную строку
-php artisan queue:work --tries=3
+Или указать в конструкторе
+public function __construct() {
+  $this->onConnection('nameConnection');
+}
+--------------------
 
-в классе задачи. больший приоритет чем командная строка
-public $tries = 5;
+Колво попыток выполнения задачи
 
-Выполнять задачу любое колво раз за N времени
-также этот метод доступен в queued event listeners
+Через командную строку
+php artisan queue:work --tries=N
+
+В классе задачи
+public $tries = N;
+
+по умолчанию это 1 раз
+потом задача будет считаться неудачной
+--------------------
+
+Пытаться выполнять задачу до указанного времени
 
 public function retryUntil() {
-  return now()->addSeconds(5);
+  return now()->addSeconds(N);
 }
+--------------------
 
-Максимальное колво выброса исключений до обозначения задачи как невыполненной
-Требуется PHP extension pcntl
+Пытаться выполнять задачу пока колво падений не будет N
 
 public $maxExceptions = 3;
+--------------------
 
-Максимальное количество секунд, в течение которых может выполняться задача
+Указать максимальное время выполнения задачи
 
-через командную строку
-php artisan queue:work --timeout=30
+Через командную строку
+php artisan queue:work --timeout=N
 
-в классе задачи. больший приоритет чем командная строка
-public $timeout = 120;
+В классе задачи
+public $timeout = N;
+--------------------
 
-Ограничение скорости
-для драйвера Redis
+Вернуть задачу в очередь
 
-запустить 10 раз каждые 60сек. key это имя класса задачи или модель Eloquent
+public function handle() {
+  $this->release();
+  $this->release(N сек)
+}
+--------------------
 
-Redis::throttle('key')->allow(10)->every(60)->then(function () {
+Сделать задачу неудачной
 
-  Job logic
+public function handle() {
+  $this->fail();
+  $this->fail($exception);
+}
+--------------------
 
-}, function () {
+Пакетная обработка задач
 
-  Could not obtain lock
-  return $this->release(10);
+Создать миграцию для таблицы job_batches
+php artisan queue:batches-table
 
+Накатить миграцию
+php artisan migrate
+
+Пропустил разделы
+пакетные задачи
+именованные пакеты
+соединения и очереди
+цепочки пакетов
+добавить задачу в пакет
+отладка пакетов
+отмена выполнения пакетов
+ошибки выполнения пакетных задач
+--------------------
+
+Задачи на базе замыкания
+
+dispatch(function () use ($user) {
+  $user->ban();
+})->catch(function (Throwable $e) {
+    job failed
 });
+--------------------
 
-Максимальное колво воркеров которые выполняют задачи. установить 1 воркер за 1 раз
+Обработчик задач
 
-Redis::funnel('key')->limit(1)->then(function () {
+это фоновый демон. загружает код в память
+изменили код, сделать рестарт обработчика
+--------------------
 
-  Job logic
+Запуск обработчика задач
 
-}, function () {
-
-  Could not obtain lock
-  return $this->release(10);
-
-});
-
-Обработка ошибок
-если задача выбросила исключение то она возвращается в очередь
-максимальное колво попыток задаётся в командной строке --tries или классе $tries
-
-
-Задачи на основе Замыканий
-dispatch(function () use ($podcast) {
-  $podcast->publish();
-});
-
-Запуск воркера
-работает до ручного выключения или закрытия терминала
-фоновую работу воркера обеспечит Supervisor
-
+В терминале
 php artisan queue:work
 
-Воркер - это обработчик задач.
-Воркер это демон, загружает в память код один раз.
-Не перезагружает код после каждой задачи.
-После изменения кода делать рестарт воркеров.
-
-ручной рестарт воркеров
+С автоматическим обновлением измененного кода
 php artisan queue:listen
 
-выбор Соединения
-соединения прописаны в config/queue.php
+В фоновом режиме
+Supervisor
+--------------------
 
-php artisan queue:work redisconnection
+Запуск нескольких обработчиков
 
-выбор Соединения и Очереди
-php artisan queue:work redisconnection --queue=emailsqueue
+В терминале
+php artisan queue:work
+php artisan queue:work
+php artisan queue:work
 
-выполнить 1 задачу в очереди
+В фоновом режиме
+Supervisor 'numprocs' = N
+--------------------
+
+Указать соединение
+
+php artisan queue:work connectionName
+
+все соединения в config/queue.php
+--------------------
+
+Указать очередь
+
+php artisan queue:work --queue=queueName
+--------------------
+
+Обработать 1 задачу
 php artisan queue:work --once
 
-выполнить все задачи в очереди и выйти
+Обработать N задач
+php artisan queue:work --max-jobs=N
+
+Обработать все задачи и выйти
 php artisan queue:work --stop-when-empty
 
-Приоритеты в очереди
-config/queue.php 'queue' = low
+Обрабатывать задачи на протяжении N секунд и выйти
+php artisan queue:work --max-time=N
+--------------------
 
-на лету выставить высокий приоритет
+Пауза между задачами
+
+php artisan queue:work --sleep=3
+--------------------
+
+Приоритеты
+
+В config/queue.php
+'queue' = low
+
+В коде
 dispatch((new Job)->onQueue('high'));
 
-сначала выполнит задачи с высоким приоритетом, потом с низким
+Командой
 php artisan queue:work --queue=high,low
+--------------------
 
 Деплой на сервер
 
-сделать рестарт воркеров
+Рестарт обработчиков
 php artisan queue:restart
+--------------------
 
-сколько ждать перед следующей попыткой выполнить задачу
-config/queue.php 'retry_after'
+Сколько ждать перед новой попыткой выполнить задачу
+параметр retry_after в config/queue.php
 
-сколько ждать перед тем как убить воркер. timeout всегда чуть короче чем retry_after
-php artisan queue:work --timeout=60
+Сколько ждать выполнения задачи, а потом завершить неудачно
+php artisan queue:work --timeout=N
 
-сколько спать воркеру
-php artisan queue:work --sleep=3
+Параметр retry_after на 5 сек длиннее чем timeout
+--------------------
 
+Настройка Supervisor
 
-Supervisor
-http://supervisord.org/index.html
+либа для Linux
 
-установка
+Мануал
+http://supervisord.org
+
+Установка
 sudo apt-get install supervisor
 
-конфиг
+Конфиг
 /etc/supervisor/conf.d
 
-настройки
-numprocs - колво воркеров
-stopwaitsecs - должно быть больше самого длительной задачи воркера
-
-команды
+Запуск
 sudo supervisorctl reread
 sudo supervisorctl update
-sudo supervisorctl start laravel-worker:*
+sudo supervisorctl start
+--------------------
 
+Обработка неудачных задач
 
-Работа с невыполненными задачам
+складываются в таблицу failed_jobs
 
-создать таблицу failed_jobs
+Создать миграцию для таблицы failed_jobs
 php artisan queue:failed-table
+
+Накатить миграцию
 php artisan migrate
+--------------------
 
-колво попыток выполнить задачу
-иначе выполнит 1 раз
-php artisan queue:work redis --tries=3
+Сколько ждать перед новой попыткой выполнить задачу
 
-сколько ждать перед следующей попыткой
-иначе повторит немедленно
-php artisan queue:work redis --delay=3
+В терминале
+php artisan queue:work --backoff=N
 
-или в свойстве класса
-public $retryAfter = 3;
+В классе в свойстве
+public $backoff = N;
 
-или в методе класса
-public function retryAfter() {return 3;}
+В классе в методе
+public function backoff() {
+  return N;
+  return [N, M, X];
+}
+--------------------
 
-если задача не выполнена, можно что-то вернуть
-метод failed не вызывается если использовали dispatchNow
+Очистка после неудачных задач
+
 public function failed(Throwable $exception) {
-  Send user notification of failure, etc...
+ notification of failure
 }
+--------------------
 
+Посмотреть неудачные задачи
 
-если задача не выполнена то будет событие
-в AppServiceProvider
-
-public function boot() {
-  Queue::failing(function (JobFailed $event) {
-    $event->connectionName
-    $event->job
-    $event->exception
-  });
-}
-
-
-посмотреть невыполненные задачи
 php artisan queue:failed
+--------------------
 
-запуск невыполненных задач по job ID
+Выполнить неудачную задачу, список задач, все задачи
+
 php artisan queue:retry 5
-
-запуск невыполненных задач сразу много
 php artisan queue:retry 5 6 7 8 9 10
 php artisan queue:retry --range=5-10
-php artisan queue:retry all все сразу
+php artisan queue:retry all
+--------------------
 
-удалить невыполненные задачи
+Удалить неудачную задачу, все задачи
+
 php artisan queue:forget 5
 php artisan queue:flush
+--------------------
 
-Задача ставится в очередь, модель Eloquent сериализуется и пишется в базу.
-Время прошло, модель удалилась. Наступил запуск задачи.
-Модели нет. Будет исключение ModelNotFoundException.
+Модель передаётся в задачу
 
-Настроить автоматическое удаление таких задач
+сериализуется в массив json и сохраняется в поле в бд
+
+Если модель уже удалена, то задачу можно не выполнять
 public $deleteWhenMissingModels = true;
+--------------------
 
-События
-Фасад Queue
-методы before, after
-События ДО и ПОСЛЕ выполнения задачи.
+События задач
 
-в AppServiceProvider
-
+в AppServiceProvider.php
 public function boot() {
 
+  до выполнения задачи
   Queue::before(function (JobProcessing $event) {
     $event->connectionName
     $event->job
     $event->job->payload()
   });
 
+  после выполнения задачи
   Queue::after(function (JobProcessed $event) {
     $event->connectionName
     $event->job
     $event->job->payload()
   });
 
-  колбек выполнится до попыток воркера получить задачу из очереди
+  перед получением задачи из очереди
   Queue::looping(function () {
     while (DB::transactionLevel() > 0) {
       DB::rollBack();
     }
   });
+  
+  задача завершилась неудачно
+  Queue::failing(function (JobFailed $event) {
+    $event->connectionName
+    $event->job
+    $event->exception
+  });
 }
+--------------------
+
+Удалить задачи из очереди
+
+php artisan queue:clear
+php artisan queue:clear connectionName --queue=queueName
 -------------------------------------------------
 
 DIGGING DEEPER -> TASK SCHEDULING
@@ -8185,8 +8030,8 @@ cache:clear  Flush the application cache
 cache:forget Remove an item from the cache
 cache:table  Создать миграцию для таблицы кеша
 
-config:cache Создать файл кеша всех конфигов
-config:clear Удалить файл кеша всех конфигов
+config:cache Создать кеш всех конфигов
+config:clear Удалить кеш всех конфигов
 
 db:seed Запустить все сидеры
 db:wipe Удалить все таблицы
@@ -8201,26 +8046,26 @@ key:generate Сгенерировать application key
 make:cast         Create a new custom Eloquent cast class
 make:channel      Create a new channel class
 make:command      Create a new Artisan command
-make:component    Создать класс компонента вьюхи
-make:controller   Создать класс контроллера
+make:component    Создать компонент вьюхи
+make:controller   Создать контроллер
 make:event        Create a new event class
 make:exception    Create a new custom exception class
-make:factory      Создать фабрику моделей
-make:job          Create a new job class
+make:factory      Создать фабрику
+make:job          Создать задачу
 make:listener     Create a new event listener class
-make:mail         Создать класс почты
-make:middleware   Создать класс мв
-make:migration    Создать класс миграции
-make:model        Создать класс модели eloquent
-make:notification Создать класс уведомлений
-make:observer     Создать класс наблюдателя
+make:mail         Создать почту
+make:middleware   Создать мидлваре
+make:migration    Создать миграцию
+make:model        Создать модель eloquent
+make:notification Создать уведомление
+make:observer     Создать наблюдателя
 make:policy       Create a new policy class
-make:provider     Создать класс сервис провайдера
-make:request      Создать класс формы запроса
+make:provider     Создать сервис провайдер
+make:request      Создать форму запроса
 make:resource     Create a new resource
-make:rule         Создать класс правил валидации
-make:seeder       Создать класс сидера
-make:test         Создать класс теста
+make:rule         Создать правила валидации
+make:seeder       Создать сидер
+make:test         Создать тест
 
 migrate:fresh    Удалить все таблицы, запустить все миграции
 migrate:fresh --seed Удалить все таблицы, запустить все миграции, засеять
@@ -8237,21 +8082,22 @@ optimize:clear Remove the cached bootstrap files
 
 package:discover Rebuild the cached package manifest
 
-queue:batches-table  Create a migration for the batches database table
-queue:clear          Delete all of the jobs from the specified queue
-queue:failed         List all of the failed queue jobs
-queue:failed-table   Создать миграцию для таблицы неудачных задач в очереди
+ОЧЕРЕДИ
+queue:batches-table  Создать миграцию для таблицы пакетных задач
+queue:clear          Удалить задачи из очереди
+queue:failed         Посмотреть неудачные задачи
+queue:failed-table   Создать миграцию для таблицы неудачных задач
 queue:flush          Flush all of the failed queue jobs
 queue:forget         Delete a failed queue job
 queue:listen         Listen to a given queue
 queue:restart        Restart queue worker daemons after their current job
 queue:retry          Retry a failed queue job
 queue:retry-batch    Retry the failed jobs for a batch
-queue:table          Создать миграцию для таблицы задач в очереди
-queue:work           Start processing jobs on the queue as a daemon
+queue:table          Создать миграцию для таблицы задач
+queue:work           Запуск обработчика задач
 
-route:cache Создать файл кеша всех роутов
-route:clear Удалить файл кеша всех роутов
+route:cache Создать кеш всех роутов
+route:clear Удалить кеш всех роутов
 route:list  Показать все роуты
 
 schedule:run  Run the scheduled commands
