@@ -1,0 +1,40 @@
+Вебсокеты это постоянный двусторонний канал браузер<->сервер
+
+Laravel-websockets
+
+это либа на php которая реализует сервер вебсокетов
+на основе либы Ratchet
+реализован протокол либы Pusher
+
+Laravel-echo
+
+это либа на js на стороне браузера
+реализован протокол либы Pusher
+--------------------
+
+Установить Laravel-websockets
+
+composer require beyondcode/laravel-websockets
+
+Установится
+
+beyondcode/laravel-websockets
+cboden/ratchet
+evenement/evenement
+paragonie/random_compat
+paragonie/sodium_compat
+pusher/pusher-php-server
+ratchet/rfc6455
+react/cache
+react/dns
+react/event-loop
+react/http
+react/promise
+react/promise-stream
+react/promise-timer
+react/socket
+react/stream
+ringcentral/psr7
+symfony/psr-http-message-bridge
+--------------------
+

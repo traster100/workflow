@@ -5217,60 +5217,98 @@ remember() - вернет новую ленивую коллекцию кото�
 
 DIGGING DEEPER -> EVENTS
 
-Слушатель подписывается на событие
+У события может быть несколько слушателей
 
-События в app/Events
-Слушатели в app/Listeners
+Папка событий (СОБ)
+app/Events
 
-У 1 события могут быть N слушателей
+Папка слушателей (СЛУ)
+app/Listeners
+--------------------
 
-Рега событий и слушателей
-ключи это События, значения это Слушатели
-в EventServiceProvider
+Регистрация СОБ и СЛУ
 
-protected $listen = [
-  'App\Events\OrderShipped' => ['App\Listeners\SendShipmentNotification'],
+1. в EventServiceProvider.php в массиве
+$listen = [
+  'EventName' => ['ListenerName']
 ];
+ключи это СОБ, значения это СЛУ
 
-Создать события и слушатели
-создадутся классы из EventServiceProvider в $listen
-
-php artisan event:generate
-
-Событие на основе Замыкания
-
+2. в EventServiceProvider.php в методе
 public function boot() {
-  parent::boot();
-  Event::listen('event.name', function ($foo, $bar) {});
-  Event::listen('event.*', function ($eventName, array $data) {});
+
+  на базе класса
+  Event::listen(EventName::class, [ListenerName::class, 'handle']);
+  
+  на базе замыкания
+  Event::listen(function (EventName $event) {});
+  
+  поставить в очередь
+  Event::listen(queueable(function (EventName $event) {}));
+  
+  задать соединение и очередь
+  Event::listen(queueable(function (EventName $event) {})
+    ->onConnection('connectionName')
+	->onQueue('queueName')
+	->delay(now()->addSeconds(10)));
+
+  если задача не выполнена
+  Event::listen(queueable(function (EventName $event) {})
+    ->catch(function (EventName $event, Throwable $e) {queued listener failed}));
+
+  слушать много СОБ одним СЛУ
+  Event::listen('event.*', function ($eventName, array $data) {});	
 }
 
-Автоматическое обнаружение Событий и Слушателей
-включить в EventServiceProvider
-
+3. в EventServiceProvider.php включить автоматическое обнаружение
 public function shouldDiscoverEvents() {
   return true;
 }
+сканируется папка СОБ и СЛУ. можно добавить свою папку СЛУ
+--------------------
 
-Все классы в app/Listeners автоматически обнаруживаются
+Посмотреть все СОБ и СЛУ
 
-Указать папки где искать
-в EventServiceProvider
+php artisan event:list
+--------------------
 
-protected function discoverEventsWithin() {
-  return [
-    $this->app->path('Listeners'),
-  ];
-}
+Создать СОБ и СЛУ
+1. сначала вбить в EventServiceProvider.php
+2. потом php artisan event:generate
 
-В продакшене кешировать
+Создать СОБ
+php artisan make:event EventName
+
+Создать СЛУ
+php artisan make:listener ListenerName --event=EventName
+--------------------
+
+На продакшене
+
+Создать кеш списка событий и слушателей
 php artisan event:cache
 
-очистить кеш
+Удалить кеш списка событий и слушателей
 php artisan event:clear
+--------------------
 
-посмотреть список всех событий и слушателей
-php artisan event:list
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Событие это контейнер данных который держит данные нужные событию, например модель Eloquent.
 Слушатель получает объект События в методе handle.
@@ -5994,8 +6032,7 @@ build
 Письмо plain text
 
 public function build() {
-  return $this->view('emails.name')
-    ->text('emails.namePlain');
+  return $this->view('emails.name')->text('emails.namePlain');
 }
 --------------------
 
@@ -6207,31 +6244,25 @@ Mail::mailer('sendmail')
 
 Отложить отправку
 
-Mail::to($user)
-  ->later(now()->addMinutes(10), new mailName($user));
+Mail::to($user)->later(now()->addMinutes(10), new mailName($user));
 --------------------
 
 Отправка в очередь
 
-Mail::to($user)
-  ->queue(new mailName($user));
+Mail::to($user)->queue(new mailName($user));
 --------------------
 
 Отправка в очередь по имени
 
-$message = (new mailName($user))
+Mail::to($user)->queue((new mailName($user))
   ->onConnection('connectionName')
-  ->onQueue('queuename');
-
-Mail::to($user)
-  ->queue($message);
+  ->onQueue('queuename'));
 --------------------
 
-Отправка в очередь всегда для почтовых классов
-интерфейс ShouldQueue
+Отправка в очередь всегда
 
+добавить интерфейс ShouldQueue
 class mailName1 extends Mailable implements ShouldQueue {}
-class mailName2 extends Mailable implements ShouldQueue {}
 --------------------
 
 Отладка письма
@@ -8036,10 +8067,10 @@ config:clear Удалить кеш всех конфигов
 db:seed Запустить все сидеры
 db:wipe Удалить все таблицы
 
-event:cache    Discover and cache the application's events and listeners
-event:clear    Clear all cached events and listeners
-event:generate Generate the missing events and listeners based on registration
-event:list     List the application's events and listeners
+event:cache    Создать кеш списка событий и слушателей
+event:clear    Удалить кеш списка событий и слушателей
+event:generate Создать события и слушателей
+event:list     Посмотреть все события и слушателей
 
 key:generate Сгенерировать application key
 
@@ -8048,11 +8079,11 @@ make:channel      Create a new channel class
 make:command      Create a new Artisan command
 make:component    Создать компонент вьюхи
 make:controller   Создать контроллер
-make:event        Create a new event class
+make:event        Создать событие
 make:exception    Create a new custom exception class
 make:factory      Создать фабрику
 make:job          Создать задачу
-make:listener     Create a new event listener class
+make:listener     Создать слушателя
 make:mail         Создать почту
 make:middleware   Создать мидлваре
 make:migration    Создать миграцию
@@ -8089,7 +8120,7 @@ queue:failed         Посмотреть неудачные задачи
 queue:failed-table   Создать миграцию для таблицы неудачных задач
 queue:flush          Flush all of the failed queue jobs
 queue:forget         Delete a failed queue job
-queue:listen         Listen to a given queue
+queue:listen         Запуск обработчика задач с автоматическим обновлением измененного кода
 queue:restart        Restart queue worker daemons after their current job
 queue:retry          Retry a failed queue job
 queue:retry-batch    Retry the failed jobs for a batch
