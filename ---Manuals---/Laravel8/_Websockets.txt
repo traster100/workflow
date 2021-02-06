@@ -6,18 +6,22 @@ Laravel-websockets
 на основе либы Ratchet
 реализован протокол либы Pusher
 
-Laravel-echo
+Laravel Echo
 
 это либа на js на стороне браузера
 реализован протокол либы Pusher
+
+Debug Dashboard
+
+панель отладки вебсокетов
+https://beyondco.de/docs/laravel-websockets/debugging/dashboard
 --------------------
 
 Установить Laravel-websockets
 
 composer require beyondcode/laravel-websockets
 
-Установится
-
+Установится:
 beyondcode/laravel-websockets
 cboden/ratchet
 evenement/evenement
@@ -36,5 +40,41 @@ react/socket
 react/stream
 ringcentral/psr7
 symfony/psr-http-message-bridge
---------------------
 
+Опубликовать миграцию
+php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="migrations"
+
+Накатить миграцию
+php artisan migrate
+будет создана таблица websockets_statistics_entries
+
+Опубликовать конфиг
+php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="config"
+будет создан файл config\websockets.php
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------
