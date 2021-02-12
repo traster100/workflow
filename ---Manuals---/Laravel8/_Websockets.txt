@@ -1,27 +1,35 @@
-Вебсокеты это постоянный двусторонний канал браузер<->сервер
+Вебсокеты это постоянный канал в обе стороны браузер<->сервер
+Браузер и сервер могут в любой момент отправлять сообщения
+Передача сообщений асинхронная
+Вебсокеты работают по протоколу WS, он похож на HTTP
+Урлы ws:// или wss://
+Порты 80 и 443
 
-Laravel-websockets
+Сначала установка соединения по HTTP GET запросу, в заголовках upgrade: websocket, уникальный ключ, версия вебсокетов 13
+Ответ сервера будет HTTP с кодом 101, в заголовках upgrade: websocket, уникальный ключ
+После этого устанавливается прямое TCP соединение между браузером и сервером
 
-это либа на php которая реализует сервер вебсокетов
-на основе либы Ratchet
-реализован протокол либы Pusher
+Для поддержания соединения используются запросы ping-pong (кадры типа ping, pong)
+Это сервер сам отправляет через промежутки времени для проверки
 
-Laravel Echo
-
-это либа на js на стороне браузера
-реализован протокол либы Pusher
-
-Debug Dashboard
-
-панель отладки вебсокетов
-https://beyondco.de/docs/laravel-websockets/debugging/dashboard
+Данные передаются кадрами (фреймами). Типы кадров: текстовые, бинарные, управляющие
+Заголовки сокетов передаются в бинарном нетекстовом виде
+Соединение разрывается любой из сторон, передачей управляющего кадра close
 --------------------
 
-Установить Laravel-websockets
+1. Laravel-websockets
 
+это сервер вебсокетов на php, на основе библиотеки Ratchet
+это альтернатива использованию Node.JS и javascript
+в нём реализован протокол сервиса Pusher и Pusher API
+он заменяет платный Pusher
+по умолчанию вещание событий из ларавел идёт на платные сервера Pusher
+канал присутствия не позволяет отправку сообщений, только уведомляет присутствует ли пользователь на канале
+
+Установить
 composer require beyondcode/laravel-websockets
 
-Установится:
+Установится
 beyondcode/laravel-websockets
 cboden/ratchet
 evenement/evenement
@@ -41,40 +49,217 @@ react/stream
 ringcentral/psr7
 symfony/psr-http-message-bridge
 
+
 Опубликовать миграцию
+будет создан файл миграции
+0000_00_00_000000_create_websockets_statistics_entries_table.php
 php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="migrations"
 
 Накатить миграцию
+будет создана таблица для статистики в панели отладки вебсокетов
+websockets_statistics_entries
 php artisan migrate
-будет создана таблица websockets_statistics_entries
 
 Опубликовать конфиг
-php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="config"
 будет создан файл config\websockets.php
+php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="config"
 
 
+Настройки
 
+Драйвер вещания
+в .env BROADCAST_DRIVER=pusher
 
+Сервер вебсокетов куда вещать события
+в config/broadcasting.php
+'host' => '127.0.0.1',
+'port' => 6001,
+'scheme' => 'http'
 
+Настройки SSL
+в /config/websockets.php в блоке 'ssl'
+в config/broadcasting.php в блоке 'pusher' => 'scheme' => 'https'
 
+Авторизация в Puser
+в .env добавить любые данные
+PUSHER_APP_ID=123
+PUSHER_APP_KEY=123
+PUSHER_APP_SECRET=123
 
+Поддержка сообщений клиент<->клиент
+сообщения вебсокетов работают как клиент->сервер->другие клиенты
+прямая связь клиент<->клиент используется вместо отправки событий на сервер, для событий типа "юзер печатает..."
+в /config/websockets.php 'enable_client_messages' => true
 
+Включить статистику
+в /config/websockets.php
+'enable_statistics' => true
 
+Очистить статистику
+php artisan websockets:clean
 
+Панель отладки
+https://beyondco.de/docs/laravel-websockets/debugging/dashboard
 
+урл панели отладки
+/laravel-websockets
+изменить в config/websockets.php в $path на 'ru/laravel-websockets'
+открыть http://domain.loc/ru/laravel-websockets
 
+в .env должно быть
+APP_ENV=local
+APP_URL=http://domain.com
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+Установить супервизор
+apt install supervisor
 --------------------
+
+2. Laravel Echo
+
+это js библиотека на стороне браузера
+реализован протокол сервиса Pusher
+библиотека получает вещаемые события с сервера
+
+Установка
+npm install laravel-echo
+npm install pusher-js
+
+Настройки
+
+Хост и порт
+в resources/js/bootstrap.js
+
+добавить
+wsHost: window.location.hostname,
+wsPort: 6001,
+
+true для SSL
+forceTLS: false,
+
+отключить отправку статистики в сервис Pusher
+disableStats: true,
+--------------------
+
+3. Рабочий процесс
+
+Посмотреть роуты
+php artisan route:list
+
+Перекомпиляция ресурсов
+npm run watch
+
+Сброс кеша конфигов
+php artisan config:cache
+
+Запустить сервер вебсокетов
+это запустит сервер Ratchet на порту 6001
+php artisan websockets:serve
+
+Запустить обработчик очереди задач
+php artisan queue:listen
+--------------------
+
+4. Понимание процесса
+
+Создать событие
+php artisan make:event NameEvent
+
+Событие должно реализовывать интерфейс ShouldBroadcast
+
+Событие добавляется в таблицу очередей jobs
+
+Событие рассылается на какой-то канал
+Каналы как радиоканалы на радио
+
+В методе broadcastOn() пишем в какой канал рассылается событие
+используя Channel() или PrivateChannel() или PresentChannel()
+например канал nameChannel
+
+В конструкторе События пишем нагрузку
+public function __construct($user, $message) {
+  $this->message = $message;
+  $this->user = $user;
+}
+
+Пуляем событие
+EventName::dispatch($user, $message);
+
+Слушаем публичный канал nameChannel
+Echo.channel('nameChannel')
+  .listen('ChatMessageWasReceived', (e) => {
+    console.log(e.user, e.message);
+});
+--------------------
+
+Тестирование
+
+заходим http://400.loc/ru/laravel-websockets
+
+канал ChatChannel
+
+событие App\Events\ChatEvent
+
+нагрузка 
+{
+  "array": [1,2],
+  "boolean": true,
+  "color": "gold",
+  "null": null,
+  "number": 123,
+  "object": {"a": "b", "c": "d"},
+  "string": "Hello1"
+}
+
+в другом окне открываем страницу чата
+--------------------
+
+Роуты пакета
+
+GET|POST
+broadcasting/auth
+Illuminate\Broadcasting\BroadcastController@authenticate 
+web
+
+GET
+laravel-websockets
+BeyondCode\LaravelWebSockets\Dashboard\Http\Controllers\ShowDashboard  
+web, BeyondCode\LaravelWebSockets\Dashboard\Http\Middleware\Authorize
+
+GET
+laravel-websockets/api/{appId}/statistics
+BeyondCode\LaravelWebSockets\Dashboard\Http\Controllers\DashboardApiController@getStatistics
+web, BeyondCode\LaravelWebSockets\Dashboard\Http\Middleware\Authorize
+
+POST
+laravel-websockets/auth
+BeyondCode\LaravelWebSockets\Dashboard\Http\Controllers\AuthenticateDashboard
+web, BeyondCode\LaravelWebSockets\Dashboard\Http\Middleware\Authorize
+
+POST
+laravel-websockets/event
+BeyondCode\LaravelWebSockets\Dashboard\Http\Controllers\SendMessage
+web, BeyondCode\LaravelWebSockets\Dashboard\Http\Middleware\Authorize
+
+POST
+laravel-websockets/statistics
+BeyondCode\LaravelWebSockets\Statistics\Http\Controllers\WebSocketStatisticsEntriesController@store
+web, BeyondCode\LaravelWebSockets\Statistics\Http\Middleware\Authorize
+--------------------
+
+
+в Axios номер сокета автоматически передается из заголовка X-Socket-ID со всеми запросами к серверу
+
+
+События на клиенте
+
+Создать событие
+Echo.private(`chat.${roomId}`)
+  .whisper('typing', {
+    name: this.user.name
+});
+
+Прослушать событие
+Echo.private(`chat.${roomId}`)
+  .listenForWhisper('typing', (event) => {
+    console.log(event.name);
+});

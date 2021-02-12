@@ -1731,10 +1731,8 @@ resources/views/greeting.blade.php
 Вывод вьюхи
 
 Route::get('/', function () {
-
   return view('greeting', ['name' => 'James']);
   return View::make('greeting', ['name' => 'James']);
-  
 });
 
 Пути до вьюх
@@ -4786,7 +4784,7 @@ config/broadcasting.php
 в этом файле роуты
 --------------------
 
-Установка Laravel Echo
+Установка Laravel Echo и Pusher JS
 
 npm install laravel-echo
 npm install pusher-js
@@ -4813,10 +4811,10 @@ public function broadcastOn() {
 Прослушиваем событие
 метод private для приватных каналов
 метод listen прослушивает событие EventName
+
 Echo.private(`users.${userId}`)
   .listen('EventName', (event) => {
     console.log(event);
-	console.log(event.user);
 });
 --------------------
 
@@ -4826,13 +4824,13 @@ Echo.private(`users.${userId}`)
 public function broadcastOn() {
 
   публичный канал
-  return new Channel('users.'.$this->user->id);
+  return new Channel('users.' . $this->user->id);
   
   приватный канал
-  return new PrivateChannel('users.'.$this->user->id);
+  return new PrivateChannel('users.' . $this->user->id);
   
   канал присутствия
-  return new PresenceChannel('users.'.$this->user->id);
+  return new PresenceChannel('users.' . $this->user->id);
 }
 
 --------------------
@@ -4871,6 +4869,7 @@ public $queue = 'default';
 
 Запустить событие в очередь sync
 
+Событие отправится сразу, без постановки в очередь
 Класс события должен реализовать интерфейс ShouldBroadcastNow, вместо ShouldBroadcast
 
 class EventName implements ShouldBroadcastNow {}
@@ -7524,7 +7523,7 @@ dispatch(function () use ($user) {
 изменили код, сделать рестарт обработчика
 --------------------
 
-Запуск обработчика задач
+Запуск обработчика очереди задач
 
 В терминале
 php artisan queue:work
@@ -8307,12 +8306,12 @@ event:list     Посмотреть все события и слушателе�
 key:generate Сгенерировать application key
 
 make:cast         Create a new custom Eloquent cast class
-make:channel      Create a new channel class
-make:command      Create a new Artisan command
+make:channel      Создать канал
+make:command      Создать команду Artisan
 make:component    Создать компонент вьюхи
 make:controller   Создать контроллер
 make:event        Создать событие
-make:exception    Create a new custom exception class
+make:exception    Создать исключение
 make:factory      Создать фабрику
 make:job          Создать задачу
 make:listener     Создать слушателя
@@ -8352,12 +8351,12 @@ queue:failed         Посмотреть неудачные задачи
 queue:failed-table   Создать миграцию для таблицы неудачных задач
 queue:flush          Flush all of the failed queue jobs
 queue:forget         Delete a failed queue job
-queue:listen         Запуск обработчика задач с автоматическим обновлением измененного кода
+queue:listen         Запуск обработчика очереди задач с автоматическим обновлением измененного кода
 queue:restart        Restart queue worker daemons after their current job
 queue:retry          Retry a failed queue job
 queue:retry-batch    Retry the failed jobs for a batch
 queue:table          Создать миграцию для таблицы задач
-queue:work           Запуск обработчика задач
+queue:work           Запуск обработчика очереди задач
 
 route:cache Создать кеш всех роутов
 route:clear Удалить кеш всех роутов
