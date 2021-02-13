@@ -1,0 +1,50 @@
+Репо
+https://github.com/axios/axios
+
+Установка
+npm install axios
+
+CDN
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+Импорт CommonJS
+const axios = require('axios');
+
+Импорт TypeScript
+import axios from 'axios';
+
+Get запрос
+
+axios.get('/user?id=123')
+  .then(function (response) {успех})
+  .catch(function (error) {ошибка})
+  .then(function () {всегда});
+
+axios.get('/user', {params: {id: 123}})
+  .then(function (response) {})
+  .catch(function (error) {})
+  .then(function () {});  
+
+Post запрос
+
+axios.post('/user', {id: 123})
+  .then(function (response) {})
+  .catch(function (error) {});
+
+Методы
+get, delete, head, options, post, put, patch
+
+Инстанс со своим конфигом
+const instance = axios.create({
+  baseURL: 'https://domain.com',
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'},
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+});
+
+Установка конфига другим способом
+axios.defaults.baseURL = 'https://domain.com';
+
+Структура ответа
+data, status, headers, config, request
