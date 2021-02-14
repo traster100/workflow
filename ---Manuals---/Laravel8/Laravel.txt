@@ -5342,53 +5342,7 @@ POST
 laravel-websockets/statistics
 BeyondCode\LaravelWebSockets\Statistics\Http\Controllers\WebSocketStatisticsEntriesController@store
 web, BeyondCode\LaravelWebSockets\Statistics\Http\Middleware\Authorize
---------------------
-
-
-События на клиенте
-
-Создать событие
-Echo.private(`chat.${roomId}`)
-  .whisper('typing', {
-    name: this.user.name
-});
-
-Прослушать событие
-Echo.private(`chat.${roomId}`)
-  .listenForWhisper('typing', (event) => {
-    console.log(event.name);
-});
-
-
-axios({
-    method: 'post',
-    url: '/api/post/',
-    data: {body: body},
-    headers: {"X-Socket-Id": Echo.socketId()}
-});
-
-Axios.interceptors.request.use((config) => {
-  config.headers['X-Socket-ID'] = window.Echo.socketId()
-  return config
-});
-
-
-Broadcast::channel('App.User.{from_user_id}.{to_user_id}', function ($user, $from_user_id, $to_user_id) {
-    return (int) $user->id === (int) $from_user_id || (int) $user->id === (int) $to_user_id;
-});
---------------------
-
-Laravel Echo Server - сервер вебсокетов
-
-https://github.com/tlaverdure/laravel-echo-server
-
-
-
-
 -------------------------------------------------
-
-
-
 
 DIGGING DEEPER -> CACHE
 
@@ -8715,6 +8669,7 @@ queue:retry-batch    Retry the failed jobs for a batch
 queue:table          Создать миграцию для таблицы задач
 queue:work           Запуск обработчика очереди задач
 
+РОУТЫ
 route:cache Создать кеш всех роутов
 route:clear Удалить кеш всех роутов
 route:list  Показать все роуты
