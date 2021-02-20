@@ -21,7 +21,7 @@ idea.log.path=${idea.system.path}/log
 
 Плагины
 
-Сначала отключить, потом удалить. Потом удалить папки в /plugins
+Отключить, потом удалить папки в /plugins
 
 Angular and AngularJS (папка AngularJS)
 ASP (asp)
@@ -36,7 +36,7 @@ PHP Docker (phpstorm-docker)
 Docker (Docker)
 Twig Support (twig)
 
-Выключить, но не удалять
+Выключить, не удалять
 
 Phing
 IDE Settings Sync
@@ -46,9 +46,7 @@ CoffeeScript
 Поставить
 
 Laravel (фреймворк Laravel)
-
 BrowseWordAtCaret (подсветка одинаковых слов)
-
 Php Inspections EA Extended (статический анализ кода)
 Отключить сбор статистики
 File | Settings | Php Inspections (EA Extended)
@@ -86,7 +84,6 @@ modules\php\PHP_7.4
 Phpstorm | Terminal
 git/bin/bash.exe
 
-
 Поставить терминал Node.JS
 Phpstorm | Node.js and NPM
 C:\Program Files\nodejs\node.exe
@@ -94,7 +91,6 @@ C:\Program Files\nodejs\node.exe
 Чтобы в редакторе снизу появится вкладка с командами npm
 Context menu of a package.json - Show npm Scripts
 View | Tool Windows | npm
-
 
 Шаблон JS-файлов
 File | Settings | Editor | File and Code Templates
@@ -165,6 +161,9 @@ Comment with Block Comment: Ctrl+Shift+/, Ctrl+Shift+.
 Toggle Full Screen mode: Ctrl+Shift+F11
 Locate Duplicates: Ctrl+Shift+Q
 Upload to Default Server: Ctrl+Alt+Shift+Z
+
+Заменить хоткеи
+Ctrl + F4 заменить на F10
 
 Включить тулбар с иконками
 View -> Appearance -> Toolbar

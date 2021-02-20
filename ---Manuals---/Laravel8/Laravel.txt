@@ -57,7 +57,7 @@ DIGGING DEEPER -> TASK SCHEDULING
 DATABASE -> REDIS
 ОБНОВЛЕНИЕ LARAVEL 7 -> 8
 COMPOSER.JSON
-PACKAGE.JSON
+NODE.JS, NPM, PACKAGE.JSON
 ЭКСПОРТ ИЗ MYSQL WORKBENCH В LARAVEL MIGRATION
 НЕЙМИНГ
 ЛУЧШИЕ ПРАКТИКИ
@@ -980,6 +980,13 @@ THE BASICS -> MIDDLEWARE
 Папка
 app/Http/Middleware
 
+Глобальный список МВ
+app/Http/Kernel.php в $middleware
+
+Список МВ для назначения отдельным роутам
+app/Http/Kernel.php в $routeMiddleware
+--------------------
+
 Создать МВ
 php artisan make:middleware NameMiddleware
 
@@ -1010,17 +1017,7 @@ public function handle($request, Closure $next) {
   return $response;
 }
 
-Глобальный список МВ
-app/Http/Kernel.php в $middleware
-
-
-МВ только для 1 роута
-
-сначала положить сюда
-app/Http/Kernel.php в $routeMiddleware
-'namemiddleware' => '\App\Http\Middleware\NameMiddleware'
-
-потом просоединить к роуту
+Назначить МВ к роуту
 Route::get('/', function () {})
   ->middleware('namemiddleware');
   
@@ -1049,13 +1046,15 @@ app/Http/Kernel.php в  $middlewareGroups
 Сортировка порядка выполнения МВ
 app/Http/Kernel.php в $middlewarePriority
 
-В МВ можно передать параметры. например чтобы проверить роль юзера
 
-public function handle($request, Closure $next, $role) {}
+В МВ можно передать параметры
+например чтобы проверить роль юзера
 
-и передать этот параметр в роут
 Route::get('/', function () {})
   ->middleware('namemiddleware:roleName, roleStatus');
+  
+public function handle($request, Closure $next, $role) {}
+  
 
 Оконечное МВ
 МВ которое должно выполнить работу, после посылки HTTP браузеру.
@@ -1768,15 +1767,18 @@ public function boot() {
 
 Композиторы Вьюх
 
-Это замыкания или методы класса, которые вызываются когда рендерится вьюха
-Когда нужно вставлять данные при каждом рендеринге вьюхи
-Композиторы нужны когда вьюха выводится на разных роутах и контроллерах и требует данные
-Композиторы разрешаются через СК, можно указать любые зависимости в конструкторе Композитора
+На основе замыканий или классов
+Вызываются когда рендерится вьюха
+Когда нужно вставлять данные при каждом рендеринге
+Когда вьюха выводится на разных роутах и требует данные
+
+Композиторы разрешаются через СК
+все зависимости в конструкторе Композитора
 
 Создать СП
 php artisan make:provider NameServiceProvider
 
-config/app.php 'providers'
+в config/app.php в $providers
 \App\Providers\NameServiceProvider::class
 
 
@@ -1787,7 +1789,7 @@ class NameServiceProvider extends ServiceProvider {
   Композиторы
   public function boot() {
 
-    для 1 вьюхи
+    для вьюхи
     View::composer('signup', function ($view) {
       $view->with('param', 'value');
     });
@@ -1811,7 +1813,7 @@ class NameServiceProvider extends ServiceProvider {
   Креаторы
   public function boot() {
 
-    для 1 вьюхи
+    для вьюхи
     View::creator('signup', function ($view) {
       $view->with('param', 'value');
     });
@@ -1831,7 +1833,6 @@ app/Http/View/Creators
 
 
 Создать композитор
-
 class NameComposer {
   public function compose(View $view) {
     $view->with('param', 'value');
@@ -1839,7 +1840,6 @@ class NameComposer {
 }
 
 Создать креатор
-
 class NameCreator {
   public function create(View $view) {
     $view->with('param', 'value');
@@ -1858,7 +1858,7 @@ dd($view->getData());
 Создатели выполняются после создания экземпляра вьюхи
 Композиторы выполняются после отображения вьюхи
 
-Чем они отличаются. На примере одинаковых переменных
+Чем они отличаются. На примере одинаковых переменных:
 
 в Контроллере переменная
 в Композиторе и Создателе такая же переменная
@@ -3582,6 +3582,7 @@ FRONTEND -> SCAFFOLDING
 Легкий старт с Bootstrap, React, Vue
 Laravel Mix компилирует SASS, Less, Vue
 Либы Lodash и Axios уже стоят
+Webpack обрабатывает инструкции из webpack.mix.js
 
 Установка
 composer require laravel/ui
@@ -3598,8 +3599,6 @@ npm install
 
 Запуск компиляции
 npm run dev
-
-webpack обработает инструкции из webpack.mix.js
 
 Поставить наблюдателя для перекомпиляции
 npm run watch
@@ -3633,7 +3632,7 @@ npm run dev
 Запуск mix команд и минификация
 npm run production
 
-Наблюдение
+Поставить наблюдателя для перекомпиляции
 npm run watch
 
 Папки
@@ -3832,7 +3831,7 @@ npm install -g browser-sync
 включить
 mix.browserSync('my-domain.test');
 
-запустить
+Поставить наблюдателя для перекомпиляции
 npm run watch
 --------------------
 
@@ -3860,11 +3859,11 @@ SECURITY -> AUTHENTICATION
 
 Фасад Auth
 
-Гуарды - как определять что юзер залогинен. через сессию
 Провайдеры - как извлечь юзера из базы. из какой таблицы
+Гуарды - как определять что юзер залогинен. через сессию
 
 В контроллерах аутентификации быть не должно
-Проверку аутентификации делают через МВ и вешают на роуты
+Проверку аутентификации делают в МВ, и вешают на роуты
 
 Конфиг
 config/auth.php
@@ -3887,7 +3886,7 @@ public function username() {
 в LoginController, RegisterController, ResetPasswordController
 
 protected function guard() {
-  return Auth::guard('guard-name');
+  return Auth::guard('NameGuard');
 }
 
 Изменить набор полей, метод сохранения юзера в БД, - в классе RegisterController
@@ -4891,6 +4890,7 @@ public function broadcastWhen() {
 Это создаст роут /broadcasting/auth в группе МВ 'web'
 Broadcast::routes();
 Broadcast::routes($attributes);
+Broadcast::routes(['middleware'=>['web', 'another']]);
 
 Можно поменять роут /broadcasting/auth
 window.Echo = new Echo({
@@ -4957,6 +4957,7 @@ var socketId = Echo.socketId();
 
 метод .channel получает публичный канал
 метод .private получает приватный канал
+
 метод .listen прослушивает событие
 
 Echo.channel(`users.${this.user.id}`)
@@ -5185,7 +5186,7 @@ disableStats: true,
 Посмотреть роуты
 php artisan route:list
 
-Перекомпиляция ресурсов
+Поставить наблюдателя для перекомпиляции
 npm run watch
 
 Сброс кеша конфигов
@@ -8391,21 +8392,34 @@ require
 require-dev
 -------------------------------------------------
 
-PACKAGE.JSON
+NODE.JS, NPM, PACKAGE.JSON
 
-Пакеты https://npmjs.com
-У каждого пакета внутри есть package.json с зависимостями
-В папке bin исполняемые файлы пакетов
+Каталог
+https://npmjs.com
 
-Папка пакетов
-node_modules
+Все команды
+node -h
+npm -h
+
+Версия
+node -v
+npm -v
+
+Обновить
+npm update
+--------------------
 
 Создать package.json
 npm init
---------------------
 
-Установить пакет
+Установить пакет глобально
+npm install packetname --global
+
+Установить пакет в папку node_modules
 npm install packetname
+
+Установить нужную версию пакета
+npm install packetname@1.1.1
 
 Скачать пакеты
 npm install
@@ -8413,13 +8427,14 @@ npm install
 Скачать пакеты для продакшена
 npm install --production
 
-Список пакетов
+Список установленных пакетов
 npm list
 npm list --depth 0
 npm list --depth 1
 
-Проверить обновления
+Список пакетов для которых есть обновления
 npm outdated
+npm outdated --depth 0
 
 Обновить пакеты
 npm up
@@ -8430,20 +8445,182 @@ npm uninstall packetname
 Найти пакет
 npm search packetname
 
-Подключить пакет в js файле
-require('packetname');
+Посмотреть текущую версию пакета
+npm list packagename
+
+Посмотреть последнюю версию пакета в каталоге
+npm view packagename version
 --------------------
 
-Ключи
+Ключи в файле package.json
 
+"main"
 точка входа в проект
-main
 
+"dependencies"
 зависимости на продакшене
-dependencies
+когда ставим командой npm install
 
+"devDependencies"
 зависимости на разработке
-devDependencies
+когда ставим командой npm install --save-dev
+
+"scripts": {
+  "start": "grunt dev"
+  "commandname": "команда"
+}
+команды
+npm start - зарезирвированная команда
+npm run commandname
+--------------------
+
+Папка node_modules
+пакеты
+
+Папка bin
+исполняемые файлы пакетов
+
+Папка src
+исходный код либы
+
+Папка dist
+подключаемый код либы
+--------------------
+
+Запуск файла
+
+node script
+node script.js
+node.exe script.js
+из PhpStorm кнопкой Run
+
+Подключить файл
+
+<script src='./node_modules/packagename/dist/script.min.js'></script>
+--------------------
+
+Подключение
+
+модуль в файле testfile.js
+const testfile = require('./testfile');
+можно опустить окончание ".js"
+
+модуль в папке folder
+const folder = require('./folder');
+автоматически внутри ищет файл index.js
+
+пакет в папке node_modules
+const modulename = require('modulename');
+автоматически ищет внутри папки node_modules
+--------------------
+
+Пример модуля
+
+Модуль с данными
+module.exports = {a: 1, b: 2};
+module.exports = [1, 2];
+
+Модуль с функцией
+module.exports = function (a, b) {return a + b;};
+console.log(modulename(2, 3));
+
+Сложный модуль
+module.exports = {a: 1, b: 2,
+  f: function (a, b) {return a * b;}
+};
+console.log(modulename.f(2, 3));
+--------------------
+
+Экспорт из модуля
+
+export - что импортируем из модуля
+exports {var, func, class}
+exports {var as var1} алиас
+
+Импорт из модуля
+
+import - что импортируем из модуля в локальную область видимости
+import {var, func, class } from './file'
+import {var as var1} алиас
+
+import * as object1 from './file'; вытащить все экспорты в 1 сборный объект
+
+Экспорт по умолчанию
+
+export default {1,2} - будет экспортировано это по умолчанию при вызове:
+import var from './file'
+--------------------
+
+
+Модули Node CommonJS
+
+импорт синхронный последовательный
+импортирует всю библиотеку
+команды require, module.exports, exports.foo
+
+var modulename = require('modulename');
+
+Примеры
+
+hello.js
+function hello() {return 'hello'}
+module.exports = hello
+
+app.js
+const hello = require('./hello')
+hello()
+
+
+hello.js
+function hello1() {return 'hello1'}
+function hello2() {return 'hello2'}
+module.exports = {hello1,hello2}
+
+app.js
+const hello = require('./hello')
+hello.hello1()
+hello.hello2()
+--------------------
+
+Модули ES6
+
+импорт асинхронный
+загружают модули динамически
+новый стандарт
+команды import, export default, export
+требуется Babel
+Babel преобразует import в require
+--------------------
+
+Примеры
+
+import modulename from 'modulename';
+
+импортирует кусок библиотеки
+import { chank } from modulename;
+
+импортирует все куски
+import * as modulename from 'modulename'; 
+--------------------
+
+hello.js
+function hello() {return 'hello'}
+export default hello
+
+app.js
+import hello from './hello'
+hello()
+
+
+hello.js
+function hello1() {return 'hello1'}
+function hello2() {return 'hello2'}
+export { hello1, hello2 }
+
+app.js
+import { hello1, hello2 } from './hello'
+hello1()
+hello2()
 -------------------------------------------------
 
 ЭКСПОРТ ИЗ MYSQL WORKBENCH В LARAVEL MIGRATION
