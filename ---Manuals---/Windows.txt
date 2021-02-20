@@ -1,3 +1,19 @@
+Win10_Enterprise_LTSC_2019_64bit.iso
+N-версия без медиаплеера и кодеков для игр. не ставить
+https://rutracker.org/forum/viewtopic.php?t=5706476
+-------------------------------------------------
+
+Ratiborus AAct v4.0 r1
+https://twitter.com/ratiborus58
+https://www.solidfiles.com/folder/bd7165a0d4/
+
+If show popup "Your Windows license will expire soon":
+run cmd administrator and input command:
+slmgr -rearm
+then restart
+then run AAct
+-------------------------------------------------
+
 Win+R и gpedit.msc
 
 Отключить Windows Defender
@@ -22,7 +38,6 @@ Computer Configuration > Administrative Templates > Windows Components > OneDriv
 Отключить Windows lock screen
 Computer Configuration > Administrative Templates > Control Panel > Personalization
 -Do not display the lock screen - в Enabled
-
 -------------------------------------------------
 
 Win+R и regedit
@@ -53,7 +68,6 @@ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer
 AltTabSettings DWORD
 0 = Thumbnails
 1 = Classic icons
-
 -------------------------------------------------
 
 Остановить и отключить службы
@@ -93,7 +107,6 @@ Windows Search
 Windows Update
 Xbox Live Auth Manager
 Xbox Live Game Save
-
 -------------------------------------------------
 
 Отключить телеметрию
@@ -104,7 +117,6 @@ sc stop DiagTrack
 sc stop dmwappushservice
 sc delete DiagTrack
 sc delete dmwappushservice
-
 -------------------------------------------------
 
 Отключить задачи в Планировщике задач
@@ -115,7 +127,6 @@ Application Experience: Microsoft Compatibility Appraiser, ProgramDataUpdater, S
 Autochk: Proxy
 Customer Experience Improvement Program: Consolidator, KernelCeipTask, UsbCeip, Microsoft-Windows-DiskDiagnosticDataCollector
 NetTrace: GatherNetworkInfo
-
 -------------------------------------------------
 
 Оптимизировать
@@ -130,7 +141,6 @@ NetTrace: GatherNetworkInfo
 На ноуте в Intel Graphic Control Panel отключить горячие клавиши
 Удалить компоненты: Internet Explorer 11, Work Folders Client, Windows PowerShell 2.0, Microsoft XPS Document Writer
 Ускорение загрузки Windows со всех процессоров (Win+R, msconfig, вкладка Boot, Advanced options -> number of processors: колво процов
-
 -------------------------------------------------
 
 Программы
@@ -146,17 +156,10 @@ https://www.sordum.org/8125/firewall-app-blocker-fab-v1-6/
 Destroy Windows 10 Spying
 Новый форк. Отключит слежение. Самая популярная. Открытый код. Последняя версия июль 2019.
 https://github.com/Wohlstand/Destroy-Windows-10-Spying/releases
-
--------------------------------------------------
-
-Драйвера
-Если в Диспетчере Устройств написано что драйвер от Микрософт (Manufacturer: Microsoft), то найти драйвер на сайте производителя
-
 -------------------------------------------------
 
 Всё по винде
 https://remontka.pro/windows-10-page
-
 -------------------------------------------------
 
 Рабочие столы
