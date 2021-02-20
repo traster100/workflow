@@ -1,0 +1,101 @@
+Bootstrap
+
+плагины подключить все сразу
+bootstrap.min.js
+
+плагины подключить отдельно
+js/dist/*.js
+(плагины dropdowns, popovers, tooltips требуют Popper.js)
+плагины это модули UMD
+
+подключить Bootstrap как модуль ESM
+<script type="module">
+  import { Toast } from 'bootstrap.esm.min.js'
+  Array.from(document.querySelectorAll('.toast'))
+    .forEach(toastNode => new Toast(toastNode))
+</script>
+(нет поддержки браузерами)
+
+Bootstrap 5 идёт без jQuery
+если бутстрап видит объект window.jQuery и на теге body нет аттрибута data-bs-no-jquery, то квери включится автоматически
+
+пример когда квери подключен
+$('[data-bs-toggle="tooltip"]').tooltip();
+
+все плагины работают через HTML аттрибуты
+(для 1 элемента использовать 1 набор. нельзя например по 1 кнопке вызвать тултип и попап одновременно)
+
+События без квери
+var myModal = document.getElementById('myModal')
+myModal.addEventListener('show.bs.modal', function (event) {
+  if (!data) {
+    stops modal from being shown
+    return event.preventDefault()
+  }
+})
+
+События с квери
+$('#myTab a').on('shown.bs.tab', function () {
+  do something
+})
+
+Все конструкторы принимают параметры
+var myModalEl = document.getElementById('myModal')
+var modal = new bootstrap.Modal(myModalEl, { keyboard: false });
+
+Все методы bootstrap асинхронны
+
+Изменить настройки по умолчанию для плагина
+bootstrap.Modal.Default.keyboard = false
+
+Узнать версию плагина
+bootstrap.Tooltip.VERSION
+--------------------
+
+Установка
+
+npm install bootstrap jquery popper.js
+
+import $ from 'jquery';
+import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import 'bootstrap/dist/css/bootstrap.css';
+
+Яваскрипт
+
+сразу всё
+import 'bootstrap';
+
+по отдельности
+import 'bootstrap/js/dist/util';
+import 'bootstrap/js/dist/dropdown';
+
+Стили
+
+сразу всё
+@import "~bootstrap/scss/bootstrap";
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+по отдельности
+
+обязательное
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/images";
+@import "~bootstrap/scss/code";
+@import "~bootstrap/scss/grid";
+
+import './scss/app.scss';
+--------------------
+
+пример
+var HTTPServer = require('http-server');
+var httpServer = new HTTPServer({
+  root: './public'
+});
+httpServer.start();
+-------------------------------------------------
