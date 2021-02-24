@@ -2123,7 +2123,7 @@ THE BASICS -> VALIDATION
 Метод validate в классе Http\Request
 
 Если валидация не прошла, будет исключение и сформирован Ответ
-Для html формы редирект, для AJAX ответ JSON массив
+Для html формы будет редирект, для AJAX запроса будет ответ как JSON массив
 
 
 public function store(Request $request) {
@@ -2180,7 +2180,7 @@ AJAX запросы
 
 Форма Запроса
 
-Форма запроса это отдельный класс с правилами валидации
+Форма Запроса это отдельный класс с правилами валидации
 Форма Запроса запускается ДО запуска метода Контроллера store
 
 Если валидация не прошла, то редирект назад или массив JSON с кодом 422, сохранение ошибок во FS
@@ -8768,7 +8768,7 @@ help           Displays help for a command
 inspire        Display an inspiring quote
 list           Lists commands
 migrate        Запустить все миграции
-optimize       Cache the framework bootstrap files
+optimize       Создать кеш файлов начальной загрузки
 serve          Запустить локальный сервер разработки
 test           Run the application tests
 tinker         Писать код в консоли как php -a
@@ -8786,6 +8786,7 @@ config:clear Удалить кеш всех конфигов
 db:seed Запустить все сидеры
 db:wipe Удалить все таблицы
 
+СОБЫТИЯ
 event:cache    Создать кеш списка событий и слушателей
 event:clear    Удалить кеш списка событий и слушателей
 event:generate Создать события и слушателей
@@ -8812,23 +8813,23 @@ make:observer     Создать наблюдателя
 make:policy       Create a new policy class
 make:provider     Создать сервис провайдер
 make:request      Создать форму запроса
-make:resource     Create a new resource
+make:resource     Создать класс ресурса
 make:rule         Создать правила валидации
 make:seeder       Создать сидер
 make:test         Создать тест
 
-migrate:fresh    Удалить все таблицы, запустить все миграции
+МИГРАЦИИ
+migrate:fresh        Удалить все таблицы, запустить все миграции
 migrate:fresh --seed Удалить все таблицы, запустить все миграции, засеять
-
-migrate:install  Создать хранилище миграций
-migrate:refresh  Сбросить и запустить все миграции
-migrate:reset    Откатить все миграции
-migrate:rollback Откатить последнюю миграцию
-migrate:status   Показать статус каждой миграции
+migrate:install      Создать хранилище миграций
+migrate:refresh      Сбросить и запустить все миграции
+migrate:reset        Откатить все миграции
+migrate:rollback     Откатить последнюю миграцию
+migrate:status       Показать статус каждой миграции
 
 notifications:table Создать миграцию для таблицы уведомлений
 
-optimize:clear Remove the cached bootstrap files
+optimize:clear Удалить кеш файлов начальной загрузки
 
 package:discover Rebuild the cached package manifest
 
