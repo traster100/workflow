@@ -1,9 +1,10 @@
 Система определения страны и города, по IP
+
 https://maxmind.com
 https://github.com/maxmind/GeoIP2-php
 https://maxmind.github.io/GeoIP2-php
 https://github.com/maxmind/MaxMind-DB-Reader-php
-
+--------------------
 
 1. либу MaxMind-DB-Reader можно поставить через Composer
 curl -sS https://getcomposer.org/installer | php

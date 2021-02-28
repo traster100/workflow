@@ -1,7 +1,7 @@
 проверка
 https://search.google.com/structured-data/testing-tool
 https://webmaster.yandex.ru/tools/microtest
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 <!--товар-->
 <div itemscope itemtype='http://schema.org/Product'>
@@ -54,14 +54,14 @@ https://webmaster.yandex.ru/tools/microtest
   </div>
 
 </div>
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 <!--рейтинг-->
 <div itemprop='aggregateRating' itemscope itemtype='http://schema.org/AggregateRating'>
   Рейтинг <span itemprop='ratingValue'>3.5</span>/5
   На основе <span itemprop='reviewCount'>11</span> голосов
 </div>
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 <!--отзыв-->
 <div itemprop='review' itemscope itemtype='http://schema.org/Review'>
@@ -78,7 +78,7 @@ https://webmaster.yandex.ru/tools/microtest
   </div>
   <span itemprop='description'>текст отзыва</span>
 </div>
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 <!--хлебные крошки-->
 <div itemscope itemtype='http://schema.org/BreadcrumbList'>
@@ -102,7 +102,7 @@ https://webmaster.yandex.ru/tools/microtest
   </div>
 
 </div>
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 <!--организация-->
 <div itemscope itemtype='http://schema.org/Organization'>
@@ -116,4 +116,4 @@ https://webmaster.yandex.ru/tools/microtest
 
   <span itemprop='telephone'>+7 (495) 120-27-17</span>
 </div>
----------------------------------------------------------------------------------------------------
+-------------------------------------------------

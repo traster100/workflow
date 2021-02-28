@@ -1,4 +1,5 @@
 Путь до php.exe
+
 File | Settings | Languages & Frameworks | PHP
 PHP language level
 CLI Interpreter

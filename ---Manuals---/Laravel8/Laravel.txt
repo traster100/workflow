@@ -485,8 +485,8 @@ $this->app->instance('HelpSpot\API', $api);
 Привязка интерфейса и реализации
 
 $this->app->bind(
-  'App\Contracts\EventPusher', интерфейс EventPusher
-  'App\Services\RedisEventPusher' реализация RedisEventPusher
+  'Contracts\EventPusher', интерфейс EventPusher
+  'Services\RedisEventPusher' реализация RedisEventPusher
 );
 
 
@@ -507,7 +507,7 @@ $this->app->when([VideoController::class, UploadController::class])
 
 Привязка примитивов
 
-$this->app->when('App\Http\Controllers\UserController')
+$this->app->when('Http\Controllers\UserController')
   ->needs('$variableName')
   ->give($value);
 
@@ -742,7 +742,7 @@ Route::match(['get', 'post'], '/', function () {});
 
 Роут на любой HTTP метод
 Route::any('/', function () {});
-
+--------------------
 
 Роуты редиректов
 
@@ -759,7 +759,7 @@ Route::permanentRedirect('/here', '/there');
 Route::view('/url', 'viewname');
 Route::view('/url', 'viewname', ['param' => 'value']);
 Route::view('/url', 'viewname')->with('param', 'value'));
-
+--------------------
 
 Параметры роутов
 
@@ -769,7 +769,7 @@ Route::get('user/{id1}/{id2}', function ($id1, $id2) {});
 
 Необязательные параметры
 Route::get('user/{id?}', function ($id = null) {});
-
+--------------------
 
 Ограничения параметров регулярками
 
@@ -781,24 +781,25 @@ Route::get('user/{id}/{name}', function ($id, $name) {})
 Ограничения параметров регулярками, на глобальном уровне
 
 в RouteServiceProvider
-
 public function boot() {
   Route::pattern('id', '[0-9]+');
   Route::pattern('name', '[A-Za-z]+');
   parent::boot();
 }
+--------------------
 
 Позволить косую черту / в роутах
 Работает только для последнего сегмента
 
 Route::get('user/{id}', function ($id) {})
   ->where('id', '.*');
-
+--------------------
 
 Именованные роуты
 
 Route::get('user/profile', function () {})
   ->name('profile');
+--------------------
 
 Урлы и редиректы на именованные роуты
 
@@ -815,7 +816,7 @@ route('profile', ['id' => 1, 'photos' => 'yes']);
 /user/1/profile?photos=yes
 
 redirect()->route('profile');
-
+--------------------
 
 Группировка роутов
 для задания им одного набора МВ или неймспейсов
@@ -827,17 +828,19 @@ Route::middleware(['first', 'second'])->group(function () {
   Route::get('/', function () {});
   Route::get('user/profile', function () {});
 });
+--------------------
 
 Неймспейсы для группы контроллеров
-по умолчанию у контроллеров пространство App\Http\Controllers
+по умолчанию у контроллеров пространство Http\Controllers
 
 Route::namespace('Admin')->group(function () {});
+--------------------
 
 Роуты субдоменов
 Route::domain('{account}.myapp.com')->group(function () {
   Route::get('user/{id}', function ($account, $id) {});
 });
-
+--------------------
 
 Префиксы роутов
 Например для роутов админки /admin/users, /admin/models
@@ -853,41 +856,42 @@ Route::name('admin.')->group(function () {
   Route::get('users', function () {})->name('users');
   Route::get('models', function () {})->name('models');
 });
+--------------------
 
 Привязка роута и Eloquent модели
 
 неявная привязка (по столбику ID). если модель не найдена то вернет 404 HTTP
-Route::get('api/users/{user}', function (App\User $user) {$user->email;});
+Route::get('api/users/{user}', function (User $user) {$user->email;});
 
 явная привязка по столбику slug
-Route::get('api/posts/{post:slug}', function (App\Post $post) {$post;});
+Route::get('api/posts/{post:slug}', function (Post $post) {$post;});
 
 для связанных моделей
 Route::get('api/users/{user}/posts/{post:slug}', function (User $user, Post $post) {$post;});
 
 Задать столбец по умолчанию, отличный от ID
 В модели Eloquent написать:
-
 public function getRouteKeyName() {
   return 'slug';
 }
 
-Явная привязка роута и Eloquent модели
+Явная привязка роута и Eloquent модели по ID
+явная привязка по столбику ID. если модель не найдена то вернет 404 HTTP
 
 в RouteServiceProvider
 public function boot() {
   parent::boot();
-  Route::model('user', App\User::class);
+  Route::model('user', User::class);
 }
 
-явная привязка по столбику ID. если модель не найдена то вернет 404 HTTP
-Route::get('profile/{user}', function (App\User $user) {$user->email;});
+Route::get('profile/{user}', function (User $user) {$user->email;});
+
 
 Настройка логики разрешения для привязки
 public function boot() {
   parent::boot();
   Route::bind('user', function ($value) {
-    return App\User::where('name', $value)->firstOrFail();
+    return User::where('name', $value)->firstOrFail();
   });
 }
 
@@ -897,14 +901,14 @@ public function boot() {
 public function resolveRouteBinding($value, $field = null) {
   return $this->where('name', $value)->firstOrFail();
 }
+--------------------
 
 Резервные роуты
-Указать роут, когда не совпал ни один роут
+указать роут, когда не совпал ни один роут
 обычно это 404
 его написать в конце
-
 Route::fallback(function () {});
-
+--------------------
 
 Лимиты скорости на роутах
 МВ throttle для ограничения скорости
@@ -947,7 +951,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/servers/{id}', function () {});
   });
 });
-
+--------------------
 
 HTML форма
 не имеет методов PUT, PATCH, DELETE
@@ -958,7 +962,7 @@ HTML форма
   ИЛИ
   @method('PUT')
 </form>
-
+--------------------
 
 Получить текущий роут
 $route = Route::current();
@@ -1028,7 +1032,7 @@ Route::get('/', function () {})
 
 Можно не ключ а имя класса
 Route::get('/', function () {})
-  ->middleware(\App\Http\Middleware\NameMiddleware::class);
+  ->middleware(\Http\Middleware\NameMiddleware::class);
 
 Назначим МВ группе роутов, но отменим для одного роута из группы
 Route::middleware([CheckAge::class])->group(function () {
@@ -1134,7 +1138,7 @@ app/Http/Controllers
 Неймспейсы
 
 Если контроллер такой
-App\Http\Controllers\Photos\AdminController
+Http\Controllers\Photos\AdminController
 
 То роут такой
 Route::get('foo', 'Photos\AdminController@method');
@@ -1206,20 +1210,20 @@ index, create, store, show, edit, update, destroy
 
 Route::resource('websites', NameController::class);
 
-GET|HEAD  websites                websites.index   App\Http\Controllers\NameController@index
-POST      websites                websites.store   App\Http\Controllers\NameController@store
-GET|HEAD  websites/create         websites.create  App\Http\Controllers\NameController@create
-GET|HEAD  websites/{website}      websites.show    App\Http\Controllers\NameController@show
-PUT|PATCH websites/{website}      websites.update  App\Http\Controllers\NameController@update
-DELETE    websites/{website}      websites.destroy App\Http\Controllers\NameController@destroy
-GET|HEAD  websites/{website}/edit websites.edit    App\Http\Controllers\NameController@edit
+GET|HEAD  websites                websites.index   Http\Controllers\NameController@index
+POST      websites                websites.store   Http\Controllers\NameController@store
+GET|HEAD  websites/create         websites.create  Http\Controllers\NameController@create
+GET|HEAD  websites/{website}      websites.show    Http\Controllers\NameController@show
+PUT|PATCH websites/{website}      websites.update  Http\Controllers\NameController@update
+DELETE    websites/{website}      websites.destroy Http\Controllers\NameController@destroy
+GET|HEAD  websites/{website}/edit websites.edit    Http\Controllers\NameController@edit
 
 
 урлы для админки
 Route::prefix('backend')->name('backend.')->group(function () {
     Route::resource('websites', NameController::class);
 });
-GET|HEAD  websites                backend.websites.index   App\Http\Controllers\NameController@index
+GET|HEAD  websites                backend.websites.index   Http\Controllers\NameController@index
 -------------------------
 
 Роуты на ресурсный контроллер. пачкой
@@ -1292,7 +1296,6 @@ Route::resource('users.posts', PostsController::class)
 методы index, create, store, show, edit, update, destroy
 
 в AppServiceProvider
-
 public function boot() {
   Route::resourceVerbs([
     'create' => 'crear',
@@ -1394,7 +1397,7 @@ Route::get('/', function (ServerRequestInterface $request) {});
 
 МВ TrimStrings и ConvertEmptyStringsToNull стоят в глобальном стеке
 Обрезают пробелы строк, пустые строки выставляют в NULL
-Можно убрать это, закоментив классы в App\Http\Kernel в $middleware
+Можно убрать это, закоментив классы в Http\Kernel в $middleware
 
 Все данные
 $request->request;
@@ -1448,6 +1451,7 @@ if ($request->has(['name', 'email'])) {} должны быть все
 if ($request->hasAny(['name', 'email'])) {} должен быть любой из
 if ($request->filled('name')) {} есть и не равно пустоте
 if ($request->missing('name')) {} нет
+--------------------
 
 Старый ввод в форму
 
@@ -1468,6 +1472,7 @@ redirect('form')->withInput();
 redirect('form')->withInput(
   $request->except('password')
 );
+--------------------
 
 Получить старый ввод
 $request->old('username');
@@ -1477,6 +1482,7 @@ $request->old('username');
 
 <input name='name' value='{{old('name')}}'>
 <input name='name' value='{{$data->name || old('name', 0) == 1 ? 'checked'}}'>
+--------------------
 
 Получить куки
 куки зашифрованы и подписаны кодом аутентификации
@@ -1484,6 +1490,7 @@ $request->old('username');
 
 $request->cookie('name');
 Cookie::get('name'); используя Ф
+--------------------
 
 Добавить куки
 response('HelloWorld')->cookie('name', 'value', $minutes);
@@ -1504,6 +1511,7 @@ Cookie::queue(Cookie::forget('name'));
 Прикрепить к Ответу истёкшую куку
 $cookie = Cookie::forget('name');
 return response('Hello World')->withCookie($cookie);
+--------------------
 
 Получить загруженные файлы
 $request->file('photo');
@@ -1514,10 +1522,12 @@ if ($request->hasFile('photo')) {}
 
 Проверка что файл корректно загружен
 if ($request->file('photo')->isValid()) {}
+--------------------
 
 Путь и расширение файла
 $request->photo->path();
 $request->photo->extension(); угадывает расширение по контенту
+--------------------
 
 Сохранение загруженных файлов
 Уникальное имя файла генерится автоматически.
@@ -1541,14 +1551,16 @@ protected $proxies = '*'; доверять всем прокси
 THE BASICS -> HTTP RESPONSES
 
 Хелпер Response
+роуты и контроллеры возвращают Ответ в браузер
+возвращается полный инстанс Ответа Response или вьюха
+полный Response позволяет задать свои коды ответа и заголовки
 
-Роуты и контроллеры возвращают Ответ в браузер
-Возвращается полный инстанс Ответа Response или вьюха
-Полный Response позволяет задать свои коды ответа и заголовки
+строка
+Route::get('/', function () {return 'Hello World';}); 
 
+массив как json
+Route::get('/', function () {return [1, 2, 3];});
 
-Route::get('/', function () {return 'Hello World';}); строка
-Route::get('/', function () {return [1, 2, 3];}); массив как json
 
 Route::get('home', function () {
 
@@ -1568,15 +1580,19 @@ Route::get('home', function () {
     ]);
 
 });
+--------------------
 
-Кеширование МВ Cache-Control
-Можно кеширование сразу группы роутов.
-Если задан etag, то MD5 хеш содержимого будет автоматически установлен в ETag.
+Мидлваре Cache-Control
+
+для кеширования
+можно кеширование группы роутов
+если задан etag, то MD5 хеш содержимого будет автоматически установлен в ETag
 
 Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function () {
   Route::get('privacy', function () {});
   Route::get('terms', function () {});
 });
+--------------------
 
 Прикрепление кук к Ответу
 
@@ -1590,13 +1606,15 @@ response($content)
 
 Cookie::queue(Cookie::make('name', 'value', $minutes));
 Cookie::queue('name', 'value', $minutes);
+--------------------
 
 Шифрование кук
-Куки зашифрованы и подписаны соответствующим МВ.
+куки зашифрованы и подписаны соответствующим мидлваре
+защиту можно отключить, добавив куку в массив
 
-Защиту можно отключить, добавив куку в массив в App\Http\Middleware\EncryptCookies
+в Http\Middleware\EncryptCookies
 protected $except = ['cookie_name'];
-
+--------------------
 
 Редиректы
 
@@ -1779,7 +1797,7 @@ public function boot() {
 php artisan make:provider NameServiceProvider
 
 в config/app.php в $providers
-\App\Providers\NameServiceProvider::class
+\Providers\NameServiceProvider::class
 
 
 class NameServiceProvider extends ServiceProvider {
@@ -1924,7 +1942,7 @@ Route::getCurrentRoute(); объект роута
 --------------------
 
 Создать урл
-$post = App\Post::find(1);
+$post = Post::find(1);
 url('posts/{$post->id}');
 выдаст http://domain.com/posts/1
 --------------------
@@ -1999,11 +2017,12 @@ Route::get('/{locale}/posts', function () {})
 
 THE BASICS -> HTTP SESSION
 
-HTTP приложения не сохраняют состояние между запросами
-Сессии обеспечивают это сохранение
-Конфиг config/session.php
-Можно свои драйверы сессий
-Драйверы это хранилища сессий
+протокол HTTP не сохраняет состояние между запросами
+сессии обеспечивают это сохранение
+можно свои драйверы (хранилища) сессий
+
+Конфиг
+config/session.php
 
 file(по умолчанию) - в storage/framework/sessions
 cookie - в зашифрованных куках
@@ -2011,6 +2030,7 @@ database - в базе
 memcached
 redis
 array - хранятся в php массиве и не сохраняются (этот драйвер для тестирования)
+--------------------
 
 Драйвер database
 
@@ -2027,14 +2047,16 @@ Schema::create('sessions', function ($table) {
 Запустить миграцию
 php artisan session:table
 php artisan migrate
+--------------------
 
 Драйвер redis
 composer predis/predis
-В конфиге в параметре connection указать тип соединения.
+в конфиге в параметре connection указать тип соединения
+--------------------
 
-
-Работа с сессиями через 2 метода.
-Хелпер Session, объект Запроса Request. Они не отличаются.
+Работа с сессиями через хелпер Session или объект запроса Request
+они одинаковы
+--------------------
 
 Получить данные через Request
 
@@ -2042,13 +2064,15 @@ public function show(Request $request, $id) {
 
   $value = $request->session()->get('key');
 
-  $value = $request->session()->get('key', 'defaultvalue'); если ключа нет вернет defaultvalue
+  если ключа нет вернет defaultvalue
+  $value = $request->session()->get('key', 'defaultvalue');
 
+  через замыкание чтобы вернуть что-то, исходя из логики написанной тут в функции
   $value = $request->session()->get('key', function () {
-    return 'defaultvalue'; через замыкание чтобы вернуть что-то, исходя из логики написанной тут в функции
+    return 'defaultvalue';
   });
-
 }
+--------------------
 
 Получить данные через Session
 
@@ -2061,6 +2085,7 @@ Route::get('home', function () {
   session(['key' => 'value']); сохранить
 
 });
+--------------------
 
 Получить все данные
 $request->session()->all();
@@ -2073,7 +2098,7 @@ if ($request->session()->exists('users')) {} ключ есть, даже есл�
 $request->session()->put('key', 'value'); Request
 session(['key' => 'value']); хелпер
 
-Сохранить массив
+Сохранить в массив
 $request->session()->push('user.teams', 'developers');
 добавит в массив user.teams значение 'developers'
 
@@ -2091,27 +2116,23 @@ $request->session()->keep(['username', 'email']); сохранит только 
 $request->session()->forget('key');
 $request->session()->forget(['key1', 'key2']);
 $request->session()->flush(); удалит всё
+--------------------
 
 Пересоздать Session ID
-Для предотвращения атаки session fixation.
-Если используем LoginController, то пересоздание Session ID автоматически.
 
-Пересоздать Session ID вручную
+Для предотвращения атаки session fixation
 $request->session()->regenerate();
+--------------------
 
 Блокировка сессии
-В пределах 1 сеанса не допускать паралельной записи в сессию с разных мест.
+в пределах 1 сеанса не допускать паралельной записи в сессию с разных мест
+для драйверов типа atomic locks: memcached, dynamodb, redis, database
 
-Для драйверов atomic locks
-memcached, dynamodb, redis, database.
+На роуты ставим блокировку
+Route::post('/route1', function () {})->block($lockSeconds = 10, $waitSeconds = 10)
+Route::post('/route2', function () {})->block($lockSeconds = 10, $waitSeconds = 10)
 
-На роуты блокировку
-
-Route::post('/profile', function () {})->block($lockSeconds = 10, $waitSeconds = 10)
-
-Route::post('/order', function () {})->block($lockSeconds = 10, $waitSeconds = 10)
-
-Запросы к роутам будут строго последовательны.
+Запросы к роутам будут строго последовательны
 $lockSeconds - максимальная длительность блокировки.
 $waitSeconds - сколько секунд ждать, после попытки получить блокировку.
 -------------------------------------------------
@@ -2166,7 +2187,7 @@ public function store(Request $request) {
 Ошибки в $errors инстанса Support\MessageBag
 $errors связана с вьюхами через МВ ShareErrorsFromSession, доступна в вьюхах
 
-МВ TrimStrings и ConvertEmptyStringsToNull всегда включены в классе App\Http\Kernel
+МВ TrimStrings и ConvertEmptyStringsToNull всегда включены в классе Http\Kernel
 
 Правило nullable
 publish_at может быть null или корректной датой
@@ -2658,7 +2679,7 @@ THE BASICS -> ERROR HANDLING
 В config/app.php $debug - сколько ошибок показать юзеру, берет значение из APP_DEBUG в .env
 Локально APP_DEBUG = true, для продакшена false
 
-App\Exceptions\Handler
+Exceptions\Handler
 
 Метод Report
 Для логирования исключений и отправки в сторонние сервисы Flare, Bugsnag, Sentry
@@ -2828,7 +2849,7 @@ Blade - это движок PHP шаблонов, можно писать вну
 
 Папка вьюх
 resources/views
-
+--------------------
 
 Лайот
 resources/views/layouts/app.blade.php
@@ -2837,14 +2858,15 @@ resources/views/layouts/app.blade.php
 
   переменная
   <title>@yield('title')</title>
+  
   <body>
   
-    тут будет вьюха
+    вьюха
     @yield('content')
 
   </body>
 <html>
-
+--------------------
 
 Вьюха
 resources/views/child.blade.php
@@ -2861,17 +2883,17 @@ resources/views/child.blade.php
 @section('content')
   контент
 @endsection
-
+--------------------
 
 @yield для определения раздела в лайоте
 вьюха расширяется от лайота через @extends
 во вьюхе вставляем в раздел @section
 @parent присоединит контент к контенту а не заменит
+--------------------
 
-
-Вьюха по умолчанию если нет раздела
+Вьюха по умолчанию если нет вставки во вьюхе
 @yield('content', View::make('viewname'));
-
+--------------------
 
 Отображение данных
 
@@ -2888,16 +2910,17 @@ resources/views/child.blade.php
   var app = @json($array);
   var app = @json($array, JSON_PRETTY_PRINT);
 </script>
+--------------------
 
 HTML Entity кодирование
-Blade и хелпер E автоматически делают двойное кодирование double encode HTML entities
-Это можно отключить
-AppServiceProvider
 
+Blade и хелпер E автоматически делают двойное кодирование double encode HTML entities
+
+Это можно отключить в AppServiceProvider
 public function boot() {
   Blade::withoutDoubleEncoding();
 }
-
+--------------------
 
 Blade и JavaScript фреймворки
 
@@ -2909,9 +2932,8 @@ JS фреймворки тоже используют эту конструкц�
 символ @ отбрасывается и в JS фреймворк придет {{}}
 
 Символ @ также используется для выхода из директив
-@@json()
-  код
-@json()
+@@json() будет выведен как @json()
+--------------------
 
 Директива @verbatim
 Для показа js переменных в большом шаблоне
@@ -2920,7 +2942,7 @@ JS фреймворки тоже используют эту конструкц�
 @verbatim
   {{name}}
 @endverbatim
-
+--------------------
 
 Операторы IF
 
@@ -2935,6 +2957,7 @@ JS фреймворки тоже используют эту конструкц�
 
 Аналог PHP empty
 @empty(условие) код @endempty
+--------------------
 
 
 Директивы аутентификации
@@ -2943,20 +2966,20 @@ JS фреймворки тоже используют эту конструкц�
 @auth('guardName') код @endauth
 @guest код @endguest
 @guest('guardName') код @endguest
-
+--------------------
 
 Проверка на наличие и отсутствия раздела
 
 @hasSection('navigation') @yield('navigation') @endif
 @sectionMissing('navigation') @include('defaultNavigation') @endif
-
+--------------------
 
 Директивы переменных среды
 
 @production код @endproduction
 @env('staging') код @endenv
 @env(['staging', 'production']) код @endenv
-
+--------------------
 
 Операторы Switch
 
@@ -2974,6 +2997,7 @@ JS фреймворки тоже используют эту конструкц�
     код
 
 @endswitch
+--------------------
 
 Циклы
 
@@ -2981,6 +3005,7 @@ JS фреймворки тоже используют эту конструкц�
 @foreach ($users as $user) {{$user->id}} @endforeach
 @forelse ($users as $user) {{$user->name}} @empty пусто @endforelse
 @while (true) код @endwhile
+--------------------
 
 Пропустить итерацию
 
@@ -2991,35 +3016,34 @@ JS фреймворки тоже используют эту конструкц�
 
 @break
 @break(условие)
+--------------------
 
-Переменная цикла
-внутри цикла доступна $loop
+Переменная внутри цикла
 
-свойства $loop
-index, iteration, remaining, count, 
-first, last, even, odd, depth, parent
-
-
-Доступ к $loop в вложенном цикле
+свойства
+index, iteration, remaining, count, first, last, even, odd, depth, parent
 
 @foreach ($users as $user)
-  @foreach ($user->posts as $post)
-    @if ($loop->parent->first)
-	  код
-    @endif
-  @endforeach
-@endforeach
 
+  $loop->first
+  
+  @foreach ($user->posts as $post)
+    $loop->parent->first
+  @endforeach
+  
+@endforeach
+--------------------
 
 Комменты в коде Blade
 удаляются при компилировании
 {{--коммент--}}
-
+--------------------
 
 Вставка PHP в шаблон Blade
 @php
   код
 @endphp
+--------------------
 
 Шаблон скомпилировать 1 раз
 для скриптов
@@ -3103,7 +3127,7 @@ resources/views/components/alert.blade.php
 
 Пути
 точка как разделитель папок
-App\View\Components\Inputs\Button.php
+View\Components\Inputs\Button.php
 <x-inputs.button/>
 -------------------------
 
@@ -3371,19 +3395,19 @@ resources/views/components/alert.blade.php
 
 включить 1ю существующую вьюху из массива
 @includeFirst(['signup', 'signin'])
-
+--------------------
 
 Директива @inject
 
 получить в переменную сервис из СК
 
-@inject('metrics', 'App\Services\MetricsService')
+@inject('metrics', 'Services\MetricsService')
 {{$metrics->monthlyRevenue()}}
+--------------------
 
+Создание директивы
 
-Создание blade директивы
-
-AppServiceProvider 
+в AppServiceProvider 
 public function boot() {
   Blade::directive('datetime', function ($param) {
     return "<?php echo $param ?>";
@@ -3395,12 +3419,11 @@ view:clear
 
 вывод
 @datetime($param)
+--------------------
 
+Создание директивы типа IF
 
-
-Создание blade IF директивы
-
-AppServiceProvider
+в AppServiceProvider
 public function boot() {
   Blade::if('disk', function ($value) {
     return config('filesystems.default') === $value;
@@ -3431,7 +3454,6 @@ Blade::include('includes.input', 'input');
 @push
 @stack
 @prepend
-@inject
 -------------------------
 
 Написание пакетов
@@ -3857,78 +3879,70 @@ mix.disableNotifications();
 
 SECURITY -> AUTHENTICATION
 
-Фасад Auth
+Фасад Auth, Session
 
-Провайдеры - как извлечь юзера из базы. из какой таблицы
-Гуарды - как определять что юзер залогинен. через сессию
-
-В контроллерах аутентификации быть не должно
-Проверку аутентификации делают в МВ, и вешают на роуты
+Провайдеры - из какого хранилища извлекать юзеров. база
+Гуарды - как определять залогиненность. сессия, токены
+Проверку аутентификации делать в мидлваре и прикреплять к роутам
 
 Конфиг
 config/auth.php
 
-Галка "запомнить меня"
-password 60-255 символов
-remember_token для токена
+Поле password
+60-255 символов
+
+Поле remember_token
+галка "запомнить меня"
 
 Редирект после логина
 в RouteServiceProvider
 public const HOME = '/adminpanel';
 
-Для логина используется поле почты
+Для логина используется почта
 это можно поменять в LoginController
 public function username() {
   return 'username';
 }
 
-Свой гуард прописать
-в LoginController, RegisterController, ResetPasswordController
-
+Свой гуард
 protected function guard() {
   return Auth::guard('NameGuard');
 }
 
-Изменить набор полей, метод сохранения юзера в БД, - в классе RegisterController
-В методе create вызывается запись App\User через Eloquent
+для юзеров модель Models\User.php
+она используется для аутентификации
+модель можно заменить на 'database' и юзать query builder
 
-для юзеров уже есть модель App\Models\User.php
-она используется по умолчанию для аутентификации
-
-Но модель можно заменить на 'database' и юзать query builder
-
-
-логинимся
-если логин пароль прошел
-то ставится сессионная кука в браузер
-
-для всего юзаются фасады Auth и Session
+Логинимся
+если логин пароль прошел то ставится сессионная кука в браузер
 
 Залогиненный юзер
 Auth::user();
 Auth::id();
 $request->user();
 if (Auth::check()) {}
+--------------------
 
+Мидлваре Auth для определения залогиненности
+'auth' => 'Illuminate\Auth\Middleware\Authenticate'
 
-есть готовое МВ Auth для определения что юзер залогинен
-auth => Illuminate\Auth\Middleware\Authenticate
+Гуарды
+в auth.php в $guards
+к роуту прикрепить гуард
 
-в auth.php есть гуарды $guards
-К роуту можно прикрепить Гуард из списка auth.php
-
-для auth указать какой гуард юзать
-Route::get('profile', function () {})
-->middleware('auth:admins');
-
-прикрепить к роуту
+Укажем auth
 Route::get('profile', function () {})
   ->middleware('auth');
 
-прикрепить к контроллеру
+Укажем auth и гуард
+Route::get('profile', function () {})
+  ->middleware('auth:admins');
+
+Укажем auth в контроллере
 public function __construct() {
   $this->middleware('auth');
 }
+--------------------
 
 Редирект незалогиненного на страницу логина
 app/Http/Middleware/Authenticate.php
@@ -3936,95 +3950,88 @@ app/Http/Middleware/Authenticate.php
 protected function redirectTo($request) {
   return route('login');
 }
+--------------------
 
 Проверка пароля
-на особо важных страницах, например биллинге
+на важных страницах, например биллинге
 
-МВ password.confirm присоединить к роуту
-
+Укажем мидлваре password.confirm
 Route::get('/settings/security', function () {})
   ->middleware(['auth', 'password.confirm']);
 
-Потом проверка не делается 3 часа. Это можно изменить в auth.password_timeout
+Проверка не делается 3 часа. Это можно изменить в auth.password_timeout
+--------------------
 
 Контроль попыток логина
 
-трейт ThrottlesLogins включен в контроллер LoginController
-После нескольких попыток логина, бан на 1 мин
+трейт ThrottlesLogins
+после N попыток логина, бан на 1 мин
+--------------------
 
-Ручная АУ юзеров
+Ручная аутентификация
 
 public function authenticate(Request $request) {
 
-  $credentials = $request->only('email', 'password'); данные из формы
+  данные из формы
+  $credentials = $request->only('email', 'password'); 
 
-  проверка выборкой из БД. пароль уже хеширован для проверки
+  проверка выборкой из БД
   if (Auth::attempt($credentials)) {
-    return redirect()->intended('dashboard'); в методе intended урл редиректа куда потом направит
+  
+    в intended урл редиректа который открыли до логина
+    return redirect()->intended('dashboard');
   }
 
-  дополнительные условия для проверки
-  if (Auth::attempt(['email' => $email, 'password' => $password, 'ban' => 0])) {
-  }
-
+  дополнительные условия
+  if (Auth::attempt(['email' => $email, 'password' => $password, 'ban' => 0])) {}
 }
+--------------------
 
-юзаем фасад Auth
-if (Auth::attempt([логин, пароль])) {
-  $request->session()->regenerate();
-  return redirect()->intended('dashboard');
-}
+Укажем какой гуард юзать при логине
+Auth::guard('admins')
+  ->attempt($credentials)
+--------------------
 
-метод intended вернет на урл, который открыли до редиректа на форму логина
+Галка "запомнить меня"
+стирание основной куки больше не разлогинивает
 
-по умолчанию указан провайдер App\Models\User.php в config/auth.php
-
-укажем какой гуард юзать при логине
-Auth::guard('admins')->attempt($credentials)
-
-в auth.php есть гуарды $guards
-
-если стоит кука remember_me "запомнить меня" то стирание основной куки логина - не разлогинивает. вообщем это бесконечная штука
-
-логиним экземпляр юзера App\Models\User.php
-экземпляр уже реализует эту хрень Contracts\Auth\Authenticatable для логина
-
+Логиним
 Auth::login($user, $remember = true);
 
-указать гуард
+Логиним и укажем гуард
 Auth::guard('admin')->login($user);
 
-логиним по ID из базы
+Логиним по ID юзера
 Auth::loginUsingId(1, $remember = true);
+--------------------
 
-разлогин
+Разлогин
 
 Auth::logout();
 $request->session()->invalidate();
 $request->session()->regenerateToken();
 return redirect('/');
+--------------------
 
-ДОБАВИТЬ СВОЙ ГУАРД
+Свой гуард добавить в 
 в AuthServiceProvider в методе boot()
 
-ДОБАВИТЬ СВОЙ ПРОВАЙДЕР
+Свой провайдер добавить в
 в AuthServiceProvider в методе boot()
-
-
-поставить Laravel Breeze 
+--------------------
 
 Доступ к гуардам
-Если разные гуарды для разных частей приложения
-Все гуарды в конфиге списком auth.php
+разные гуарды для разных частей приложения
 
-if (Auth::guard('admin')->attempt($credentials)) {}
+Логин
+Auth::guard('admins')->attempt($credentials);
 
 Разлогин
 Auth::logout();
 $request->session()->invalidate();
 $request->session()->regenerateToken();
 return redirect('/');
-
+--------------------
 
 Галочка "Запомнить меня"
 в таблице users поле remember_token
@@ -4040,6 +4047,7 @@ remember_web_59ba* = eyJpdiI6IlJXTXZGMF*
 по факту проверка специальной куки
 
 if (Auth::viaRemember()) {}
+--------------------
 
 Другие методы АУ
 
@@ -4053,9 +4061,10 @@ Auth::loginUsingId(1); по ID юзера
 Auth::loginUsingId(1, true); по ID юзера и с галочкой
 
 if (Auth::once($credentials)) {} логин для 1 запроса. без кук и сессий
+--------------------
 
 HTTP Basic АУ
-Добавить МВ auth.basic к роуту
+Добавить мидлваре auth.basic к роуту
 По умолчанию используется поле email как username
 Для FastCGI дополнительные настройки в .htaccess
 
@@ -4063,12 +4072,12 @@ Route::get('profile', function () {})->middleware('auth.basic');
 
 HTTP Basic АУ без сохранения состояния
 Нужна для API. пропустил
-
+--------------------
 
 Разлогин для других устройств, кроме текущего
 По факту инвалидация всех других сессий, кроме текущей
 
-раскоментить МВ в app/Http/Kernel.php
+раскоментить мидлваре в app/Http/Kernel.php
 'web' => [\Illuminate\Session\Middleware\AuthenticateSession::class];
 
 Auth::logoutOtherDevices($password); этот метод требует вбива пароля.
@@ -4080,7 +4089,8 @@ Auth::logoutOtherDevices($password); этот метод требует вбив
 пропустил
 
 События
-Можно добавить прослушиватели, на события АУ в EventServiceProvider: События Registered, Attempting, Authenticated, Login, Failed, Validated, Verified, Logout, CurrentDeviceLogout, OtherDeviceLogout, Lockout, PasswordReset.
+Добавить прослушиватели на события аутентификации в EventServiceProvider
+события Registered, Attempting, Authenticated, Login, Failed, Validated, Verified, Logout, CurrentDeviceLogout, OtherDeviceLogout, Lockout, PasswordReset.
 -------------------------------------------------
 
 SECURITY -> AUTHORIZATION
@@ -4104,7 +4114,7 @@ Gate::define('update-post', function ($user, $post) {
   return $user->id === $post->user_id;
 });
 
-Gate::define('update-post', 'App\Policies\PostPolicy@update');
+Gate::define('update-post', 'Policies\PostPolicy@update');
 
 Разрешаем или запрещаем действия
 $user передаётся туда сам
@@ -4266,7 +4276,7 @@ if ($user->can('create', Post::class)) {}
 
 2. через МВ
 МВ авторизует действия, до того как запрос достигнет роута или контроллера.
-В App\Http\Kernel, МВ Illuminate\Auth\Middleware\Authorize стоит с ключом can.
+В Http\Kernel, МВ Illuminate\Auth\Middleware\Authorize стоит с ключом can.
 
 Route::put('/post/{post}', function (Post $post) {})->middleware('can:update,post');
 
@@ -4278,7 +4288,7 @@ post это параметр маршрута который передаем П
 
 Действия не требующие моделей
 
-Route::post('/post', function () {})->middleware('can:create,App\Post');
+Route::post('/post', function () {})->middleware('can:create,Post');
 
 3. через метод контроллера authorize()
 вернет HTTP 403 если нет авторизации. Как и метод can, этот метод принимает имя действия, которое вы хотите разрешить, и соответствующую модель. Если действие не авторизовано.
@@ -4308,19 +4318,19 @@ public function __construct() {
 
 @can('update', $post)
   юзер может изменять пост
-@elsecan('create', App\Post::class)
+@elsecan('create', Post::class)
   юзер может создавать пост
 @endcan
 
 @cannot('update', $post)
   юзер НЕможет изменять пост
-@elsecannot('create', App\Post::class)
+@elsecannot('create', Post::class)
   юзер НЕможет создавать пост
 @endcannot
 
 @canany(['update', 'view', 'delete'], $post)
   юзер может изменять, просматривать, удалять пост
-@elsecanany(['create'], \App\Post::class)
+@elsecanany(['create'], \Post::class)
   юзе может создавать пост
 @endcanany
 
@@ -4335,11 +4345,11 @@ public function __construct() {
 @endunless
 
 Действия не требующие моделей
-@can('create', App\Post::class)
+@can('create', Post::class)
   юзер может создавать пост
 @endcan
 
-@cannot('create', App\Post::class)
+@cannot('create', Post::class)
   юзер Неможет создавать пост
 @endcannot
 
@@ -4356,7 +4366,7 @@ $this->authorize('update', [$post, $request->input('category')]);
 SECURITY -> EMAIL VERIFICATION
 
 Готовые методы отправки и верификации пользователей при реге
-Модель App\User должна расширять контракт Contracts\Auth\MustVerifyEmail
+Модель User должна расширять контракт Contracts\Auth\MustVerifyEmail
 
 Новые юзеры получают на почту письмо со ссылкой
 К событию Auth\Events\Registered присоединен слушатель SendEmailVerificationNotification в EventServiceProvider
@@ -4452,7 +4462,7 @@ php artisan migrate
 изменить можно в config/auth.php 'expire'
 
 контракт Contracts\Auth\CanResetPassword
-класс App\User
+класс User
 вьюхи resources/views/auth/passwords
 
 вся логика тут
@@ -4650,7 +4660,7 @@ public function handle() {
 Вывод результата таблицей
 
 $headers = ['Name', 'Email'];
-$users = App\User::all(['name', 'email'])->toArray();
+$users = User::all(['name', 'email'])->toArray();
 $this->table($headers, $users);
 
 Прогресс бар
@@ -4780,7 +4790,7 @@ config/broadcasting.php
 
 СП
 в config/app.php в $providers
-раскоментить App\Providers\BroadcastServiceProvider
+раскоментить Providers\BroadcastServiceProvider
 в этом файле роуты
 --------------------
 
@@ -4983,7 +4993,7 @@ Echo.leave(`users.${this.user.id}`);
 Пространство имен для классов Событий
 
 По умолчанию
-App\Events
+Events
 
 Задать своё
 window.Echo = new Echo({
@@ -5297,7 +5307,7 @@ http://400.loc/ru/laravel-websockets
 ChatChannel
 
 событие
-App\Events\ChatEvent
+Events\ChatEvent
 
 нагрузка 
 {
@@ -5367,11 +5377,14 @@ Schema::create('cache', function ($table) {
 
 Создать миграцию для таблицы cache для кеша
 php artisan cache:table
+--------------------
 
-драйвер Memcached
+Драйвер Memcached
+
 https://pecl.php.net/package/memcached
 
-конфиг config/cache.php
+конфиг
+config/cache.php
 
 'memcached' => [
   [
@@ -5380,104 +5393,119 @@ https://pecl.php.net/package/memcached
     'weight' => 100
   ],
 ];
+--------------------
 
 драйвер Redis
 composer predis/predis
+--------------------
 
+Доступ к разным хранилищам
 
-доступ к разным хранилищам
 Cache::store('file')->get('foo');
 Cache::store('redis')->get('foo');
 Cache::store('database')->get('foo');
+--------------------
 
-получить данные
+Получить данные
+
 Cache::get('key');
 Cache::get('key', 'defaultvalue');
 Cache::get('key', function () {
   return DB::table(...)->get(); тут свою логику писать
 });
+--------------------
 
-проверка на наличие
+Проверка на наличие
+
 if (Cache::has('key')) {}
+--------------------
 
-инкремент и декремент значения
+Инкремент и декремент значения
 на 1 или $amount
 
 Cache::increment('key');
 Cache::increment('key', $amount);
 Cache::decrement('key');
 Cache::decrement('key', $amount);
+--------------------
 
-получить данные, а если их нет то сохранить и получить
+Получить данные, а если нет, то сохранить и получить
 Cache::remember('users', $seconds, function () {
   return DB::table('users')->get();
 });
 
-получить данные, а если их нет то сохранить навсегда и получить
+Получить данные, а если нет, то сохранить навсегда и получить
 Cache::rememberForever('users', function () {
   return DB::table('users')->get();
 });
 
-получить данные и удалить
+Получить данные и удалить
 $value = Cache::pull('key');
+--------------------
 
-сохранить данные
+Cохранить данные
 Cache::put('key', 'value'); на бесконечно
 Cache::put('key', 'value', $seconds); на N секунд
 Cache::put('key', 'value', now()->addMinutes(10)); на N секунд
 
-сохранить данные, если их нет
+Сохранить данные, если их нет
 Cache::add('key', 'value', $seconds);
 
-сохранить данные навсегда
+Сохранить данные навсегда
 Cache::forever('key', 'value');
+--------------------
 
-удалить данные
+Удалить данные
 Cache::forget('key');
 
-удалить, указав 0 или отрицательное значение TTL
+Удалить данные, указав 0 или отрицательное значение TTL
 Cache::put('key', 'value', 0);
 Cache::put('key', 'value', -5);
 
-удалить все данные
+Удалить все данные
 Cache::flush();
+--------------------
 
+Хелпер Cache
 
-хелпер Cache
-
-получить данные
+Получить данные
 cache('key');
 
-сохранить данные
+Сохранить данные
 cache(['key' => 'value'], $seconds);
 cache(['key' => 'value'], now()->addMinutes(10));
+--------------------
 
-функция Cache
+Функция Cache
 cache()->remember('users', $seconds, function () {
   return DB::table('users')->get();
 });
+--------------------
 
 Теги кеша
-Тегами группировать связанные элементы.
-Не поддерживаются драйверами file, dynamodb, database.
 
-сохранить
+тегами группировать связанные элементы
+не поддерживаются драйверами file, dynamodb, database
+
+Сохранить
 Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
 Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
 
-получить
-$john = Cache::tags(['people', 'artists'])->get('John');
-$anne = Cache::tags(['people', 'authors'])->get('Anne');
+Получить
+Cache::tags(['people', 'artists'])->get('John');
+Cache::tags(['people', 'authors'])->get('Anne');
 
-удалить
+Удалить
 Cache::tags(['people', 'authors'])->flush();
 Cache::tags('authors')->flush();
+--------------------
 
 Атомарная блокировка
-Чтобы гарантировать последовательность операций над кешем.
-На драйверах memcached, dynamodb, redis, database, array.
 
-для драйвера database
+чтобы гарантировать последовательность операций над кешем
+на драйверах memcached, dynamodb, redis, database, array
+
+Для драйвера database
 
 Schema::create('cache_locks', function ($table) {
   $table->string('key')->primary();
@@ -5485,47 +5513,41 @@ Schema::create('cache_locks', function ($table) {
   $table->integer('expiration');
 });
 
-$lock = Cache::lock('foo', 10);
 
+$lock = Cache::lock('foo', 10);
 if ($lock->get()) {
   лок на 10сек
   $lock->release();
 }
 
 Cache::lock('foo')->get(function () {
-  тут лок пока идёт работа
+  тут лок, пока идёт работа
 });
 
-если блокировка недоступна прямо сейчас, то указать сколько секунд ждать
+Если блокировка недоступна на постановку, то указать сколько секунд ждать
 
 $lock = Cache::lock('foo', 10);
 
 try {
-
   $lock->block(5);
   тут код если блокировка получена
-
 } catch (LockTimeoutException $e) {
-
   блокировка не получена
-
 } finally {
-
   optional($lock)->release();
-
 }
 
 Cache::lock('foo', 10)->block(5, function () {
   тут код если блокировка получена
 });
+--------------------
 
 Поставить блокировку в одном процессе а снять в другом
-$this->owner токен
+токен $this->owner
 
 1 процесс
 $podcast = Podcast::find($id);
 $lock = Cache::lock('foo', 120);
-
 if ($result = $lock->get()) {
   ProcessPodcast::dispatch($podcast, $lock->owner());
 }
@@ -5533,8 +5555,9 @@ if ($result = $lock->get()) {
 2 процесс
 Cache::restoreLock('foo', $this->owner)->release();
 
-снять блокировку без токена
+Снять блокировку без токена
 Cache::lock('foo')->forceRelease();
+--------------------
 
 Свой драйвер кеша
 
@@ -5739,7 +5762,7 @@ LazyCollection::make(function () {
 1. используя обычные коллекции
 1 запрос к бд и получение всех объектов
 
-App\User::all()->filter(function ($user) {
+User::all()->filter(function ($user) {
   return $user->id > 500;
 });
 
@@ -5747,7 +5770,7 @@ App\User::all()->filter(function ($user) {
 1 запрос к бд, но получение по 1 объекту
 потом запускается filter()
 
-$users = App\User::cursor()->filter(function ($user) {
+$users = User::cursor()->filter(function ($user) {
   return $user->id > 500;
 });
 
@@ -6848,17 +6871,17 @@ Mail::to($user)
 protected $listen = [
 
   до отправки
-  'Illuminate\Mail\Events\MessageSending' => ['App\Listeners\LogSendingMessage'],
+  'Illuminate\Mail\Events\MessageSending' => ['Listeners\LogSendingMessage'],
 
   после отправки
-  'Illuminate\Mail\Events\MessageSent' => ['App\Listeners\LogSentMessage'],
+  'Illuminate\Mail\Events\MessageSent' => ['Listeners\LogSentMessage'],
 ];
 -------------------------------------------------
 
 DIGGING DEEPER -> NOTIFICATIONS
 
 Отправка уведомлений по разным каналам
-трейт Notifiable включен в модель App\Models\User
+трейт Notifiable включен в модель Models\User
 Фасад Notification
 
 Каналы
@@ -7090,7 +7113,7 @@ public function toMail($notifiable) {
 Канал database
 
 хранит уведомления в таблице notifications
-трейт Notifiable включен в модель App\Models\User
+трейт Notifiable включен в модель Models\User
 
 Создать миграцию для таблицы notifications
 php artisan notifications:table
@@ -7179,7 +7202,7 @@ public function broadcastType() {
 Прослушать уведомления
 
 формат канала {notifiable}.{id}
-для юзера App\Models\User с ID 1 это будет канал App.Models.User.1
+для юзера Models\User с ID 1 это будет канал App.Models.User.1
 
 Echo.private('App.Models.User.' + userId)
   .notification((notification) => {
@@ -7323,7 +7346,7 @@ $user->notify(new InvoicePaid($invoice));
 Слушателей событий в EventServiceProvider.php
 $listen = [
   'Illuminate\Notifications\Events\NotificationSent' => [
-    'App\Listeners\LogNotification',
+    'Listeners\LogNotification',
   ],
 ];
 
@@ -8045,7 +8068,7 @@ DIGGING DEEPER -> TASK SCHEDULING
 Крон
 * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 
-Все задачи в классе App\Console\Kernel в методе schedule
+Все задачи в классе Console\Kernel в методе schedule
 
 protected function schedule(Schedule $schedule) {
 
@@ -8340,7 +8363,7 @@ php artisan serve
 
 Роуты
 
-в RouteServiceProvider было $namespace = App\Http\Controllers
+в RouteServiceProvider было $namespace = Http\Controllers
 теперь $namespace = null
 
 Контракт Session

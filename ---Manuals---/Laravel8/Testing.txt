@@ -17,11 +17,12 @@ tests/Unit
 Unit тесты тестируют 1 метод или функцию
 Feature тесты тестируют большие куски функционала
 
-переменная окружения ставится в testing
-сессия и кеш ставится в array
+переменная окружения ставится в 'testing'
+сессия и кеш ставится в 'array'
 
 Переменные окружения
 в phpunit.xml
+--------------------
 
 Удалить файл кеша всех конфигов
 config:clear
@@ -29,10 +30,10 @@ config:clear
 создать .env.testing в корне
 он заменит .env при запуске тестов PHPUnit или выполнение Artisan команд с параметром --env=testing
 
-Cоздать класс теста в папке Feature
+Cоздать класс теста Feature
 php artisan make:test UserTest
 
-Cоздать класс теста в папке Unit
+Cоздать класс теста Unit
 php artisan make:test UserTest --unit
 
 Запуск тестов
@@ -41,7 +42,7 @@ vendor/bin/phpunit
 Подробный вывод
 php artisan test
 
-принимает все аргументы phpunit
+Принимает все аргументы phpunit
 php artisan test --group=feature
 -------------------------------------------------
 
@@ -50,25 +51,25 @@ BROWSER TESTS
 Dusk это обёртка над ChromeDriver
 тестирование в браузере
 не требует JDK и Selenium
-запуск 1 или несколько браузеров сразу
+запуск 1 или несколько браузеров
 автоматически подгрузит jQuery если её нет
 
-папка тестов
+Папка тестов
 tests/Browser
 
-установить
+Установить
 composer require --dev laravel/dusk
 php artisan dusk:install
 
-установить нужную версию ChromeDriver
+Установить нужную версию ChromeDriver
 php artisan dusk:chrome-driver - последнюю
 php artisan dusk:chrome-driver 74 - номер версии
 php artisan dusk:chrome-driver --all - все версии
 
-файлы chromedriver должны быть исполняемые
+Файлы chromedriver должны быть исполняемые
 chmod -R 0755 vendor/laravel/dusk/bin/
 
-можно не использовать ChromeDriver и Google Chrome
+Можно не использовать ChromeDriver и Google Chrome
 а использовать сервер Selenium и любой браузер
 
 protected function driver() {
@@ -81,20 +82,20 @@ protected function driver() {
     'http://localhost:9515', DesiredCapabilities::chrome()
   );
 }
+--------------------
 
-
-запуск теста
+Запуск теста
 принимает все аргументы phpunit
 
 php artisan dusk
 
-запуск только неудачных тестов
+Запуск только неудачных тестов
 php artisan dusk:fails
 
-создать тест
+Создать тест
 php artisan dusk:make LoginTest
 
-настроить урл приложения
+Настроить урл приложения
 APP_URL в .env
 
 Окружение
@@ -102,24 +103,22 @@ APP_URL в .env
 иначе будет бекап .env, запуск теста, потом переименование обратно в .env
 шаблон .env.dusk.{environment}
 
-размер окна браузера
+Размер окна браузера
 $browser->resize(1920, 1080);
 $browser->maximize();
 $browser->fitContent();
 
-переместить браузер
+Переместить браузер
 $browser->move(100, 100);
 
 если тест не прошел, то ресайз браузера по размеру содержимого и скриншот
 отключить ресайз
 $browser->disableFitOnFailure();
+--------------------
 
 Создать свой макрос действия браузера
-
 Browser::macro('scrollToElement', function ($element = null) {
-
   $this->script("$('html, body').animate({ scrollTop: $('$element').offset().top }, 0);");
-
   return $this;
 });
 
@@ -128,6 +127,7 @@ $this->browse(function ($browser) use ($user) {
   ->scrollToElement('#credit-card-details')
   ->assertSee('Enter Credit Card Details');
 });
+--------------------
 
 Логин
 
@@ -135,13 +135,14 @@ $this->browse(function ($first, $second) {
   $first->loginAs(User::find(1))
   ->visit('/home');
 });
-
+--------------------
 
 Если нужны миграции бд
 
 class ExampleTest extends DuskTestCase {
   use DatabaseMigrations;
 }
+--------------------
 
 Работа с куками
 
@@ -154,6 +155,7 @@ $browser->plainCookie('name', 'Taylor');
 
 удалить
 $browser->deleteCookie('name');
+--------------------
 
 Скрин
 в tests/Browser/screenshots
@@ -185,7 +187,7 @@ $browser->click('@login-button');
 Клик
 $browser->clickLink($linkText);
 
-клик если ссылка видна
+Клик если ссылка видна
 if ($browser->seeLink($linkText)) {}
 
 
@@ -274,7 +276,7 @@ $browser->dragRight('.selector', 10);
 $browser->dragUp('.selector', 10);
 $browser->dragDown('.selector', 10);
 $browser->dragOffset('.selector', 10, 10);
-
+--------------------
 
 Работа с окнами js
 
@@ -470,9 +472,9 @@ assertVueDoesNotContain - не содержит
 Создать страницу
 в tests/Browser/Pages
 
-php artisan dusk:page Login
+php artisan dusk:page NamePage
 
-Страница - это метод группировок селекторов под удобные аттрибуты
+Страница это метод группировки селекторов под "удобные" аттрибуты
 методы url, assert, elements
 
 public function elements() {
@@ -495,65 +497,50 @@ public static function siteElements() {
 Создать компонент
 в tests/Browser/Components
 
-php artisan dusk:component DatePicker
+php artisan dusk:component NameComponent
 
-Компонент - это кусок который присутствует на разных страницах
+Компонент это кусок который присутствует на разных страницах
 например датапикер или поле поиска
 --------------------
 
 Непрерывная интеграция
 
-в .env.testing требует APP_URL=http://127.0.0.1:8000
+В .env.testing поставить
+APP_URL=http://127.0.0.1:8000
 
 CircleCI
-пример конфига в мане
-
 Codeship
-пример конфига в мане
-
 Heroku CI
-пример конфига в мане
-
 Travis CI
-пример конфига в мане
-
 GitHub Actions
-пример конфига в мане
 -------------------------------------------------
 
 CONSOLE TESTS
 
 консольные приложения которые ожидают ввода от юзера
 
-
 Команда
-
 Artisan::command('question', function () {
-
   $name = $this->ask('What is your name?');
-
   $language = $this->choice('Which language do you program in?', [
-        'PHP',
-        'Ruby',
-        'Python',
-  ]);
+    'PHP',
+    'Ruby',
+    'Python',
+]);
 
   $this->line('Your name is '.$name.' and you program in '.$language.'.');
-
 });
 
 
 Тест команды
-
 public function testConsoleCommand() {
-
   $this->artisan('question')
     ->expectsQuestion('What is your name?', 'Taylor Otwell')
     ->expectsQuestion('Which language do you program in?', 'PHP')
     ->expectsOutput('Your name is Taylor Otwell and you program in PHP.')
     ->assertExitCode(0);
 }
-
+--------------------
 
 При ожидании подтверждения да/нет
 
@@ -569,7 +556,7 @@ expectsConfirmation - когда команда ждет выбора ответ
 
 HTTP TESTS
 
-МВ CSRF отключено
+Мидлваре CSRF отключено
 
 сделать get запрос
 $response = $this->get('/');
@@ -604,42 +591,43 @@ $response = $this->actingAs($user)
   ->withSession(['foo' => 'bar'])
   ->get('/');
 
-укажем гуарда
+укажем гуард
 $this->actingAs($user, 'api')
 --------------------
 
-тестирование json
+Тестирование json
 
 методы
 json, getJson, postJson, putJson, patchJson, deleteJson, optionsJson
 assertJson, assertExactJson, assertJsonPath
 
-в response данные доступны как элементы массива
+В response данные доступны как элементы массива
 $this->assertTrue($response['created']);
 --------------------
 
-тестирование загрузки файла
+Тестирование загрузки файла
 
 Storage::fake('avatars');
 
-создать картинку с размерами
-$file = UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100);
+Создать картинку с размерами
+UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100);
 
-документ
-$file = UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);
+Документ
+UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);
 
-документ с mime типом
-$file = UploadedFile::fake()->create('document.pdf', $sizeInKilobytes, 'application/pdf');
+Документ с mime типом
+UploadedFile::fake()->create('document.pdf', $sizeInKilobytes, 'application/pdf');
 
-отправить
+
+Отправить
 $response = $this->json('POST', '/avatar', [
   'avatar' => $file,
 ]);
 
-проверка что файл сохранился
+Проверка что файл сохранился
 Storage::disk('avatars')->assertExists($file->hashName());
 
-проверка что файл НЕсохранился
+Проверка что файл НЕсохранился
 Storage::disk('avatars')->assertMissing('missing.jpg');
 --------------------
 
@@ -697,7 +685,7 @@ assertViewHas - наличие фрагмента данных
 assertViewHasAll - есть список данных
 assertViewIs - шаблон возвращен роутом
 assertViewMissing - нет данных
-
+--------------------
 
 Утверждения аутентификации
 
@@ -710,36 +698,32 @@ assertInvalidCredentials - данные невалидны
 
 MOCKING
 
-имитация без выполнения
-используется при тестировании
+имитация без выполнения. используется при тестировании
 
-привязка имитационного объекта в СК
+Привязка имитационного объекта в СК
 $this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
   $mock->shouldReceive('process')->once();
 }));
-
-СК будет юзать инстанс имитации вместо реального
-
-или так
 $this->mock(Service::class, function ($mock) {
   $mock->shouldReceive('process')->once();
 });
 
+СК будет юзать инстанс имитации, вместо реального
 
-имитировать указанные методы
+Имитировать методы
 $this->partialMock(Service::class, function ($mock) {
   $mock->shouldReceive('process')->once();
 });
 
-сделить за объектом
+Сделить за объектом
 $this->spy(Service::class, function ($mock) {
     $mock->shouldHaveReceived('process');
 });
-
+--------------------
 
 Фасады
 
-не выполнять задач
+Не выполнять задач
 Bus::fake();
 Bus::assertDispatched(function (ShipOrder $job) use ($order) {
   return $job->order->id === $order->id;
@@ -747,7 +731,7 @@ Bus::assertDispatched(function (ShipOrder $job) use ($order) {
 
 Bus::assertNotDispatched(AnotherJob::class);
 
-не прослушивать события
+Не прослушивать события
 Event::fake();
 Event::assertDispatched(function (OrderShipped $event) use ($order) {
   return $event->order->id === $order->id;
@@ -755,36 +739,35 @@ Event::assertDispatched(function (OrderShipped $event) use ($order) {
 Event::assertDispatched(OrderShipped::class, 2);
 Event::assertNotDispatched(OrderFailedToShip::class);
 
-не прослушивать только набор
+Не прослушивать только набор
 Event::fake([
   OrderCreated::class,
 ]);
 
-только для части теста
+Только для части теста
 $order = Event::fakeFor(function () {
   $order = factory(Order::class)->create();
   Event::assertDispatched(OrderCreated::class);
 });
+--------------------
 
-
-подделка HTTP
+Подделка HTTP
 в мане
 
-не отправлять почту
-в том числе в очереди
+Не отправлять почту. в очереди тоже
 Mail::fake();
 
-не отправлять уведомления
+Не отправлять уведомления
 Notification::fake();
 
-не ставить задачи в очередь
+Не ставить задачи в очередь
 Queue::fake();
 
-не загружать файлы
+Не загружать файлы
 Storage::fake('photos');
 Storage::persistentFake('photos');
 
-имитировать фасады
+Имитировать фасады
 кроме фасадов Request, Config
 
 $value = Cache::get('key'); настояший вызов
@@ -811,6 +794,7 @@ php artisan make:factory Name -m NameModel
 class ExampleTest extends TestCase {
   use RefreshDatabase;
 }
+--------------------
 
 Добавить данные
 
@@ -830,93 +814,79 @@ public function definition() {
 	'sites_id' => $this->faker->unique(true)->numberBetween(1, Site::count()),
     ];
 });
+--------------------
 
 в Faker добавить локаль
 config/app.php 'faker_locale'
+--------------------
 
-работает для extend моделей тоже
+Работает для extend моделей тоже
 
-$factory->define(App\Admin::class, function (Faker\Generator $faker) {
-  return factory(App\User::class)->raw([]);
+$factory->define(Admin::class, function (Faker\Generator $faker) {
+  return factory(User::class)->raw([]);
 });
-
+--------------------
 
 Колбеки до и после создания модели
 
-$factory->afterMaking(App\User::class, function ($user, $faker) {
-  
-});
+$factory->afterMaking(User::class, function ($user, $faker) {});
 
-$factory->afterCreating(App\User::class, function ($user, $faker) {
-  $user->accounts()->save(factory(App\Account::class)->make());
+$factory->afterCreating(User::class, function ($user, $faker) {
+  $user->accounts()->save(factory(Account::class)->make());
 });
-
+--------------------
 
 Колбеки для состояний
 
-$factory->afterMakingState(App\User::class, 'delinquent', function ($user, $faker) {
-  
-});
+$factory->afterMakingState(User::class, 'delinquent', function ($user, $faker) {});
 
-$factory->afterCreatingState(App\User::class, 'delinquent', function ($user, $faker) {
-  
-});
+$factory->afterCreatingState(User::class, 'delinquent', function ($user, $faker) {});
+--------------------
 
-
-Создать модель
-$user = factory(App\User::class)->make();
-
-Создать 3 модели
-$users = factory(App\User::class, 3)->make();
+Создать юзеров
+factory(User::class)->make();
+factory(User::class, 3)->make();
 
 Применить состояния
-$users = factory(App\User::class, 5)->states('delinquent')->make();
-$users = factory(App\User::class, 5)->states('premium', 'delinquent')->make();
+factory(User::class, 5)->states('delinquent')->make();
+factory(User::class, 5)->states('premium', 'delinquent')->make();
 
 Изменить аттрибуты
-$user = factory(App\User::class)->make([
-  'name' => 'Abigail',
-]);
+factory(User::class)->make(['name' => 'Abigail']);
 
-Сохранить модели
-$user = factory(App\User::class)->create();
-$users = factory(App\User::class, 3)->create();
+Сохранить юзеров
+factory(User::class)->create();
+factory(User::class, 3)->create();
 
 Сохранить с аттрибутами
-$user = factory(App\User::class)->create([
-  'name' => 'Abigail',
-]);
-
+factory(User::class)->create(['name' => 'Abigail']);
+--------------------
 
 Создать отношения
-
-$users = factory(App\User::class, 3)
+factory(User::class, 3)
   ->create()
   ->each(function ($user) {
-     $user->posts()->save(factory(App\Post::class)->make());
+     $user->posts()->save(factory(Post::class)->make());
 });
 
 Прикрепить несколько отношений
-
 $user->posts()->createMany(
-  factory(App\Post::class, 3)->make()->toArray()
+  factory(Post::class, 3)->make()->toArray()
 );
 
 К посту создать юзера
-
-$factory->define(App\Post::class, function ($faker) {
+$factory->define(Post::class, function ($faker) {
   return [
     'title' => $faker->title,
     'content' => $faker->paragraph,
-    'user_id' => factory(App\User::class),
+    'user_id' => factory(User::class),
   ];
 });
+--------------------
 
-
-для HAS MANY
+Для связи HasMany
 
 Создать юзера и посты
-
 $user = User::factory()
   ->hasPosts(3, function (array $attributes, User $user) {
     return ['type' => $user->type];
@@ -931,11 +901,11 @@ $user = User::factory()
   })
 )
 ->create();
+--------------------
 
-для BELONGS TO
+Для связи BelongsTo
 
 Создать посты и юзера
-
 $posts = Post::factory()
   ->count(3)
   ->for(User::factory()
@@ -946,30 +916,27 @@ $posts = Post::factory()
   ->count(3)
   ->forUser(['name' => 'Jessica'])
 ->create();
-
+--------------------
 
 Прикрепить вычисляемый аттрибут
 
-$factory->define(App\Post::class, function ($faker) {
-    return [
-        'title' => $faker->title,
-        'content' => $faker->paragraph,
-
-        'user_id' => factory(App\User::class),
-
-        'user_type' => function (array $post) {
-            return App\User::find($post['user_id'])->type;
-        },
-
-    ];
+$factory->define(Post::class, function ($faker) {
+  return [
+    'title' => $faker->title,
+    'content' => $faker->paragraph,
+    'user_id' => factory(User::class),
+    'user_type' => function (array $post) {
+      return User::find($post['user_id'])->type;
+    },
+  ];
 });
-
+--------------------
 
 Посев в базу
 
 $this->seed();
 $this->seed(OrderStatusSeeder::class);
-
+--------------------
 
 Утверждения
 

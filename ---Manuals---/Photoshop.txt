@@ -1,7 +1,7 @@
 Создание макроса
 
-Открыть картинку.
-Меню Window->Actions.
-В палитре нажать Create new action, задать имя, нажать Record.
-Провести все процедуры, сохранить картинку, нажать Stop Record.
-File->Automate->Batch, выбрать макрос, выбрать папки folder_from и folder_to, нажать ОК.
+Открыть картинку
+Меню Window->Actions
+В палитре нажать Create new action, задать имя, нажать Record
+Провести все процедуры, сохранить картинку, нажать Stop Record
+File->Automate->Batch, выбрать макрос, выбрать папки folder_from и folder_to, нажать ОК

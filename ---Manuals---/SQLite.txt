@@ -9,6 +9,7 @@ SQLite
 Тип столбца не определяет тип хранимого значения, т.е. в столбец можно занести любое значение. Тип столбца определяет как сравнивать значения при приведении к одному типу. Например для «A INTEGER» если вставляемое значение не целое, то SQlite пытается привести его к целому. Т.е. строка «123» превратится в целое 123, а остальные значения запишутся как есть.
 
 Изначально SQlite работал по принципу «многие читают — один пишет». То есть только одно соединение пишет в БД в данный момент времени. Если другие соединения попробуют тоже записать, то будет ошибка SQLITE_BUSY. Можно ввести таймаут операций. Тогда подключение, столкнувшись с занятостью БД, будет ждать N секунд прежде, чем отвалиться с ошибкой SQLITE_BUSY. Либо одно подключение и все запросы через него, либо исходить из возможного таймаута и предусмотреть повтор выполнения запроса. Write Ahead Log, WAL - если включить для БД этот режим лога, то несколько подключений смогут одновременно модифицировать БД. Но в этом режиме БД уже занимает несколько файлов.
+-------------------------------------------------
 
 Значение внутри БД может принадлежать к одному из следующих типов хранения (storage class):
 NULL,
@@ -30,9 +31,10 @@ PRAGMA journal_mode = DELETE | TRUNCATE | PERSIST | MEMORY | WAL | OFF; - зад
 PRAGMA synchronous = 0 | OFF | 1 | NORMAL | 2 | FULL; - тип синхронизации транзакции
 
 Если вы не используете транзакции явно (BEGIN; ...; COMMIT;), то всегда создается неявная транзакция. Она стартует перед выполнением команды и коммитится сразу после. В мультипоточном режиме необходимо использовать не "BEGIN", а "BEGIN IMMEDIATE".
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Плагин к Workbench который позволяет экспорт диаграмм в SQLite синтаксис
+
 https://github.com/tatsushid/mysql-wb-exportsqlite
 Choose "Install Plugin/Module..." in "Scripting" menu
 Open export_sqlite_grt.py file
@@ -48,35 +50,35 @@ MySQL: 2514 (В настройках заменить localhost на 127.0.0.1)
 MS SQL: 1993
 SQLite: 1500
 PostgreSQL: 1403
----------------------------------------------------------------------------------------------------
+-------------------------------------------------
 
 Примеры
 
-<?php
-
 try {
+
  $db = new PDO ('sqlite:words.db');
 
-// режим обработки ошибок. по умолчанию PDO::ERRMODE_SILENT
+ режим обработки ошибок. по умолчанию PDO::ERRMODE_SILENT
  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// можно у каждого запроса указывать как $select->setFetchMode(PDO::FETCH_ASSOC);
+  можно у каждого запроса указывать как $select->setFetchMode(PDO::FETCH_ASSOC);
  $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-// чтобы при многопоточной записи процесс ждал 5 секунд своей очереди, а не сразу падал с  SQLITE_BUSY
+  чтобы при многопоточной записи процесс ждал 5 секунд своей очереди, а не сразу падал с  SQLITE_BUSY
  $db->setAttribute(PDO::ATTR_TIMEOUT, 5000);
 
-// многопоточность. ускорение в 5 раз
+  многопоточность. ускорение в 5 раз
  $db->query('PRAGMA journal_mode=WAL;');
 
-//  включить поддержку foreign keys
+  включить поддержку foreign keys
  $db->query('PRAGMA foreign_keys = 1;');
 
 } catch (PDOException $e) {
- exit ($e->getMessage());
+  exit ($e->getMessage());
 }
+--------------------
 
-//insert
+insert
 $insert = $db->prepare("INSERT OR IGNORE INTO `en_to_ru` (`english`, `russian`) VALUES (:english, :russian)");
 
 for ($i = 0; $i < 100000; $i++) {
@@ -84,50 +86,55 @@ for ($i = 0; $i < 100000; $i++) {
  $insert->bindParam(':russian', $i);
  $insert->execute();
 }
+--------------------
 
-//update
+update
 $update = $db->prepare("UPDATE OR IGNORE `en_to_ru` SET `english` = :english, `russian` = :russian WHERE `id` = :id");
 $update->bindValue(':id', 772);
 $update->bindValue(':english', 8888);
 $update->bindValue(':russian', 9999);
 $update->execute();
 
-//delete
+--------------------
+
+delete
 $delete = $db->prepare("DELETE FROM `en_to_ru` WHERE `id` = :id");
 $delete->bindValue(':id', 772);
 $delete->execute();
+--------------------
 
-//select весь массив
+select весь массив
 $select = $db->prepare("SELECT * FROM `en_to_ru` WHERE `id` > :id");
 $select->bindValue(':id', 772);
 $select->execute();
 $result = $select->fetchAll();
 var_dump($result);
+--------------------
 
-// select одно, как массив в общем массиве
+select одного, как массив в общем массиве
 $select = $db->prepare("SELECT * FROM `en_to_ru` WHERE `id` = :id");
 $select->bindValue(':id', 800);
 $select->execute();
 $result = $select->fetchAll();
 var_dump($result);
+--------------------
 
-// select одно как один массив
+select одно как один массив
 $select = $db->prepare("SELECT * FROM `en_to_ru` WHERE `id` = :id");
 $select->bindValue(':id', 800);
 $select->execute();
 $result = $select->fetch();
 var_dump($result);
+--------------------
 
-// select один столбец
+select один столбец
 $select = $db->prepare("SELECT `english` FROM `en_to_ru` WHERE `id` = :id");
 $select->bindValue(':id', 800);
 $select->execute();
 $result = $select->fetchColumn();
 var_dump($result);
+--------------------
 
-
-/*
- * bindParam — Привязывает параметр запроса к переменной
- * bindColumn — Связывает столбец с PHP переменной
- * bindValue — Связывает параметр с заданным значением
- */
+bindParam — Привязывает параметр запроса к переменной
+bindColumn — Связывает столбец с PHP переменной
+bindValue — Связывает параметр с заданным значением

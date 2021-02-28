@@ -104,117 +104,97 @@ QUERY BUILDER
 
 Query Builder (КБ) это построитель запросов
 использует PDO для создания и выполнения запросов
-работает для всех систем БД
+работает для всех видов БД
 привязки предотвращают атаки SQL injection
 
 Фасад DB
 --------------------
 
 Выйти с Eloquent на КБ
-$users = User::query()->where();
+query()
 
 Получить все строки
-DB::table('users')->get();
+get()
 
 Получить 1ю строку
-DB::table('users')->where('name', 'John')->first();
+first()
 
 Получить 1 строку по id
-DB::table('users')->find(3);
+find(3)
 
 Получить 1 строку 1 столбик
-DB::table('users')->where('name', 'John')->value('email');
+value('email')
 
 Получить все строки по 1 или нескольким столбикам
-DB::table('roles')->pluck('title');
-DB::table('roles')->pluck('title', 'name');
+pluck('title')
+pluck('title', 'name')
 
 Получить все строки чанками по N
-DB::table('users')->chunk(100, function ($users) {});
+chunk(100, function ($users) {})
 
 Обновить все строки чанками по N
-DB::table('users')->chunkById(100, function ($users) {
+DB::table('users')->chunkById(N, function ($users) {
   foreach ($users as $user) {
     DB::table('users')->where('id', $user->id)->update(['active' => true]);
   }
-});
+})
 --------------------
 
 Агрегатные функции
-DB::table('users')->count();
-DB::table('users')->max();
-DB::table('users')->min();
-DB::table('users')->avg();
-DB::table('users')->sum();
+count()
+max()
+min()
+avg()
+sum()
 
 Проверка на существование
-DB::table('users')->exists();
-DB::table('users')->doesntExist();
+exists()
+doesntExist()
 --------------------
 
 Select
 
 выбрать нужные столбики
-DB::table('users')->select('name', 'email as user_email')->get();
+select('name', 'email as user_email')
 
 выбрать с distinct
-DB::table('users')->distinct()->get();
+distinct()
 
 на лету добавить в select еще столбик
 $query = DB::table('users')->select('name');
-$users = $query->addSelect('age')->get();
+$query->addSelect('age');
 --------------------
 
 Сырые запросы
 самому обрабатывать код против SQL injection
 
 DB::raw универсален
-DB::table('users')->select(DB::raw('count(*) as count'))->get();
+select(DB::raw('count(*) as count'))
 
-Остальные удобные алиасы
-DB::table('users')->selectRaw()->get();
-DB::table('users')->whereRaw()->get();
-DB::table('users')->havingRaw()->get();
-DB::table('users')->orderByRaw()->get();
-DB::table('users')->groupByRaw()->get();
+Остальные алиасы raw
+selectRaw()
+whereRaw()
+havingRaw()
+orderByRaw()
+groupByRaw()
 --------------------
 
 Запросы Join
 
-inner join
-
-DB::table('users')
-  ->join('contacts', 'users.id', '=', 'contacts.user_id')
-  ->select('users.*', 'contacts.phone')
-  ->get();
-
-
-left join, right join
-
-DB::table('users')
-  ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
-  ->get();
-  
-DB::table('users')
-  ->rightJoin('posts', 'users.id', '=', 'posts.user_id')
-  ->get();
-
-cross join
-
-DB::table('sizes')
-  ->crossJoin('colors')
-  ->get();
+join('posts', 'users.id', '=', 'posts.user_id')
+leftJoin('posts', 'users.id', '=', 'posts.user_id')
+rightJoin('posts', 'users.id', '=', 'posts.user_id')
+crossJoin('colors')
 --------------------
 
 Дополнительные условия в Join
 
-DB::table('users')
-  ->join('contacts', function ($join) {
-    $join->on('users.id', '=', 'contacts.user_id')
-	  ->where('contacts.user_id', '>', 5);
-	  ->orOn(...);
-  })
-  ->get();
+join('contacts', function ($join) {
+  $join->on('users.id', '=', 'contacts.user_id')
+    ->where('contacts.user_id', '>', 5);
+	->orOn(...);
+})
+--------------------
 
 Подзапросы в Join
 joinSub, leftJoinSub, rightJoinSub
@@ -233,23 +213,19 @@ $users = DB::table('users')
 Запросы Union
 union, unionAll
 
-$first = DB::table('users')
-  ->whereNull('first_name');
-  
-$users = DB::table('users')
-  ->whereNull('last_name')
-  ->union($first)
-  ->get();
+$first = DB::table('users')->whereNull('first_name');
+$users = DB::table('users')->whereNull('last_name')->union($first);
 --------------------
 
-Уточнения по Where
+Where
 
-DB::table('users')->where('votes', 10)->get();
-DB::table('users')->where('votes', '=', 10)->get();
-DB::table('users')->where('votes', '>=', 10)->get();
-DB::table('users')->where('name', 'like', 'T%')->get();
-DB::table('users')->where([['a', '=', '1'], ['b', '<>', '1']])->get();
-DB::table('users')->orWhere('name', 'John')->get();
+where('votes', 10);
+where('votes', '=', 10);
+where('votes', '>=', 10);
+where('name', 'like', '%word%');
+where([['a', '=', '1'], ['b', '<>', '1']]);
+orWhere('name', 'John');
+--------------------
 
 Группировка внутри or (... and ...)
 
@@ -266,16 +242,24 @@ DB::table('users')
 
 whereBetween, orWhereBetween
 whereNotBetween, orWhereNotBetween
+
 whereIn, whereNotIn
 orWhereIn, orWhereNotIn
-whereIntegerInRaw, whereIntegerNotInRaw (когда внутри IN() большой массив)
+
+когда внутри IN() большой массив
+whereIntegerInRaw, whereIntegerNotInRaw
+
 whereNull, whereNotNull
 orWhereNull, orWhereNotNull
-whereDate, whereMonth, whereDay, whereYear, whereTime для сравнения с датой
-whereColumn, orWhereColumn для сравнения 2 столбиков
+
+для сравнения с датой
+whereDate, whereMonth, whereDay, whereYear, whereTime 
+
+для сравнения 2 столбиков
+whereColumn, orWhereColumn
 --------------------
 
-Группировка параметров скобочками внутри замыкания
+Группировка параметров внутри замыкания
 всегда группировать вызовы orWhere
 
 select * from users where name = 'John' and (votes > 100 or title = 'Admin')
@@ -313,169 +297,141 @@ User::where(function ($query) {
 
 Запросы из столбиков Json
 
-DB::table('users')->where('options->language', 'en')->get();
-DB::table('users')->whereJsonContains('options->languages', 'en')->get();
-DB::table('users')->whereJsonContains('options->languages', ['en', 'de'])->get();
-
-запросы по длинне
-
-DB::table('users')->whereJsonLength('options->languages', 0)->get();
-DB::table('users')->whereJsonLength('options->languages', '>', 1)->get();
+where('options->language', 'en')
+whereJsonContains('options->languages', 'en')
+whereJsonContains('options->languages', ['en', 'de'])
+whereJsonLength('options->languages', 0)
+whereJsonLength('options->languages', '>', 1)
 --------------------
 
 Сортировка
 
-DB::table('users')->orderBy('name', 'desc')->get();
-DB::table('users')->orderBy('name', 'desc')->orderBy('email', 'asc')->get();
+orderBy('name', 'desc')
+orderBy('name', 'desc')->orderBy('email', 'asc')
 
-сортировка по дате (по столбику created_at)
-можно передать своё имя столбика
+сортировка по дате по столбику created_at
+latest()
 
-DB::table('users')->latest()->first();
+сортировка по дате по столбику column
+latest('column')
 
 сортировка рандомная
-DB::table('users')->inRandomOrder()->first();
+inRandomOrder()
 
 Удалить сортировку
-$query = DB::table('users')->orderBy('name');
-$unorderedUsers = $query->reorder()->get();
+reorder()
 
 Удалить сортировку и применить новую
-$query = DB::table('users')->orderBy('name');
-$usersOrderedByEmail = $query->reorder('email', 'desc')->get();
+reorder('email', 'desc')
 --------------------
 
 Группировка
-groupBy и having
 работает как where
 
-DB::table('users')
-  ->groupBy('account_id')
-  ->having('account_id', '>', 100)
-  ->get();
-  
-DB::table('users')
-  ->groupBy('first_name', 'status')
-  ->having('account_id', '>', 100)
-  ->get();
+groupBy('account_id')
+groupBy('account_id', 'status')
+
+having('account_id', '>', 100)
+having('account_id', '>', 100)
 --------------------
 
 Лимит и офсет
 skip это limit
 take это offset
 
-DB::table('users')
-  ->skip(10)
-  ->take(5)
-  ->get();
-  
-DB::table('users')
-  ->offset(10)
-  ->limit(5)
-  ->get();
+skip(N)
+take(M)
+
+limit(N)
+offset(M)
 --------------------
 
 Условные добавления в запрос
 
-when выполняет Замыкание, когда переданный параметр true
-
 $role = $request->input('role');
 
-$users = DB::table('users')
-  ->when($role, function ($query, $role) {
-    return $query->where('role_id', $role);
+
+Если $role true, то выполнится замыкание
+
+when($role, function ($query, $role) {
+  return $query->where('role_id', $role);
 })->get();
 
-2 замыкания, второе сработает, когда переданный параметр false
+Если $role false, то выполнится второе замыкание
 
-$sortBy = null;
-
-$users = DB::table('users')
-  ->when($sortBy, function ($query, $sortBy) {
-    return $query->orderBy($sortBy);
-  }, function ($query) {
-    return $query->orderBy('name');
+when($role, function ($query, $role) {
+  return $query->orderBy($role);
+}, function ($query) {
+  return $query->orderBy('name');
 })->get();
 --------------------
 
 Вставка строк
-insert, insertOrIgnore, insertGetId
 
 вставка 1 строки
-DB::table('users')->insert(['email' => 'john@example.com', 'votes' => 0]);
+insert(['email' => 'john@example.com', 'votes' => 0]);
 
 вставка много строк
-DB::table('users')->insert([
+insert([
   ['email' => 'taylor@example.com', 'votes' => 0],
   ['email' => 'dayle@example.com', 'votes' => 0],
 ]);
 
 игнорирование дубликатов при вставке
-DB::table('users')->insertOrIgnore([
+insertOrIgnore([
   ['id' => 1, 'email' => 'taylor@example.com'],
   ['id' => 2, 'email' => 'dayle@example.com'],
 ]);
 
 вставка 1 строки и получить вставленный ID
-$id = DB::table('users')->insertGetId(['email' => 'john@example.com', 'votes' => 0]);
-$id = DB::table('users')->insertGetId(['email' => 'john@example.com', 'votes' => 0], 'id_user');
+insertGetId(['email' => 'john@example.com', 'votes' => 0]);
+insertGetId(['email' => 'john@example.com', 'votes' => 0], 'id_user');
 --------------------
 
 Обновления строк
-update, updateOrInsert
 
 обновить строку
-$affected = DB::table('users')
-  ->where('id', 1)
-  ->update(['votes' => 1]);
+update(['votes' => 1])
 
 обновить или вставить
-если строка не найдена, то она будет вставлена с данными из обоих массивов
+если строка не найдена, то будет вставлена с данными из обоих массивов
 
-DB::table('users')
-  ->updateOrInsert(
-    ['email' => 'john@example.com', 'name' => 'John'], массив условий поиска строки
-    ['votes' => '2'] что обновлять
+updateOrInsert(
+
+  условия для поиска строки
+  ['email' => 'john@example.com', 'name' => 'John'], 
+  
+  что обновлять
+  ['votes' => '2']
 );
 
 обновить строку JSON
-DB::table('users')->where('id', 1)->update(['options->enabled' => true]);
+update(['options->enabled' => true]);
 --------------------
 
 Инкремент и Декремент столбика
-increment, decrement
 для них не работают события модели
 
-DB::table('users')->increment('votes');
-DB::table('users')->increment('votes', 5); на +5
-DB::table('users')->decrement('votes');
-DB::table('users')->decrement('votes', 5); на -5
-DB::table('users')->increment('votes', 1, ['name' => 'John']); попутно что-то еще обновим
+increment('votes');
+increment('votes', 5); на +5
+decrement('votes');
+decrement('votes', 5); на -5
+increment('votes', 1, ['name' => 'John']); попутно еще что-то обновим
 --------------------
 
 Удаление строк
-delete, truncate
 
-DB::table('users')->delete();
-DB::table('users')->where('votes', '>', 100)->delete();
-DB::table('users')->truncate(); удалит все строки и сбросит счетчик ID
+delete()
+truncate(); удалит все строки и сбросит счетчик ID
 --------------------
 
 Блокировка
 
 блокирует изменение строк, пока транзакция не зафиксирована
-
-DB::table('users')
-  ->where('votes', '>', 100)
-  ->sharedLock()
-  ->get();
+sharedLock()
 
 блокирует выборку и изменение строк, пока существует sharedLock
-
-DB::table('users')
-  ->where('votes', '>', 100)
-  ->lockForUpdate()
-  ->get();
+lockForUpdate()
 --------------------
 
 SQL debug
@@ -499,55 +455,26 @@ dd(DB::getQueryLog());
 PAGINATION
 
 Пагинатор встроен в Eloquent ORM и Query Builder
-метод groupBy не работает с методом paginate()
+метод groupBy() не работает с методом paginate()
 
 Без пагинатора
-User:all();
-DB::table('users')->get();
+all()
+get()
 
 Пагинатор ссылки "1,2,3"
-User:paginate(10);
-DB::table('users')->paginate(10);
+paginate(10)
 
 Пагинатор ссылки "Назад, Вперед"
-User:simplePaginate(10);
-DB::table('users')->simplePaginate(10);
+simplePaginate(10)
 
 Пагинатор с Eloquent
-App\User::paginate(15);
-User::where('votes', '>', 100)->paginate(15);
-User::where('votes', '>', 100)->simplePaginate(15);
+User::paginate(10)
+User::simplePaginate(10)
 --------------------
 
 Свой пагинатор
 стиль paginate от Pagination\LengthAwarePaginator
 стиль simplePaginate от Pagination\Paginator
---------------------
-
-Ссылки пагинатора
-{{$users->links()}}
-
-Счетчик страниц в урле пагинатора
-page=N
-
-Изменить ссылки
-$users = App\User::paginate(15)->withPath('custom/url');
-будут такие custom/url?page=N
-
-Добавить параметр к ссылкам
-{{$users->appends(['sort' => 'votes'])->links()}}
-добавит sort=votes в query string
-
-Добавить весь query string к ссылкам
-{{$users->withQueryString()->links()}}
-
-Добавить хеш к ссылкам
-{{$users->fragment('foo')->links()}}
-добавит #foo
-
-Настройка колва ссылок
-по умолчанию 3
-{{$users->onEachSide(5)->links()}}
 --------------------
 
 Конвертация пагинатора в Json
@@ -572,18 +499,39 @@ $users = App\User::paginate(15)->withPath('custom/url');
 }
 --------------------
 
-Изменить внешний вид ссылок пагинатора
+Счетчик страниц в урле пагинатора
+page=N
+
+Изменить ссылки пагинатора
+withPath('custom/url')
+будут ссылки вида custom/url?page=N
+
+Ссылки пагинатора
+{{$users->links()}}
+
+Добавить параметр к ссылкам в query string
+{{$users->appends(['sort' => 'votes'])->links()}}
+
+Добавить весь query string к ссылкам
+{{$users->withQueryString()->links()}}
+
+Добавить хеш к ссылкам в query string
+{{$users->fragment('foo')->links()}}
+
+Настройка колва ссылок
+{{$users->onEachSide(N)->links()}}
+
+Изменить внешний вид ссылок
 {{$paginator->links('view.name')}}
 {{$paginator->links('view.name', ['foo' => 'bar'])}}
 
-Экспорт вьюх пагинатора в свой каталог resources/views/vendor/pagination
+Экспорт вьюх ссылок пагинатора в свой каталог resources/views/vendor/pagination
 php artisan vendor:publish --tag=laravel-pagination
 
 Изменить название вьюхи
 
 в AppServiceProvider
 public function boot() {
-
   Paginator::defaultView('view-name');
   Paginator::defaultSimpleView('view-name');
 
@@ -708,18 +656,14 @@ Schema::dropIfExists('users');
 
 У id и foreign_id должны совпадать тип столбца
 
-Если ID такой
+1 связка
 $table->integer('id')->autoIncrement();
-
-То Foreign_ID такой
 $table->integer('categories_id');
 $table->index('categories_id');
 $table->foreign('categories_id')->references('id')->on('categories');
 
-Если ID такой
+2 связка
 $table->id();
-
-То Foreign_ID такой
 $table->foreignId('categories_id')->constrained();
 -------------------------
 
@@ -883,8 +827,8 @@ Schema::table('posts', function (Blueprint $table) {
 });
 
 constrained() автоматически найдет таблицу и столбик
-можно уточнить
 
+можно уточнить
 Schema::table('posts', function (Blueprint $table) {
   $table->foreignId('user_id')->constrained('users');
 });

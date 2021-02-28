@@ -33,7 +33,7 @@ VAPOR
 -------------------------------------------------
 
 PASSPORT
-логин для api. токены. нет состояния сеанса между запросами. на основе oauth2. гуард tokenguard. компоненты vue. json api. круд клиентов и токенов, коды авторизации. гуарды и провайдеры, использование api через js. использование токена, куки, csrf. события
+логин для api. токены. на основе oauth2. гуард tokenguard. компоненты vue. json api. круд клиентов и токенов, коды авторизации. гуарды и провайдеры, использование api через js. использование токена, куки, csrf. события
 
 SANCTUM
 система логина для spa (одностраничники), приложений, api. на основе токенов. у токенов области видимости. без oauth. токены как у github. роуты. гуарды. cors, csrf, вещание, тестирование
@@ -60,38 +60,20 @@ NOVA
 LIVEWIRE
 микрофреймворк для динамических компонентов. поле поиска с отображением результатов на лету. пагинация
 
-LUMEN
-микрофреймворк
-
-ECHO
-JS либа
-
-MIX
-компиляция и минификация
-
-HOMESTEAD
-среда разработки
-
-ORION
-rest api на базе eloquent моделей
-
-INTERVENTION
-работа с картинками
-
-FAKER
-генератор данных для сидеров
+LUMEN микрофреймворк
+ECHO JS либа
+MIX компиляция и минификация
+HOMESTEAD среда разработки
+ORION rest api на базе eloquent моделей
+INTERVENTION работа с картинками
+FAKER генератор данных для сидеров
 
 SCOUT
 поисковая машина. на основе индексов. драйвер algolia. мягкое удаление поддерживается. свои драйверы
 
-TINKER
-repl пакет для artisan console
-
-ENVOYER
-продвинутая выключалка приложения
-
-VALET
-среда разработки для Mac
+TINKER repl пакет для artisan console
+ENVOYER продвинутая выключалка приложения
+VALET среда разработки для Mac
 -------------------------------------------------
 
 FLARE
@@ -106,20 +88,9 @@ TELESCOPE
 
 CMS based Laravel
 
-Asgard
-Atlantis
-Borgert
-Coaster
-Coaster
-Decoy
-Fully
-Lavalite
-MaguttiCMS
-Microweber
-October
-Photon
-PongoCMS
-PyroCMS
-Quarx
-Twill
-TypiCMS
+Asgard, Atlantis, Borgert
+Coaster, Coaster, Decoy
+Fully, Lavalite, MaguttiCMS
+Microweber, October, Photon
+PongoCMS, PyroCMS, Quarx
+Twill, TypiCMS

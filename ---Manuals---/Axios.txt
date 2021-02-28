@@ -1,4 +1,4 @@
-Репо
+Репоз
 https://github.com/axios/axios
 
 Установка
@@ -12,6 +12,7 @@ const axios = require('axios');
 
 Импорт TypeScript
 import axios from 'axios';
+--------------------
 
 Get запрос
 
@@ -24,6 +25,7 @@ axios.get('/user', {params: {id: 123}})
   .then(function (response) {})
   .catch(function (error) {})
   .then(function () {});  
+--------------------
 
 Post запрос
 
@@ -33,6 +35,7 @@ axios.post('/user', {id: 123})
 
 Методы
 get, delete, head, options, post, put, patch
+--------------------
 
 Инстанс со своим конфигом
 const instance = axios.create({
@@ -45,6 +48,7 @@ const instance = axios.create({
 
 Установка конфига другим способом
 axios.defaults.baseURL = 'https://domain.com';
+--------------------
 
 Структура ответа
 data, status, headers, config, request

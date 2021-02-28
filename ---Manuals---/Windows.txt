@@ -161,9 +161,3 @@ https://github.com/Wohlstand/Destroy-Windows-10-Spying/releases
 Всё по винде
 https://remontka.pro/windows-10-page
 -------------------------------------------------
-
-Рабочие столы
-
-Ctrl + Win + D – создать рабочий стол
-Ctrl + Win + F4 – закрыть рабочий стол
-Ctrl + Win + стрелки - сменить рабочий стол

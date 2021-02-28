@@ -6,7 +6,7 @@ Getting Started, Relationships, Collections, Mutators, Api resources, Serializat
 GETTING STARTED
 
 Eloquent ORM это реализация паттерна ActiveRecord
-модели Eloquent это тоже Query Builder, доступны все его методы
+моделям Eloquent доступны все методы Query Builder
 
 Таблица это Модель
 Паттерн Repositories это хранилище для абстракций
@@ -26,6 +26,7 @@ php artisan make:model Name
 
 Создать модель и миграцию
 php artisan make:model Name -m
+--------------------
 
 class Name extends Model {
 
@@ -55,10 +56,10 @@ class Name extends Model {
   protected $connection = 'connectionName';
 
   значения по умолчанию для столбиков
-  protected $attributes = [
-    'delayed' => false,
-  ];
-
+  protected $attributes = ['delayed' => false];
+  
+  при обновлении Comment, обновит метку времени updated_at у родителя Post
+  protected $touches = ['post'];
 }
 -------------------------
 
@@ -66,16 +67,12 @@ class Name extends Model {
 
 User::addSelect(['last_post' => Post::select('name')
   ->whereColumn('user_id', 'users.id')
-  ->orderBy('arrived_at', 'desc')
-  ->limit(1)
 ])->get();
 
 Подзапросы в OrderBy
 
 User::orderByDesc(Post::select('arrived_at')
     ->whereColumn('user_id', 'users.id')
-    ->orderBy('arrived_at', 'desc')
-    ->limit(1)
 )->get();
 -------------------------
 
@@ -87,7 +84,7 @@ Post::where('active', 1)->orderBy('name', 'desc')->take(10)->get();
 Post::chunk(200, function ($posts) {});
 
 Курсоры
-курсор возвращает ленивые коллекции LazyCollection. доступны все методы ленивых коллекций
+курсор возвращает ленивые коллекции LazyCollection
 
 Получить строки по 1 через курсоры
 foreach (Post::where('foo', 'bar')->cursor() as $post) {}
@@ -124,9 +121,9 @@ Post::where('legs', '>', 100)->firstOrFail();
 Агрегатные функции
 все агрегатные функции из Query Builder
 
-Post::where('active', 1)->count();
-Post::where('active', 1)->sum('price');
-Post::where('active', 1)->max('price');
+count()
+sum('price')
+max('price')
 -------------------------
 
 Переизвлечь модель в новую переменную
@@ -156,11 +153,13 @@ $user->name = 'name';
 $user->save();
 
 Массовое обновление
-для методов saving, saved, updating, updated не срабатывают события модели
 
 User::where('active', 1)
   ->where('destination', 'San Diego')
   ->update(['delayed' => 1]);
+
+Не срабатывают события модели
+для методов saving, saved, updating, updated
 -------------------------
 
 Контроль изменения аттрибутов модели с момента извлечения
@@ -231,15 +230,15 @@ User::destroy(1);
 User::destroy(1, 2, 3);
 User::destroy([1, 2, 3]);
 User::destroy(collect([1, 2, 3]));
+--------------------
 
-destroy() - события deleting и deleted работают
+События deleting и deleted работают
+на методе destroy() и delete()
 --------------------
 
 Удалить несколько моделей
 
 User::where('active', 0)->delete();
-
-delete() - события deleting и deleted не работают
 --------------------
 
 Мягкое удаление строк
@@ -247,9 +246,8 @@ delete() - события deleting и deleted не работают
 без фактического удаления
 на базе столбика deleted_at в котором время удаления
 
+подключаем трейт
 class User extends Model {
-
-  подключаем трейт
   use SoftDeletes;
 }
 
@@ -306,7 +304,7 @@ $billing->save();
 
 Глобальные области для Запросов
 
-позволяют добавить ограничения для всех запросов к модели
+глобальные ограничения для всех запросов к модели
 мягкое удаление сделано на таком принципе
 
 Создать область
@@ -323,7 +321,7 @@ class User extends Model {
   }
 }
 
-Область на основе Замыканий
+Добавить область к модели, на основе замыкания
 class User extends Model {
   protected static function booted() {
     static::addGlobalScope('age', function (Builder $builder) {
@@ -345,9 +343,8 @@ User::withoutGlobalScopes([FirstScope::class, SecondScope::class])->get();
 
 Локальные области для Запросов
 
-позволяют добавить ограничения для запросов к модели
-это методы в модели Eloquent с префиксом scope
-методы возвращают Query Builder
+локальные ограничения для всех запросов к модели
+эти методы в модели Eloquent с префиксом scope
 
 class User extends Model {
 
@@ -362,10 +359,10 @@ class User extends Model {
 
 }
 
-Вызываются такие методы без префикса
-User::popular()->get();
-User::popular()->active()->get();
-User::active(100)->get();
+Вызываются методы без префикса
+popular()
+active(100)
+popular()->active(100)
 
 User::popular()->orWhere(function (Builder $query) {
   $query->active();
@@ -380,12 +377,12 @@ if ($post->is($anotherPost)) {}
 
 События
 
-retrieved извлечение
-creating, created новая модель сохраняется
-updating, updated существующая модель сохраняется
-saving, saved модель создана или обновлена
-deleting, deleted,
-restoring, restored
+выборка retrieved
+новая модель сохраняется creating, created
+существующая модель сохраняется updating, updated
+модель создана или обновлена saving, saved
+модель удалена deleting, deleted
+модель восстановлена restoring, restored
 
 массовое обновление или удаление не вызывает событий
 saved, updated, deleting, deleted
@@ -818,9 +815,9 @@ $book->loadMissing('author');
 
 1. Метод save() принимает экземпляр модели Eloquent
 
+$post = Post::find(1);
 $comment = new Comment(['message' => 'comment']);
 
-$post = Post::find(1);
 $post->comments()->save($comment);
 
 $post->comments()->saveMany([
@@ -850,7 +847,7 @@ $post->push();
 --------------------
 
 Установка foreign key на потомка
-$account = Account::find(10);
+$account = Account::find(1);
 $user->account()->associate($account);
 $user->save();
 
@@ -859,10 +856,10 @@ $user->account()->dissociate();
 $user->save();
 --------------------
 
-Если модели нет то вернуть болванку
+Если модели нет, то вернуть болванку
 return $this->belongsTo('User')->withDefault();
 
-Если модели нет то вернуть болванку с набором аттрибутов
+Если модели нет, то вернуть болванку, с набором аттрибутов
 return $this->belongsTo('User')->withDefault([
   'name' => 'Guest Author'
 ]);
@@ -903,13 +900,6 @@ User::find(1)->roles()->save($role, ['expires' => $expires]);
 
 Обновление записи в pivot таблице
 $user->roles()->updateExistingPivot($roleId, $attributes);
-
-Обновление родительских меток времени
-при обновлении Comment, обновит updated_at у Post
-
-class Comment extends Model {
-  protected $touches = ['post'];
-}
 -------------------------------------------------
 
 COLLECTIONS
@@ -1168,7 +1158,7 @@ public $preserveKeys = true;
 $this->collection в UserCollection обращается к User
 
 Можно это изменить
-public $collects = 'App\Http\Resources\Member';
+public $collects = 'Http\Resources\Member';
 --------------------
 
 Загрузка отношений
@@ -1305,14 +1295,14 @@ SERIALIZATION
 сериализует модели в массивы или json
 
 Модель и отношения в массив
-user = App\User::with('roles')->first();
+user = User::with('roles')->first();
 $user->toArray();
 
 Модель в массив
 $user->attributesToArray();
 
 Коллекции моделей в массив
-$users = App\User::all();
+$users = User::all();
 $users->toArray();
 
 Модель и отношения в json
