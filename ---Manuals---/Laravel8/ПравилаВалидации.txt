@@ -1,0 +1,98 @@
+accepted            yes, on, 1, true
+active_url          A, AAAA запись dns_get_record
+after:date          после даты N
+after_or_equal:date после или равно дате N
+alpha               только буквы
+alpha_dash          букво-цифры, знаки - и _
+alpha_num           букво-цифры
+array               PHP array
+
+bail                 остановка валидации после первой же ошибки
+before:date          до даты N
+before_or_equal:date до или равно дате N
+between:min,max      между
+boolean              true, false, 1, 0, "1", "0"
+
+confirmed - совпадения для двух полей password и password_confirmation
+
+date - должно быть датой
+date_equals:date - должно быть равно дате N
+date_format:format - дата должна быть нужного формата
+different:field - поле должно иметь другое значение, чем поле field
+digits:value - должно быть числовым
+digits_between:min,max - должно быть числовым и от min до max
+dimensions:min_width,max_width,min_height,max_height,width,height,ratio - файл должен быть картинкой с заданными параметрами. есть метод Rule::dimensions
+distinct - массив без дублей значений
+
+email - должно быть почтой. email:rfc,dns - валидаторы RFCValidation и DNSCheckValidation. всего 5 валидаторов
+ends_with:foo,bar - должно заканчиваться одним из значений
+exclude_if:anotherfield,value - поле будет исключено из данных Запроса, если поле anotherfield равно value
+exclude_unless:anotherfield,value - поле будет исключено из данных Запроса, если поле anotherfield НЕравно value
+exists:table[,column] - поле должно существовать в таблице БД. Можно указать свой столбец. Можно указать тип соединения. Можно указать Eloquent модель. Есть метод Rule::exists
+
+file - поле должно быть успешно загруженным файлом
+filled - поле не должно быть пустым, если оно присутствует
+
+gt:field - поле должно быть больше чем поле field
+gte:field - поле должно быть больше или равно чем поле field
+
+image - поле должно быть картинкой jpeg, png, bmp, gif, svg, webp
+in:foo,bar - поле должно быть одним из значений. Есть метод Rule::in
+in_array:anotherfield.* - поле должно существовать в значениях другого поля
+integer - целое число
+ip - IP адрес
+ipv4 - IPv4 адрес
+ipv6 - IPv6 адрес
+
+json - JSON строка
+
+lt:field - поле должно быть меньше поля field
+lte:field - поле должно быть меньше или равно полю field
+
+max:value - поле должно быть меньше или равно значению value
+mimetypes:image/png,video/mpeg - файл должен быть MIME типом. угадывание по контенту внутри файла
+mimes:png,mpeg - файл должен быть MIME типом. угадывание по контенту внутри файла
+min:value - поле должно быть равно value
+
+not_in:foo,bar - поле НЕдолжно быть одним из значений. Есть метод Rule::notIn
+not_regex:pattern - поле не должно совпадать регулярке. под капотом preg_match. Если внутри будет | то правила валидации указывать массивом
+nullable - поле может быть NULL
+numeric - поле должно быть цифровым
+
+password - поле должно быть аутентификационным паролем юзера
+present - поле должно быть во входных данных и оно не пустое
+
+regex:pattern - поле должно совпадать регулярке. под капотом preg_match. Если внутри будет | то правила валидации указывать массивом
+
+required - поле должно быть во входных данных и оно не пустое (не NULL, '', [])
+
+required_if:anotherfield,value - поле должно быть во входных данных и оно не пустое, если поле anotherfield равно значению value. Есть метод Rule::requiredIf
+
+required_unless:anotherfield,value - поле должно быть во входных данных и оно не пустое, если поле anotherfield НЕравно значению value.
+
+required_with:foo,bar - поле должно быть во входных данных и оно не пустое, если присутствует любое из других указанных полей
+
+required_with_all:foo,bar -
+поле должно быть во входных данных и оно не пустое, если присутствуют ВСЕ другие указанные поля
+
+required_without:foo,bar - поле должно быть во входных данных и оно не пустое, если отсутствует любое из других указанных полей
+
+required_without_all:foo,bar - поле должно быть во входных данных и оно не пустое, если отсутствуют ВСЕ другие указанные поля
+
+same:field - поле должно быть равно полю field
+
+size:value - поле должно иметь указанный размер. для строк это колво букв. для чисел это число. для массива это колво элементов. для файлов это размер в Кб.
+
+starts_with:foo,bar - поле должно начинаться с одного из заданных значений
+
+string - поле должно быть строкой
+
+sometimes - если поле есть в выходных данных
+
+timezone - поле должно быть таймзоной из php timezone_identifiers_list
+
+unique:table,column,except,idColumn - поле не должно существовать в БД. можно указать Eloquent модель. можно указать тип соединения. есть метод Rule::unique
+
+url - поле должно быть урлом
+
+uuid - поле должно быть валидным UUID по RFC 4122
