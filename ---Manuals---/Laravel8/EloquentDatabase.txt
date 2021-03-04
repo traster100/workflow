@@ -1,4 +1,4 @@
-Состав файла EloquentORM
+Состав файла Eloquent
 
 Getting Started, Relationships, Collections, Mutators, Api resources, Serialization
 
