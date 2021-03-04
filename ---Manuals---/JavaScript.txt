@@ -1,88 +1,105 @@
-JSDoc - документация.
-JSLint - проверяльщик кода на ошибки+стиль+структуру.
+JSDoc - документация
+JSLint - проверяльщик кода на ошибки, стиль, структуру
+--------------------
 
-Методы загрузки
+Методы загрузки скрипта
+
 <script src='' параметр></script>
-defer - для скриптов, которым требуется доступ ко всему DOM, важен порядок выполнения.
-async - для независимых скриптов типа счётчиков и рекламы, не важен порядок выполнения.
+defer - для скриптов, которым требуется доступ ко всему DOM, важен порядок выполнения
+async - для независимых скриптов типа счётчиков и рекламы, не важен порядок выполнения
+--------------------
 
-События отлова нажатия клавиш в input
+События нажатия клавиш в input
+
 keydown - первое нажатие отловит пустое. именно нажатие клавиши, до буквы.
 keydup - первое нажатие уже смысловое. буква
+--------------------
+
+Готовность документа
+
+запускается когда DOM готов
+$(document).ready(function () {});
+$(function() {});
+
+запускается когда готовы DOM, картинки, фреймы
+$(window).on("load", function () {});
+--------------------
+
+Вначале файла обязательно
 
 "use strict";
-$(document).ready(function () {
+--------------------
 
-    //не давать вбивать ничего кроме цифр
-    //<input type="number" onkeypress='return event.charCode >= 48 && event.charCode <= 57' >
+не давать вбивать ничего кроме цифр
+<input type="number" onkeypress='return event.charCode >= 48 && event.charCode <= 57' >
 
-    //не давать вбивать ничего кроме цифр. и только 6 цифр
-    onkeypress='return (event.charCode >= 48 && event.charCode <= 57) && (this.value.length < 6)'
+не давать вбивать ничего кроме цифр. и только 6 цифр
+onkeypress='return (event.charCode >= 48 && event.charCode <= 57) && (this.value.length < 6)'
 
-    //проверка вбиваемых символов на лету, когда вбиваем их в поле input
-    $('#code').on('keyup', function () {
+проверка вбиваемых символов на лету, когда вбиваем их в поле input
+$('#code').on('keyup', function () {
 
-        var filed = $(this).val();
+  var filed = $(this).val();
 
-        //длина символов
-        var length_symbols = filed.length;
+  //длина символов
+  var length_symbols = filed.length;
 
-        //ничего кроме латинницы и цифр
-        var regexp = /^[a-zA-Z0-9]+$/i;
-        if (regexp.test(filed)) {}
+  //ничего кроме латинницы и цифр
+  var regexp = /^[a-zA-Z0-9]+$/i;
+  if (regexp.test(filed)) {}
 
-        //добавление/удаление аттрибута у тега
-        $('#check').attr('disabled', 'disabled');
-        $('#check').removeAttr('disabled');
+    //добавление/удаление аттрибута у тега
+    $('#check').attr('disabled', 'disabled');
+    $('#check').removeAttr('disabled');
 
-        //добавление/удаление класса у тега
-        $('#check').addClass('btn-default');
-        $('#check').removeClass('btn-default');
+    //добавление/удаление класса у тега
+    $('#check').addClass('btn-default');
+    $('#check').removeClass('btn-default');
 
-        //если нет класса - добавит, если есть - удалит
-        $('a').toggleClass('active');
+    //если нет класса - добавит, если есть - удалит
+    $('a').toggleClass('active');
 
-        //перед объектами, которые управляются jQuery, ставим символ $
-        var $first = $('#first');
+    //перед объектами, которые управляются jQuery, ставим символ $
+    var $first = $('#first');
     });
 
-    //клик по кнопке
-    $('#check').on('click', function () {
+//клик по кнопке
+$('#check').on('click', function () {
 
-        //сама кнопка
-        var button = $(this);
+  //сама кнопка
+  var button = $(this);
 
-        //запрос к серверу
-        $.post(
-            'url',
-            {
-                'var1': 'value1',
-            },
-            function (result) {
-                console.log(result);
-            });
+  //запрос к серверу
+  $.post(
+    'url',
+      {
+        'var1': 'value1',
+      },
+    function (result) {
+      console.log(result);
     });
+});
 
-    //клик по ссылке, которая есть на странице с самого начала
-    $('#link').on('click', function (event) {});
+//клик по ссылке, которая есть на странице с самого начала
+$('#link').on('click', function (event) {});
 
-    //клик по ссылке, которая появится на странице потом, в результате ajax-запроса
-    $(document).delegate('#link', 'click', function (event) {});
+//клик по ссылке, которая появится на странице потом, в результате ajax-запроса
+$(document).delegate('#link', 'click', function (event) {});
 
-    //скрол наверх, или к элементу
-    $('html,body').animate({scrollTop: $("input:first").offset().top - 100}, 500);
-    $('#boxscroll').scrollTop(9999999);
-    $('#boxscroll').scrollTop();
+//скрол наверх, или к элементу
+$('html,body').animate({scrollTop: $("input:first").offset().top - 100}, 500);
+$('#boxscroll').scrollTop(9999999);
+$('#boxscroll').scrollTop();
 
-    $('a').on('click', function () {
-        $('html, body').animate({
-            scrollTop: $("header").offset().top
-        }, 200);
-        return false;
-    });
+$('a').on('click', function () {
+  $('html, body').animate({
+    scrollTop: $("header").offset().top
+  , 200);
+  return false;
+});
 
-    //редирект/открытие другого урла. обычно для скачивания файла
-    window.location.href = 'url';
+//редирект/открытие другого урла. обычно для скачивания файла
+window.location.href = 'url';
 
     //вопрос с подтверждением
     if (confirm('Удалить?')) {}

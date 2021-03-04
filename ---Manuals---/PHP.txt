@@ -316,55 +316,29 @@ $a->n1(); // T11
 $a->n2(); // T22
 -------------------------------------------------
 
-Пространства имен
+Слова namespace и use
 
-index1.php
+Класс в одном файле
+class Original {}
 
-namespace A1;
-class N {
- public function n() {
-  echo __CLASS__ . ' : ' . __NAMESPACE__;
- }
-}
-echo __FILE__ . ' : ' . __NAMESPACE__;
-
-index2.php
-
-namespace A2;
-class N {
- public function n() {
-  echo __CLASS__ . ' : ' . __NAMESPACE__;
- }
-}
-echo __FILE__ . ' : ' . __NAMESPACE__;
+Класс в другом файле
+namespace Shortcut;
+class Original {}
 
 
-index3.php
-namespace A3;
-include_once 'index1.php';
-include_once 'index2.php';
+Использование
 
-$a1 = new \A1\N;
-$a1->n();
+new Original();
+new Shortcut\Original();
 
-$a2 = new \A2\N;
-$a2->n();
+namespace Shortcut;
+new Original(); // вызовется Shortcut\Original()
 
-echo __FILE__ . ' : ' . __NAMESPACE__ . '';
+namespace Shortcut;
+new \Original(); // вызовется Original()
 
-Элементы из одного пространства имён могут быть импортированы в другое, и использоваться в нём непосредственно.
-
-use A1\N;
-$a3 = new N;
-$a3->n();
-
-Вывод:
-C:\YD\domains\test.loc\index1.php : A1
-C:\YD\domains\test.loc\index2.php : A2
-A1\N : A1
-A2\N : A2
-C:\YD\domains\test.loc\index3.php : A3
-A1\N : A1
+use Shortcut\Original as Orig2
+new Orig2(); // вызовется Shortcut\Original()
 -------------------------------------------------
 
 PDO
@@ -683,18 +657,22 @@ public function a1() :bool {}
 public function a1(array $b) {}
 
 Проверка строго на null. вернет $a или второе значение
-$a ?? false;
-$a ?? null;
-$a ?? '';
+$a ?? 1;
 
 Слово ::class
-вернет класс с его пространством имён. т.е. полное имя класса
+вернет полное имя класс с пространством имен
 
 namespace NamespaceName1;
 class className1{}
 
-вернет \NamespaceName1\className1
-className1::class;
+className1::class; // \NamespaceName1\className1
+-------------------------------------------------
+
+ООП
+
+наследование - от абстрактных классов
+инкапсуляция - скрытие реализации всего что возможно (public, private, protected)
+полиморфизм - 1 интерфейс и множество реализаций
 -------------------------------------------------
 
 Regexp
