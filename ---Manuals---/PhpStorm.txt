@@ -21,36 +21,46 @@ idea.log.path=${idea.system.path}/log
 
 Плагины
 
-Отключить, потом удалить папки в /plugins
-
-Angular and AngularJS (папка AngularJS)
-ASP (asp)
-Drupal Support (drupal)
-Joomla! Support (joomla)
-Mercurial (hg4idea)
-Vue.js (vuejs)
-Vagrant (vagrant)
-WordPress Support (wordPress)
-Subversion (svn4idea)
-PHP Docker (phpstorm-docker)
-Docker (Docker)
-Twig Support (twig)
-
-Выключить, не удалять
+Отключить
 
 Phing
+Docker
+Vagrant
 IDE Settings Sync
 Settings Repository
+Angular and AngularJS
 CoffeeScript
+Vue.js
+Gherkin
+GNU GetText files (*.po)
+Drupal
+Joomla!
+WordPress
+PHP Docker
+PHP Remote Interpreter
+PHP WSL Support
+Hunspell
+Tailwind CSS
+Twig
+Behat Support
+Codeception Framework
+PHPSpec BDD Framework
+Mercurial
+Perforce
+Subversion
+Copyright
+Grazie
+PhpStorm Workshop
+Time Tracking
 
 Поставить
 
-Laravel (фреймворк Laravel)
-BrowseWordAtCaret (подсветка одинаковых слов)
-Php Inspections EA Extended (статический анализ кода)
-Отключить сбор статистики
-File | Settings | Php Inspections (EA Extended)
-Automatically collect crash-reports
+Laravel
+BrowseWordAtCaret
+Php Inspections (EA Extended)
+  отключить сбор статистики
+  File | Settings | Php Inspections (EA Extended)
+  Automatically collect crash-reports
 -------------------------------------------------
 
 Удаление лишнего
